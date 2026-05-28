@@ -25,21 +25,12 @@
 <ng-template #title>
 	<span class="text-xl font-bold text-blue-950">Utility payments</span>
   <span class="date ml-4">
-    <nz-date-picker
-            [nzDisabledDate]="disabledStartDate"
-            nzFormat="yyyy-MM-dd"
-            [(ngModel)]="startValue"
-            nzPlaceHolder="Start"
-            (nzOnOpenChange)="handleStartOpenChange($event)"
-          ></nz-date-picker>
-          <nz-date-picker
-            #endDatePicker
-            [nzDisabledDate]="disabledEndDate"
-            nzFormat="yyyy-MM-dd"
-            [(ngModel)]="endValue"
-            nzPlaceHolder="End"
-            (nzOnOpenChange)="handleEndOpenChange($event)"
-          ></nz-date-picker>
+    <app-date-range-select
+      [(startValue)]="startValue"
+      [(endValue)]="endValue"
+      [(preset)]="dateRangePreset"
+      (rangeChange)="refreshDateRangeData()"
+    ></app-date-range-select>
   </span>
 </ng-template>
 <ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

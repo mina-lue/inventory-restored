@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { CommonModule } from '@angular/common'
@@ -12,12 +12,12 @@ import { Observable } from 'rxjs';
 import { AttendanceService } from '../../../service/attendance.service';
 import { TransactionsService } from '../../../service/transactions.service';
 import { RouterLink } from '@angular/router';
-import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { EmployeeAttendanceComponent } from "../../attendance/employee-attendance/employee-attendance.component";
+import { DateRangePreset, DateRangeSelectComponent, getDateRangeForPreset } from '../../lib/date-range-select/date-range-select.component';
 
 @Component({
   selector: 'app-salary',
-  imports: [EmployeeAttendanceComponent, RouterLink, NzDatePickerModule, NzCardComponent, NzTableModule, CommonModule, NzCheckboxModule, NzButtonModule, FormsModule, NzIconModule, EmployeeAttendanceComponent],
+  imports: [EmployeeAttendanceComponent, RouterLink, NzCardComponent, NzTableModule, CommonModule, NzCheckboxModule, NzButtonModule, FormsModule, NzIconModule, DateRangeSelectComponent],
   templateUrl: './salary.component.html',
   styleUrl: './salary.component.scss'
 })
@@ -29,28 +29,19 @@ export class SalaryComponent implements OnInit{
   salariesToPay: any[] = [];
   startValue= new Date();
   endValue = new Date();
+  dateRangePreset: DateRangePreset = 'week';
   employeeAttendances$ : Observable<any[]> | undefined;
 
-  @ViewChild('endDatePicker') endDatePicker!: NzDatePickerComponent;
   empAttendance: any[] = [];
   employeeName :string = "";
 
 
     constructor(private service:InventoryService, private attendanceService: AttendanceService, private readonly transactionService :TransactionsService){
-      this.startValue.setDate(this.startValue.getDate()-30)
+      const initialDateRange = getDateRangeForPreset(this.dateRangePreset);
+      this.startValue = initialDateRange.start;
+      this.endValue = initialDateRange.end;
       this.employees$ = this.attendanceService.getAttendanceHours(this.startValue, this.endValue);
-      this.employees$.subscribe((data: any[])=>{
-        data.forEach((emp)=>{
-          this.salaries.push({
-            employee: emp.employee,
-            amount: emp.amount,
-            date: this.today,
-            workHour: emp.workedHours,
-            paid: false
-          })
-        })
-
-      });
+      this.loadSalaries();
     }
 
     ngOnInit():void{
@@ -100,30 +91,24 @@ export class SalaryComponent implements OnInit{
 
 
 
-    disabledStartDate = (startValue: Date): boolean => {
-      if (!startValue || !this.endValue) {
-        return false;
-      }
-      return startValue.getTime() > this.endValue.getTime();
-    };
-
-    disabledEndDate = (endValue: Date): boolean => {
-      if (!endValue || !this.startValue) {
-        return false;
-      }
-      return endValue.getTime() <= this.startValue.getTime();
-    };
-
-    handleStartOpenChange(open: boolean): void {
-      if (!open) {
-        this.endDatePicker.open();
-      }
-      console.log('handleStartOpenChange', open);
+    refreshDateRangeData(): void {
+      this.employees$ = this.attendanceService.getAttendanceHours(this.startValue, this.endValue);
+      this.loadSalaries();
     }
 
-    handleEndOpenChange(open: boolean): void {
-      this.attendanceService.getAttendanceHours(this.startValue, this.endValue).subscribe((data)=>{
-        console.log(data);
-      })
+    private loadSalaries(): void {
+      this.salaries = [];
+      this.salariesToPay = [];
+      this.employees$.subscribe((data: any[])=>{
+        data.forEach((emp)=>{
+          this.salaries.push({
+            employee: emp.employee,
+            amount: emp.amount,
+            date: this.today,
+            workHour: emp.workedHours,
+            paid: false
+          })
+        })
+      });
     }
 }

@@ -1,0 +1,25 @@
+.date-range-select-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.date-range-select-control {
+  width: 150px;
+}
+
+.date-range-select-field nz-date-picker {
+  width: min(150px, 100%);
+}
+
+@media (max-width: 640px) {
+  .date-range-select-field {
+    justify-content: flex-start;
+  }
+
+  .date-range-select-control,
+  .date-range-select-field nz-date-picker {
+    width: 100%;
+  }
+}

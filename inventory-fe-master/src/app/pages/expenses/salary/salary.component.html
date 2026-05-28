@@ -46,21 +46,12 @@
   <ng-template #attendanceTitle>
     <span class="text-2xl font-bold"> Salary Pay On: {{today}}</span>
     <span class="date ml-4">
-      <nz-date-picker
-      [nzDisabledDate]="disabledStartDate"
-      nzFormat="yyyy-MM-dd "
-      [(ngModel)]="startValue"
-      nzPlaceHolder="Start"
-      (nzOnOpenChange)="handleStartOpenChange($event)"
-    ></nz-date-picker>
-    <nz-date-picker
-      #endDatePicker
-      [nzDisabledDate]="disabledEndDate"
-      nzFormat="yyyy-MM-dd"
-      [(ngModel)]="endValue"
-      nzPlaceHolder="End"
-      (nzOnOpenChange)="handleEndOpenChange($event)"
-    ></nz-date-picker>
+      <app-date-range-select
+        [(startValue)]="startValue"
+        [(endValue)]="endValue"
+        [(preset)]="dateRangePreset"
+        (rangeChange)="refreshDateRangeData()"
+      ></app-date-range-select>
   </span>
   </ng-template>
 
@@ -76,8 +67,6 @@
   <ng-template #close>
     <button class="mr-4"  (click)="closeEmpAttendances()"><nz-icon nzType="close" nzTheme="outline" /></button>
   </ng-template>
-
-
 
 
 

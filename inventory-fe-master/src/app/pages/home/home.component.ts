@@ -1,24 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { FormsModule } from '@angular/forms'
 import { RouterLink } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
 import { TransactionsService } from '../../service/transactions.service';
 import { formatDate } from '../../lib/DateFormatter';
 import { InventoryService } from '../../service/store-service.service';
-import { Product } from '../../model/product.model';
-import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { LineComponent } from "../lib/line/line.component";
 import { InventoryBalance } from '../../model/InventoryBalance';
 import { ReorderSuggestion } from '../../model/ReorderSuggestion.model';
+import { DateRangeSelectComponent, DateRangePreset, getDateRangeForPreset } from '../lib/date-range-select/date-range-select.component';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, NzIconModule, NzCardModule, NzDropDownModule, CommonModule, NzSelectModule, FormsModule, NzDatePickerComponent, NzDatePickerModule, LineComponent],
+  imports: [RouterLink, NzIconModule, NzCardModule, NzDropDownModule, CommonModule, LineComponent, DateRangeSelectComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -53,15 +50,16 @@ export class HomeComponent implements OnInit{
   lowStockMaterials$: Observable<any[]>;
   reorderSuggestions$: Observable<ReorderSuggestion[]>;
   profit = 0;
-  dateRangePreset = 'week';
+  dateRangePreset: DateRangePreset = 'week';
 
 
   startValue: Date = new Date();
   endValue: Date = new Date();
-  @ViewChild('endDatePicker') endDatePicker!: NzDatePickerComponent;
 
   constructor(private readonly transactionService: TransactionsService, private readonly storeService: InventoryService){
-    this.setPresetRange(this.dateRangePreset);
+    const initialDateRange = getDateRangeForPreset(this.dateRangePreset);
+    this.startValue = initialDateRange.start;
+    this.endValue = initialDateRange.end;
     this.balance$ = transactionService.getBalance();
     this.productions$ = storeService.getProductions(formatDate(this.startValue), formatDate(this.endValue));
     this.moneyIn$ = transactionService.getMoneyIn(formatDate(this.startValue), formatDate(this.endValue));/*
@@ -157,43 +155,7 @@ export class HomeComponent implements OnInit{
 
   }
 
-  disabledStartDate = (startValue: Date): boolean => {
-    if (!startValue || !this.endValue) {
-      return false;
-    }
-    return startValue.getTime() > this.endValue.getTime();
-  };
-
-  disabledEndDate = (endValue: Date): boolean => {
-    if (!endValue || !this.startValue) {
-      return false;
-    }
-    return endValue.getTime() <= this.startValue.getTime();
-  };
-
-  handleStartOpenChange(open: boolean): void {
-    if (!open) {
-      this.endDatePicker.open();
-    }
-  }
-
-  handleEndOpenChange(open: boolean): void {
-    if (open || this.dateRangePreset !== 'custom') {
-      return;
-    }
-
-    this.refreshDateRangeData();
-  }
-
-  onDateRangePresetChange(value: string): void {
-    this.dateRangePreset = value;
-    if (value !== 'custom') {
-      this.setPresetRange(value);
-      this.refreshDateRangeData();
-    }
-  }
-
-  private refreshDateRangeData(): void {
+  refreshDateRangeData(): void {
     this.productions$ = this.storeService.getProductions(formatDate(this.startValue), formatDate(this.endValue));
     this.moneyIn$ = this.transactionService.getMoneyIn(formatDate(this.startValue), formatDate(this.endValue));
     this.moneyInTaxed$ = this.transactionService.getMoneyInTaxed(formatDate(this.startValue), formatDate(this.endValue));
@@ -220,38 +182,6 @@ export class HomeComponent implements OnInit{
           })
         })
        });
-  }
-
-  private setPresetRange(preset: string): void {
-    const today = new Date();
-    const start = new Date(today);
-
-    if (preset === 'today') {
-      this.startValue = start;
-      this.endValue = today;
-      return;
-    }
-
-    if (preset === 'week') {
-      const day = start.getDay();
-      const daysSinceMonday = day === 0 ? 6 : day - 1;
-      start.setDate(start.getDate() - daysSinceMonday);
-      this.startValue = start;
-      this.endValue = today;
-      return;
-    }
-
-    if (preset === 'month') {
-      start.setDate(1);
-      this.startValue = start;
-      this.endValue = today;
-      return;
-    }
-
-    if (preset === 'all') {
-      this.startValue = new Date(0);
-      this.endValue = today;
-    }
   }
 
 }

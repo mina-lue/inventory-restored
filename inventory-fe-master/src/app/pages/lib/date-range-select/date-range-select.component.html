@@ -1,0 +1,32 @@
+<div class="date-range-select-field">
+  <nz-select
+    class="date-range-select-control"
+    [(ngModel)]="preset"
+    (ngModelChange)="onPresetChange($event)"
+  >
+    <nz-option nzValue="today" nzLabel="Today"></nz-option>
+    <nz-option nzValue="week" nzLabel="This week"></nz-option>
+    <nz-option nzValue="month" nzLabel="This month"></nz-option>
+    <nz-option nzValue="all" nzLabel="All time"></nz-option>
+    <nz-option nzValue="custom" nzLabel="Custom"></nz-option>
+  </nz-select>
+  <nz-date-picker
+    *ngIf="preset === 'custom'"
+    [nzDisabledDate]="disabledStartDate"
+    nzFormat="yyyy-MM-dd"
+    [(ngModel)]="startValue"
+    nzPlaceHolder="Start"
+    (ngModelChange)="startValueChange.emit($event)"
+    (nzOnOpenChange)="handleStartOpenChange($event)"
+  ></nz-date-picker>
+  <nz-date-picker
+    *ngIf="preset === 'custom'"
+    #endDatePicker
+    [nzDisabledDate]="disabledEndDate"
+    nzFormat="yyyy-MM-dd"
+    [(ngModel)]="endValue"
+    nzPlaceHolder="End"
+    (ngModelChange)="endValueChange.emit($event)"
+    (nzOnOpenChange)="handleEndOpenChange($event)"
+  ></nz-date-picker>
+</div>
