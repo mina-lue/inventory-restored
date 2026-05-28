@@ -4,6 +4,7 @@ import com.anim.inventory.product.Product;
 import com.anim.inventory.product.ProductService;
 import com.anim.inventory.production.entity.Production;
 import com.anim.inventory.production.repo.ProductionRepository;
+import com.anim.inventory.stockmovement.StockMovementService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +16,12 @@ public class ProductionService {
 
     private final ProductionRepository productionRepository;
     private final ProductService productService;
+    private final StockMovementService stockMovementService;
 
-    public ProductionService(ProductionRepository productionRepository, ProductService productService) {
+    public ProductionService(ProductionRepository productionRepository, ProductService productService, StockMovementService stockMovementService) {
         this.productionRepository = productionRepository;
         this.productService = productService;
+        this.stockMovementService = stockMovementService;
     }
 
     public List<Production> findAll() {
@@ -39,10 +42,19 @@ public class ProductionService {
             throw new NoSuchElementException("Product not found.");
         }
 
-        product.setQuantity(product.getQuantity() + production.getQuantity());
+        int quantityBefore = safeQuantity(product.getQuantity());
+        int quantityAfter = quantityBefore + production.getQuantity();
+
+        product.setQuantity(quantityAfter);
         productService.updateInventory(product);
         production.setProduct(product);
-        return productionRepository.save(production);
+        Production savedProduction = productionRepository.save(production);
+        stockMovementService.record("product", product.getId(), "production", quantityBefore, quantityAfter, savedProduction.getId(), "Product produced");
+        return savedProduction;
+    }
+
+    private int safeQuantity(Integer quantity) {
+        return quantity == null ? 0 : quantity;
     }
 
 

@@ -5,6 +5,7 @@ import com.anim.inventory.material.MaterialService;
 import com.anim.inventory.product.Product;
 import com.anim.inventory.product.ProductService;
 import com.anim.inventory.store.BalanceService;
+import com.anim.inventory.stockmovement.StockMovementService;
 import com.anim.inventory.transaction.expenses.ExpensesService;
 import com.anim.inventory.transaction.io.entities.Purchase;
 import com.anim.inventory.transaction.io.entities.Sale;
@@ -33,14 +34,16 @@ public class TransactionsService {
     private final ProductService productService;
     private final BalanceService balanceService;
     private final MaterialService materialService;
+    private final StockMovementService stockMovementService;
 
-    public TransactionsService(SaleRepository saleRepository, PurchaseRespository purchaseRespository, ProductService productService, BalanceService balanceService, MaterialService materialService, ExpensesService expensesService) {
+    public TransactionsService(SaleRepository saleRepository, PurchaseRespository purchaseRespository, ProductService productService, BalanceService balanceService, MaterialService materialService, ExpensesService expensesService, StockMovementService stockMovementService) {
         this.saleRepository = saleRepository;
         this.purchaseRespository = purchaseRespository;
         this.productService = productService;
         this.balanceService = balanceService;
         this.materialService = materialService;
         this.expensesService = expensesService;
+        this.stockMovementService = stockMovementService;
         totalMoneyOut = 0.0;
         totalMoneyIn = 0.0;
     }
@@ -59,19 +62,24 @@ public class TransactionsService {
             throw new NoSuchElementException("Product not found.");
         }
 
-        if (product.getQuantity() < sale.getQuantity()) {
+        int quantityBefore = safeQuantity(product.getQuantity());
+
+        if (quantityBefore < sale.getQuantity()) {
             throw new IllegalArgumentException("Sale quantity exceeds available product stock.");
         }
 
-        product.setQuantity(product.getQuantity() - sale.getQuantity());
+        int quantityAfter = quantityBefore - sale.getQuantity();
+        product.setQuantity(quantityAfter);
         Float updatePrice = sale.getTotalPrice() / sale.getQuantity();
         product.setPrice(updatePrice);
-        product.setSoldQuantity(product.getSoldQuantity() + sale.getQuantity());
+        product.setSoldQuantity(safeQuantity(product.getSoldQuantity()) + sale.getQuantity());
         product.setLastSoldTime(LocalDateTime.now());
         productService.updateInventory(product);
         balanceService.changeBalance(sale.getTotalPrice());
         sale.setProduct(product);
-        return saleRepository.save(sale);
+        Sale savedSale = saleRepository.save(sale);
+        stockMovementService.record("product", product.getId(), "sale", quantityBefore, quantityAfter, savedSale.getId(), "Product sold");
+        return savedSale;
     }
 
     @Transactional
@@ -88,13 +96,18 @@ public class TransactionsService {
             throw new NoSuchElementException("Material not found.");
         }
 
-        material.setQuantity(material.getQuantity() + purchase.getQuantity());
+        int quantityBefore = safeQuantity(material.getQuantity());
+        int quantityAfter = quantityBefore + purchase.getQuantity();
+
+        material.setQuantity(quantityAfter);
         Float updatePrice = purchase.getTotalPrice() / purchase.getQuantity();
         material.setPrice(updatePrice);
         materialService.updateInventory(material);
         balanceService.changeBalance(-purchase.getTotalPrice());
         purchase.setMaterial(material);
-        return purchaseRespository.save(purchase);
+        Purchase savedPurchase = purchaseRespository.save(purchase);
+        stockMovementService.record("material", material.getId(), "purchase", quantityBefore, quantityAfter, savedPurchase.getId(), "Material purchased");
+        return savedPurchase;
     }
 
 
@@ -141,5 +154,9 @@ public class TransactionsService {
         if (amount == null || amount <= 0) {
             throw new IllegalArgumentException(fieldName + " must be greater than zero.");
         }
+    }
+
+    private int safeQuantity(Integer quantity) {
+        return quantity == null ? 0 : quantity;
     }
 }
