@@ -40,7 +40,7 @@
     </div>
   </nz-card>
 
-  <nz-card class="dashboard-section" [nzTitle]="productionTitle">
+  <nz-card class="dashboard-section" [nzTitle]="productionTitle" [nzExtra]="dateFilters">
     <div class="summary-grid">
       <nz-card class="summary-card summary-production" [nzTitle]="productionsCardTitle">
         <ng-container *ngIf="productions$ | async as productions">
