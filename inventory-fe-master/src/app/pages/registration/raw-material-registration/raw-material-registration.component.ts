@@ -23,7 +23,14 @@ export class RawMaterialRegistrationComponent {
 
     validateForm = this.fb.group({
       name:[undefined, Validators.required],
+      sku:[undefined],
+      barcode:[undefined],
+      category:[undefined],
+      supplier:[undefined],
+      costPrice:[undefined],
       price:[undefined, Validators.required],
+      reorderPoint:[0],
+      location:[undefined],
       unit:[undefined, Validators.required],
     })
 

@@ -10,18 +10,28 @@
 	<thead>
 		<tr>
 			<th>Material Name</th>
+			<th>SKU</th>
+			<th>Category</th>
 			<th>Unit of Measurement</th>
+			<th>Cost Price</th>
 			<th>Price Per Unit</th>
 			<th>Total Quantity</th>
+			<th>Reorder</th>
+			<th>Location</th>
 			<th>Total Value</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr *ngFor="let material of materialsTable.data">
 			<td>{{material.name}}</td>
+			<td>{{material.sku || '-'}}</td>
+			<td>{{material.category || '-'}}</td>
 			<td>{{material.unit}}</td>
+			<td>{{material.costPrice || '-'}}</td>
 			<td>{{material.price}}</td>
 			<td>{{material.quantity}}</td>
+			<td>{{material.reorderPoint}}</td>
+			<td>{{material.location || '-'}}</td>
 			<td>{{material.price * material.quantity}}</td>
 		</tr>
 	</tbody>

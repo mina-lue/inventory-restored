@@ -1,5 +1,5 @@
 <div class="justify-center flex mt-4">
-<nz-card [nzTitle]="formTitle" class="w-1/2 shadow-md" [nzExtra]="quit">
+<nz-card [nzTitle]="formTitle" class="w-3/4 shadow-md" [nzExtra]="quit">
 <form nz-form class="w-full" [formGroup]="validateForm" (ngSubmit)="save(validateForm.value)">
 	<nz-form-item>
 		<nz-form-label [nzSpan]="5"><span class="text-lg">Product Name</span></nz-form-label>
@@ -8,12 +8,82 @@
 		</nz-form-control>
 	</nz-form-item>
 
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">SKU</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input placeholder="SKU" formControlName="sku">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">Barcode</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input placeholder="Barcode or QR value" formControlName="barcode">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">Category</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input placeholder="Category" formControlName="category">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">Supplier</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input placeholder="Supplier" formControlName="supplier">
+    </nz-form-control>
+  </nz-form-item>
+
 	<nz-form-item>
-        <nz-form-label [nzSpan]="5"><span class="text-lg">Unit price</span></nz-form-label>
+        <nz-form-label [nzSpan]="5"><span class="text-lg">Cost Price</span></nz-form-label>
         <nz-form-control [nzSpan]="12" nzHasFeedback>
-          <nz-input-number name="price" style="width:100%" formControlName="price"></nz-input-number>
+          <nz-input-number name="costPrice" style="width:100%" formControlName="costPrice"></nz-input-number>
         </nz-form-control>
     </nz-form-item>
+
+  <nz-form-item>
+        <nz-form-label [nzSpan]="5"><span class="text-lg">Selling Price</span></nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback>
+          <nz-input-number name="sellingPrice" style="width:100%" formControlName="sellingPrice"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+
+  <nz-form-item>
+        <nz-form-label [nzSpan]="5"><span class="text-lg">Reorder Point</span></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-input-number name="reorderPoint" style="width:100%" formControlName="reorderPoint"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">Location</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input placeholder="Warehouse, shelf, or bin" formControlName="location">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">Batch Number</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input placeholder="Batch or lot number" formControlName="batchNumber">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">Serial Number</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input placeholder="Serial number" formControlName="serialNumber">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5"><span class="text-lg">Expiry Date</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input type="date" formControlName="expiryDate">
+    </nz-form-control>
+  </nz-form-item>
 
      <nz-form-item>
 		<nz-form-label [nzSpan] = "5"><span class="text-lg">Unit of Measure</span></nz-form-label>

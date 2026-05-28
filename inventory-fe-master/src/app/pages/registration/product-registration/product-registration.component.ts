@@ -22,7 +22,18 @@ export class ProductRegistationComponent implements OnInit{
 
   validateForm = this.fb.group({
     name:[undefined, Validators.required],
-    price:[undefined, Validators.required],
+    sku:[undefined],
+    barcode:[undefined],
+    category:[undefined],
+    supplier:[undefined],
+    costPrice:[undefined],
+    sellingPrice:[undefined, Validators.required],
+    price:[undefined],
+    reorderPoint:[0],
+    location:[undefined],
+    batchNumber:[undefined],
+    serialNumber:[undefined],
+    expiryDate:[undefined],
     unit:[undefined, Validators.required],
   })
 
@@ -35,7 +46,10 @@ export class ProductRegistationComponent implements OnInit{
 
   save(data: any){
     if(this.validateForm.valid){
-      this.service.addProduct(data);
+      this.service.addProduct({
+        ...data,
+        price: data.sellingPrice
+      });
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

@@ -12,19 +12,29 @@
 	<thead>
 		<tr>
 			<th>Product Name</th>
+			<th>SKU</th>
+			<th>Category</th>
 			<th>Unit of Measure</th>
-			<th>Unit Price</th>
+			<th>Cost</th>
+			<th>Selling</th>
 			<th>quantity</th>
+			<th>Reorder</th>
+			<th>Location</th>
 			<th>Total Price</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr *ngFor = "let product of productsTable.data">
 			<td>{{product.name}}</td>
+			<td>{{product.sku || '-'}}</td>
+			<td>{{product.category || '-'}}</td>
 			<td>{{product.unit}}</td>
-			<td>{{product.price}}</td>
+			<td>{{product.costPrice || '-'}}</td>
+			<td>{{product.sellingPrice || product.price}}</td>
 			<td>{{product.quantity}}</td>
-			<td>{{product.price * product.quantity}}</td>
+			<td>{{product.reorderPoint}}</td>
+			<td>{{product.location || '-'}}</td>
+			<td>{{(product.sellingPrice || product.price) * product.quantity}}</td>
 		</tr>
 	</tbody>
 	</nz-table>

@@ -25,7 +25,18 @@ public class MaterialService {
     }
 
     public ResponseEntity<Material> save(Material material) {
-        material.setQuantity(0);
+        if (material.getQuantity() == null) {
+            material.setQuantity(0);
+        }
+        if (material.getReorderPoint() == null) {
+            material.setReorderPoint(0);
+        }
+        if (material.getActive() == null) {
+            material.setActive(true);
+        }
+        if (material.getCostPrice() == null) {
+            material.setCostPrice(material.getPrice());
+        }
         return new ResponseEntity<>(materialRepository.save(material), HttpStatus.CREATED);
     }
 

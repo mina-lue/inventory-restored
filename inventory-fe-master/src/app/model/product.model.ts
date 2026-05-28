@@ -1,7 +1,20 @@
 export interface Product{
   id?:string,
   name:string,
+  sku?: string,
+  barcode?: string,
+  category?: string,
+  supplier?: string,
   price:number,
+  costPrice?: number,
+  sellingPrice?: number,
+  taxRate?: number,
   quantity: number,
+  reorderPoint?: number,
+  location?: string,
+  batchNumber?: string,
+  serialNumber?: string,
+  expiryDate?: string,
+  active?: boolean,
   unit: string
 }

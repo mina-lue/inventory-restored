@@ -46,9 +46,24 @@ public class ProductService {
     }
 
     public ResponseEntity<Product> save(Product product) {
-        product.setQuantity(0);
-        product.setSoldQuantity(0);
-        product.setLastSoldTime(LocalDateTime.now());
+        if (product.getQuantity() == null) {
+            product.setQuantity(0);
+        }
+        if (product.getSoldQuantity() == null) {
+            product.setSoldQuantity(0);
+        }
+        if (product.getReorderPoint() == null) {
+            product.setReorderPoint(0);
+        }
+        if (product.getActive() == null) {
+            product.setActive(true);
+        }
+        if (product.getSellingPrice() == null) {
+            product.setSellingPrice(product.getPrice());
+        }
+        if (product.getPrice() == null) {
+            product.setPrice(product.getSellingPrice());
+        }
         return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
 

@@ -72,6 +72,7 @@ public class TransactionsService {
         product.setQuantity(quantityAfter);
         Float updatePrice = sale.getTotalPrice() / sale.getQuantity();
         product.setPrice(updatePrice);
+        product.setSellingPrice(updatePrice);
         product.setSoldQuantity(safeQuantity(product.getSoldQuantity()) + sale.getQuantity());
         product.setLastSoldTime(LocalDateTime.now());
         productService.updateInventory(product);
@@ -102,6 +103,7 @@ public class TransactionsService {
         material.setQuantity(quantityAfter);
         Float updatePrice = purchase.getTotalPrice() / purchase.getQuantity();
         material.setPrice(updatePrice);
+        material.setCostPrice(updatePrice);
         materialService.updateInventory(material);
         balanceService.changeBalance(-purchase.getTotalPrice());
         purchase.setMaterial(material);
