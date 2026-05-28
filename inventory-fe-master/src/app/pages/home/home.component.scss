@@ -156,6 +156,12 @@
   color: #fff;
 }
 
+.summary-card ::ng-deep .ant-card-head,
+.summary-card ::ng-deep .ant-card-head-title,
+.summary-card ::ng-deep .ant-card-body {
+  color: #fff;
+}
+
 .summary-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

@@ -42,7 +42,7 @@
 
   <nz-card class="dashboard-section" [nzTitle]="productionTitle">
     <div class="summary-grid">
-      <nz-card class="summary-card summary-production" nzTitle="Productions">
+      <nz-card class="summary-card summary-production" [nzTitle]="productionsCardTitle">
         <ng-container *ngIf="productions$ | async as productions">
           <p *ngFor="let production of productions" class="summary-row">
             <span>{{production.product?.name}}</span>
@@ -52,7 +52,7 @@
         </ng-container>
       </nz-card>
 
-      <nz-card class="summary-card summary-store" nzTitle="Store">
+      <nz-card class="summary-card summary-store" [nzTitle]="storeCardTitle">
         <ng-container *ngIf="productsInStore$ | async as products">
           <p *ngFor="let product of products" class="summary-row">
             <span>{{product.name}}</span>
@@ -62,7 +62,7 @@
         </ng-container>
       </nz-card>
 
-      <nz-card class="summary-card summary-sales" nzTitle="Sales">
+      <nz-card class="summary-card summary-sales" [nzTitle]="salesCardTitle">
         <ng-container *ngIf="productsSold$ | async as sales">
           <p *ngFor="let sale of sales" class="summary-row">
             <span>{{sale.product?.name}}</span>
@@ -194,4 +194,16 @@
 
 <ng-template #outTitle>
   <span class="metric-title">Money Out</span>
+</ng-template>
+
+<ng-template #productionsCardTitle>
+  <span class="metric-title">Productions</span>
+</ng-template>
+
+<ng-template #storeCardTitle>
+  <span class="metric-title">Store</span>
+</ng-template>
+
+<ng-template #salesCardTitle>
+  <span class="metric-title">Sales</span>
 </ng-template>
