@@ -15,8 +15,9 @@ public class EmployeeController {
     private final EmployeeRepository employeeRepository;
 
     @GetMapping
-    public List<Employee> getAll() {
-        Page<Employee> pageEmployees =  employeeRepository.findAll(PageRequest.of(0, 10));
+    public List<Employee> getAll(@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size) {
+        Page<Employee> pageEmployees = employeeRepository.findAll(PageRequest.of(page, size));
         return pageEmployees.getContent();
     }
 

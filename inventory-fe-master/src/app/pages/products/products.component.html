@@ -39,18 +39,13 @@
 	</tbody>
 	</nz-table>
 
-	<nz-pagination
-	    [nzTotal] = "total"
-	    [nzPageIndex]="startAt"
-	    [nzPageSize]="size"
-	    [nzSize]="'small'"
-	    [nzPageSizeOptions] = "[5, 10, 15, 20, 30, 40, 50]"
-	    [nzShowSizeChanger] = "true"
-	    (nzPageIndexChange)="onPageChange($event)"
-	    (nzPageSizeChange)="onPageSizeChange($event)"
-	    class="float-right"
-	    >
-	 </nz-pagination>
+	<app-list-pagination
+	  [total]="total"
+	  [pageIndex]="pageIndex"
+	  [pageSize]="pageSize"
+	  (pageIndexChange)="onPageChange($event)"
+	  (pageSizeChange)="onPageSizeChange($event)"
+	></app-list-pagination>
 </nz-card>
 
 <ng-template #title>

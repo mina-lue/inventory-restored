@@ -3,7 +3,7 @@
     <nz-table
     #storeTable
     ngSkipHydration
-    [nzData]="storeItems"
+    [nzData]="storeItems | paginate: pageIndex : pageSize"
     nzTableLayout="fixed"
     nzSize="small"
     nzBordered="true"
@@ -29,17 +29,13 @@
         </tr>
       </tbody>
     </nz-table>
-    <nz-pagination
-    [nzTotal] = "total"
-    [nzPageIndex]="startAt"
-    [nzPageSize]="size"
-    [nzSize]="'small'"
-    [nzPageSizeOptions] = "[5, 10, 15, 20, 30, 40, 50]"
-    [nzShowSizeChanger] = "true"
-    (nzPageIndexChange)="onPageChange($event)"
-    (nzPageSizeChange)="onPageSizeChange($event)"
-    class="float-right"
-    ></nz-pagination>
+    <app-list-pagination
+      [total]="total"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      (pageIndexChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-list-pagination>
   </nz-card>
 
   
@@ -48,5 +44,4 @@
 <ng-template #itemsInStore>
   <span class="text-black text-2xl ">Items In Store</span>
 </ng-template>
-
 

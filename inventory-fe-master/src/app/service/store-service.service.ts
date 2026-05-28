@@ -86,10 +86,14 @@ export class InventoryService {
   }
 
   getCustomers(): Observable<Customer[]>{
+    return this.getCustomersPage({ page: 0, size: 10 });
+  }
+
+  getCustomersPage(page: Page): Observable<Customer[]>{
     const params = new HttpParams()
-    .set("page", 0)
-    .set("size", 10);
-    return this.http.get<Customer[]>(storeEndPoints.customers).pipe(catchError(() => of([])))
+      .set("page", page.page)
+      .set("size", page.size);
+    return this.http.get<Customer[]>(storeEndPoints.customers, { params }).pipe(catchError(() => of([])))
   }
 
   getCustomersCount(): Observable<number>{
@@ -109,7 +113,14 @@ export class InventoryService {
   }
 
   getEmployees():Observable<any[]>{
-    return this.http.get<any[]>(storeEndPoints.employees).pipe(catchError(() => of([])));
+    return this.getEmployeesPage({ page: 0, size: 10 });
+  }
+
+  getEmployeesPage(page: Page): Observable<any[]>{
+    const params = new HttpParams()
+      .set("page", page.page)
+      .set("size", page.size);
+    return this.http.get<any[]>(storeEndPoints.employees, { params }).pipe(catchError(() => of([])));
   }
 
   getEmployeesCount(): Observable<number>{

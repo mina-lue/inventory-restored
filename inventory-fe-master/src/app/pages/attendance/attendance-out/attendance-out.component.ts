@@ -11,20 +11,26 @@ import { InventoryService } from '../../../service/store-service.service';
 import { Observable } from 'rxjs';
 import { AttendanceService } from '../../../service/attendance.service';
 import { AttendanceIn } from '../../../model/attendance.model';
+import { ListPaginationComponent } from '../../lib/list-pagination/list-pagination.component';
+import { PaginatePipe } from '../../lib/paginate/paginate.pipe';
 
 @Component({
   selector: 'app-attendance-out',
-  imports: [NzCardComponent, NzTableModule, CommonModule,NzCheckboxModule,NzButtonModule, FormsModule, NzIconModule],
+  imports: [NzCardComponent, NzTableModule, CommonModule,NzCheckboxModule,NzButtonModule, FormsModule, NzIconModule, ListPaginationComponent, PaginatePipe],
   templateUrl: './attendance-out.component.html',
   styleUrl: './attendance-out.component.scss'
 })
 export class AttendanceOutComponent {
   attendanceIns$: Observable<any[]>;
   today = new Date().toLocaleDateString();
+  total = 0;
+  pageIndex = 1;
+  pageSize = 20;
 
 
     constructor(private service:InventoryService, private attendanceService: AttendanceService){
       this.attendanceIns$ = attendanceService.getAttendanceInToday();
+      this.attendanceIns$.subscribe(items => this.total = items?.length ?? 0);
     }
 
     ngOnInit():void{

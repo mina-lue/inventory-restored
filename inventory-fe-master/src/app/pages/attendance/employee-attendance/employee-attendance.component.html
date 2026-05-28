@@ -2,6 +2,7 @@
 [nzSize]="'small'"
 nzBordered="true"
 [nzTitle]="employeeName"
+[nzData]="employeeAttendance"
 >
   <thead>
   <tr>
@@ -10,9 +11,16 @@ nzBordered="true"
   </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of employeeAttendance">
+    <tr *ngFor="let item of employeeAttendance | paginate: pageIndex : pageSize">
       <td>{{item.date | date:'MMM d, y, h:mm a'}}</td>
       <td>{{item.workHour/60.0}}</td>
     </tr>
   </tbody>
 </nz-table>
+<app-list-pagination
+  [total]="total"
+  [pageIndex]="pageIndex"
+  [pageSize]="pageSize"
+  (pageIndexChange)="pageIndex = $event"
+  (pageSizeChange)="pageSize = $event; pageIndex = 1"
+></app-list-pagination>

@@ -14,10 +14,12 @@ import { TransactionsService } from '../../../service/transactions.service';
 import { RouterLink } from '@angular/router';
 import { EmployeeAttendanceComponent } from "../../attendance/employee-attendance/employee-attendance.component";
 import { DateRangePreset, DateRangeSelectComponent, getDateRangeForPreset } from '../../lib/date-range-select/date-range-select.component';
+import { ListPaginationComponent } from '../../lib/list-pagination/list-pagination.component';
+import { PaginatePipe } from '../../lib/paginate/paginate.pipe';
 
 @Component({
   selector: 'app-salary',
-  imports: [EmployeeAttendanceComponent, RouterLink, NzCardComponent, NzTableModule, CommonModule, NzCheckboxModule, NzButtonModule, FormsModule, NzIconModule, DateRangeSelectComponent],
+  imports: [EmployeeAttendanceComponent, RouterLink, NzCardComponent, NzTableModule, CommonModule, NzCheckboxModule, NzButtonModule, FormsModule, NzIconModule, DateRangeSelectComponent, ListPaginationComponent, PaginatePipe],
   templateUrl: './salary.component.html',
   styleUrl: './salary.component.scss'
 })
@@ -27,6 +29,9 @@ export class SalaryComponent implements OnInit{
   today = new Date().toLocaleDateString();
   salaries: any[] = [];
   salariesToPay: any[] = [];
+  total = 0;
+  pageIndex = 1;
+  pageSize = 20;
   startValue= new Date();
   endValue = new Date();
   dateRangePreset: DateRangePreset = 'week';
@@ -111,6 +116,7 @@ export class SalaryComponent implements OnInit{
             paid: false
           })
         })
+        this.total = this.salaries.length;
       });
     }
 }

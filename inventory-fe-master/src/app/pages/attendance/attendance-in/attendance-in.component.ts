@@ -10,22 +10,30 @@ import { Employee } from '../../../model/employee.model';
 import { InventoryService } from '../../../service/store-service.service';
 import { Observable, startWith } from 'rxjs';
 import { AttendanceService } from '../../../service/attendance.service';
+import { ListPaginationComponent } from '../../lib/list-pagination/list-pagination.component';
+import { PaginatePipe } from '../../lib/paginate/paginate.pipe';
 
 
 @Component({
   selector: 'app-attendance-in',
-  imports: [NzCardComponent, NzTableModule, CommonModule,NzCheckboxModule,NzButtonModule, FormsModule, NzIconModule],
+  imports: [NzCardComponent, NzTableModule, CommonModule,NzCheckboxModule,NzButtonModule, FormsModule, NzIconModule, ListPaginationComponent, PaginatePipe],
   templateUrl: './attendance-in.component.html',
   styleUrl: './attendance-in.component.scss'
 })
 export class AttendanceInComponent implements OnInit{
-  employees$: Observable<any[]>;
+  employees$!: Observable<any[]>;
   today = new Date().toLocaleDateString();
+  total = 0;
+  pageIndex = 1;
+  pageSize = 20;
 //  attendances: any[] = [];
 
 
     constructor(private service:InventoryService, private attendanceService: AttendanceService){
-      this.employees$ = this.service.getEmployees().pipe(startWith([]));
+      this.service.getEmployeesCount().subscribe(total => {
+        this.total = total;
+        this.employees$ = this.service.getEmployeesPage({ page: 0, size: total }).pipe(startWith([]));
+      });
   /*    this.employees$.pipe().subscribe((data: Employee[])=>{
         data.forEach((emp)=>{
           this.attendances.push({

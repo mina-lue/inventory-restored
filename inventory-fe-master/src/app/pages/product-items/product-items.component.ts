@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NzPaginationModule } from 'ng-zorro-antd/pagination'
 import { InventoryService } from '../../service/store-service.service';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -8,30 +7,38 @@ import { CommonModule } from '@angular/common'
 import { Observable, startWith } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { ListPaginationComponent } from '../lib/list-pagination/list-pagination.component';
 
 @Component({
   selector: 'app-product-items',
-  imports: [NzPaginationModule, NzCardComponent, NzTableModule, CommonModule, RouterLink, NzIconModule],
+  imports: [NzCardComponent, NzTableModule, CommonModule, RouterLink, NzIconModule, ListPaginationComponent],
   templateUrl: './product-items.component.html',
   styleUrl: './product-items.component.scss'
 })
 export class ProductItemsComponent {
-  total = 10;
-  startAt = 0;
-  size = 10;
-  productsInStore: Observable<Product[]>;
+  total = 0;
+  pageIndex = 1;
+  pageSize = 20;
+  productsInStore!: Observable<Product[]>;
 
   constructor(private readonly store:InventoryService){
-    this.total= store.productsInStore.total;
-    this.productsInStore = store.getProducts({size:10, page:0}).pipe(startWith([]));
-    }
-
-
-  onPageChange($event:any){
-    console.log($event);
+    this.loadProducts();
+    this.store.getProductsCount().subscribe(total => this.total = total);
   }
-  onPageSizeChange($event:any){
-    console.log($event);
+
+  private loadProducts(): void {
+    this.productsInStore = this.store.getProducts({size: this.pageSize, page: this.pageIndex - 1}).pipe(startWith([]));
+  }
+
+  onPageChange(pageIndex: number){
+    this.pageIndex = pageIndex;
+    this.loadProducts();
+  }
+
+  onPageSizeChange(pageSize: number){
+    this.pageSize = pageSize;
+    this.pageIndex = 1;
+    this.loadProducts();
   }
 
 }

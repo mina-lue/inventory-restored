@@ -1,6 +1,6 @@
 <nz-card [nzTitle]="title" class="shadow-sm mt-2" [nzExtra]="quit">
 	<nz-table
-	[nzData]="(assets$ |async)?? []"
+	[nzData]="((assets$ |async)?? []) | paginate: pageIndex : pageSize"
 	#assetsTable
 	[nzFrontPagination]="false"
 	nzSize="small"
@@ -24,6 +24,13 @@
 		</tr>
 	</tbody>
 	</nz-table>
+	<app-list-pagination
+	  [total]="total"
+	  [pageIndex]="pageIndex"
+	  [pageSize]="pageSize"
+	  (pageIndexChange)="pageIndex = $event"
+	  (pageSizeChange)="pageSize = $event; pageIndex = 1"
+	></app-list-pagination>
 </nz-card>
 
 <ng-template #title>
@@ -31,4 +38,3 @@
 </ng-template>
 
 <ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>
-

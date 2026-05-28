@@ -14,7 +14,7 @@
         <strong>{{valuation.totalValue}}</strong>
       </div>
     </div>
-    <nz-table [nzData]="(valuation$ | async)?.items ?? []" #valuationTable nzSize="small" [nzFrontPagination]="false">
+    <nz-table [nzData]="((valuation$ | async)?.items ?? []) | paginate: valuationPageIndex : reportPageSize" #valuationTable nzSize="small" [nzFrontPagination]="false">
       <thead>
         <tr>
           <th>Type</th>
@@ -26,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of valuationTable.data">
+        <tr *ngFor="let row of $any(valuationTable.data)">
           <td>{{row.itemType}}</td>
           <td>{{row.name}}</td>
           <td>{{row.sku || '-'}}</td>
@@ -36,10 +36,17 @@
         </tr>
       </tbody>
     </nz-table>
+    <app-list-pagination
+      [total]="(valuation$ | async)?.items?.length ?? 0"
+      [pageIndex]="valuationPageIndex"
+      [pageSize]="reportPageSize"
+      [showSizeChanger]="false"
+      (pageIndexChange)="valuationPageIndex = $event"
+    ></app-list-pagination>
   </nz-card>
 
   <nz-card nzTitle="Low stock" class="shadow-sm">
-    <nz-table [nzData]="(lowStock$ | async) ?? []" #lowStockTable nzSize="small" [nzFrontPagination]="false">
+    <nz-table [nzData]="((lowStock$ | async) ?? []) | paginate: lowStockPageIndex : reportPageSize" #lowStockTable nzSize="small" [nzFrontPagination]="false">
       <thead>
         <tr>
           <th>Type</th>
@@ -52,7 +59,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of lowStockTable.data">
+        <tr *ngFor="let row of $any(lowStockTable.data)">
           <td>{{row.itemType}}</td>
           <td>{{row.name}}</td>
           <td>{{row.sku || '-'}}</td>
@@ -63,10 +70,17 @@
         </tr>
       </tbody>
     </nz-table>
+    <app-list-pagination
+      [total]="(lowStock$ | async)?.length ?? 0"
+      [pageIndex]="lowStockPageIndex"
+      [pageSize]="reportPageSize"
+      [showSizeChanger]="false"
+      (pageIndexChange)="lowStockPageIndex = $event"
+    ></app-list-pagination>
   </nz-card>
 
   <nz-card nzTitle="Profit by product" class="shadow-sm">
-    <nz-table [nzData]="(profitByProduct$ | async) ?? []" #profitTable nzSize="small" [nzFrontPagination]="false">
+    <nz-table [nzData]="((profitByProduct$ | async) ?? []) | paginate: profitPageIndex : reportPageSize" #profitTable nzSize="small" [nzFrontPagination]="false">
       <thead>
         <tr>
           <th>Product</th>
@@ -78,7 +92,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of profitTable.data">
+        <tr *ngFor="let row of $any(profitTable.data)">
           <td>{{row.productName}}</td>
           <td>{{row.sku || '-'}}</td>
           <td>{{row.quantitySold}}</td>
@@ -88,10 +102,17 @@
         </tr>
       </tbody>
     </nz-table>
+    <app-list-pagination
+      [total]="(profitByProduct$ | async)?.length ?? 0"
+      [pageIndex]="profitPageIndex"
+      [pageSize]="reportPageSize"
+      [showSizeChanger]="false"
+      (pageIndexChange)="profitPageIndex = $event"
+    ></app-list-pagination>
   </nz-card>
 
   <nz-card nzTitle="Sales" class="shadow-sm">
-    <nz-table [nzData]="(sales$ | async) ?? []" #salesTable nzSize="small" [nzFrontPagination]="false">
+    <nz-table [nzData]="((sales$ | async) ?? []) | paginate: salesPageIndex : reportPageSize" #salesTable nzSize="small" [nzFrontPagination]="false">
       <thead>
         <tr>
           <th>Date</th>
@@ -103,7 +124,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of salesTable.data">
+        <tr *ngFor="let row of $any(salesTable.data)">
           <td>{{row.saleDate | date:'MMM d, y, h:mm a'}}</td>
           <td>{{row.customerName || '-'}}</td>
           <td>{{row.productName}}</td>
@@ -113,10 +134,17 @@
         </tr>
       </tbody>
     </nz-table>
+    <app-list-pagination
+      [total]="(sales$ | async)?.length ?? 0"
+      [pageIndex]="salesPageIndex"
+      [pageSize]="reportPageSize"
+      [showSizeChanger]="false"
+      (pageIndexChange)="salesPageIndex = $event"
+    ></app-list-pagination>
   </nz-card>
 
   <nz-card nzTitle="Material consumption" class="shadow-sm">
-    <nz-table [nzData]="(materialConsumption$ | async) ?? []" #consumptionTable nzSize="small" [nzFrontPagination]="false">
+    <nz-table [nzData]="((materialConsumption$ | async) ?? []) | paginate: consumptionPageIndex : reportPageSize" #consumptionTable nzSize="small" [nzFrontPagination]="false">
       <thead>
         <tr>
           <th>Date</th>
@@ -127,7 +155,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of consumptionTable.data">
+        <tr *ngFor="let row of $any(consumptionTable.data)">
           <td>{{row.consumptionDate | date:'MMM d, y, h:mm a'}}</td>
           <td>{{row.batchNumber || '-'}}</td>
           <td>{{row.productName || '-'}}</td>
@@ -136,10 +164,17 @@
         </tr>
       </tbody>
     </nz-table>
+    <app-list-pagination
+      [total]="(materialConsumption$ | async)?.length ?? 0"
+      [pageIndex]="consumptionPageIndex"
+      [pageSize]="reportPageSize"
+      [showSizeChanger]="false"
+      (pageIndexChange)="consumptionPageIndex = $event"
+    ></app-list-pagination>
   </nz-card>
 
   <nz-card nzTitle="Expense breakdown" class="shadow-sm">
-    <nz-table [nzData]="(expenseBreakdown$ | async) ?? []" #expenseTable nzSize="small" [nzFrontPagination]="false">
+    <nz-table [nzData]="((expenseBreakdown$ | async) ?? []) | paginate: expensePageIndex : reportPageSize" #expenseTable nzSize="small" [nzFrontPagination]="false">
       <thead>
         <tr>
           <th>Type</th>
@@ -147,16 +182,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of expenseTable.data">
+        <tr *ngFor="let row of $any(expenseTable.data)">
           <td>{{row.type}}</td>
           <td>{{row.total}}</td>
         </tr>
       </tbody>
     </nz-table>
+    <app-list-pagination
+      [total]="(expenseBreakdown$ | async)?.length ?? 0"
+      [pageIndex]="expensePageIndex"
+      [pageSize]="reportPageSize"
+      [showSizeChanger]="false"
+      (pageIndexChange)="expensePageIndex = $event"
+    ></app-list-pagination>
   </nz-card>
 
   <nz-card nzTitle="Stock movement history" class="shadow-sm">
-    <nz-table [nzData]="(stockMovements$ | async) ?? []" #movementTable nzSize="small" [nzFrontPagination]="false">
+    <nz-table [nzData]="((stockMovements$ | async) ?? []) | paginate: movementPageIndex : reportPageSize" #movementTable nzSize="small" [nzFrontPagination]="false">
       <thead>
         <tr>
           <th>Date</th>
@@ -169,7 +211,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of movementTable.data">
+        <tr *ngFor="let row of $any(movementTable.data)">
           <td>{{row.createdAt | date:'MMM d, y, h:mm a'}}</td>
           <td>{{row.itemType}} #{{row.itemId}}</td>
           <td>{{row.movementType}}</td>
@@ -180,6 +222,13 @@
         </tr>
       </tbody>
     </nz-table>
+    <app-list-pagination
+      [total]="(stockMovements$ | async)?.length ?? 0"
+      [pageIndex]="movementPageIndex"
+      [pageSize]="reportPageSize"
+      [showSizeChanger]="false"
+      (pageIndexChange)="movementPageIndex = $event"
+    ></app-list-pagination>
   </nz-card>
 </div>
 

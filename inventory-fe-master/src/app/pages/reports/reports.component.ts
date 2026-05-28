@@ -6,10 +6,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 import { ReportsService } from '../../service/reports.service';
+import { ListPaginationComponent } from '../lib/list-pagination/list-pagination.component';
+import { PaginatePipe } from '../lib/paginate/paginate.pipe';
 
 @Component({
   selector: 'app-reports',
-  imports: [CommonModule, RouterLink, NzCardComponent, NzIconModule, NzTableModule],
+  imports: [CommonModule, RouterLink, NzCardComponent, NzIconModule, NzTableModule, ListPaginationComponent, PaginatePipe],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss'
 })
@@ -21,6 +23,14 @@ export class ReportsComponent {
   materialConsumption$: Observable<any[]>;
   expenseBreakdown$: Observable<any[]>;
   stockMovements$: Observable<any[]>;
+  reportPageSize = 20;
+  valuationPageIndex = 1;
+  lowStockPageIndex = 1;
+  profitPageIndex = 1;
+  salesPageIndex = 1;
+  consumptionPageIndex = 1;
+  expensePageIndex = 1;
+  movementPageIndex = 1;
 
   constructor(private reportsService: ReportsService) {
     this.valuation$ = reportsService.getInventoryValuation();

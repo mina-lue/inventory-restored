@@ -1,6 +1,6 @@
 <nz-card [nzTitle]="attendanceTitle" class=" rounded-md" [nzExtra]="save" *ngIf="attendanceIns$|async">
   <nz-table
-  [nzData]="(attendanceIns$ |async)??[]"
+  [nzData]="((attendanceIns$ |async)??[]) | paginate: pageIndex : pageSize"
   #emps
   ngSkipHydration
   [nzFrontPagination]="false"
@@ -19,6 +19,13 @@
       </tr>
     </tbody>
   </nz-table>
+  <app-list-pagination
+    [total]="total"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    (pageIndexChange)="pageIndex = $event"
+    (pageSizeChange)="pageSize = $event; pageIndex = 1"
+  ></app-list-pagination>
   </nz-card>
 
 
@@ -31,4 +38,3 @@
 
   <ng-template #save><div class="flex gap-4"><button class="r-0" nz-button nzType="default" nzDanger (click)="resetAttendance()">reset</button> </div></ng-template>
 <!-- <button class="r-0" nz-button nzType="primary" (click)="saveAttendance()">save</button> -->
-

@@ -1,6 +1,6 @@
 <nz-card [nzTitle]="attendanceTitle" class="mt-4 rounded-md" [nzExtra]="save" *ngIf="employees$|async">
   <nz-table
-  [nzData]="salaries"
+  [nzData]="salaries | paginate: pageIndex : pageSize"
   #emps
   ngSkipHydration
   [nzFrontPagination]="false"
@@ -29,6 +29,13 @@
       </tr>
     </tbody>
   </nz-table>
+  <app-list-pagination
+    [total]="total"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    (pageIndexChange)="pageIndex = $event"
+    (pageSizeChange)="pageSize = $event; pageIndex = 1"
+  ></app-list-pagination>
   <nz-card *ngIf="employeeAttendances$|async" [nzTitle]="empAttendanceTitle" [nzExtra]="close" class="w-1/2">
     <app-employee-attendance
     [employeeAttendance]="empAttendance"
@@ -67,6 +74,5 @@
   <ng-template #close>
     <button class="mr-4"  (click)="closeEmpAttendances()"><nz-icon nzType="close" nzTheme="outline" /></button>
   </ng-template>
-
 
 
