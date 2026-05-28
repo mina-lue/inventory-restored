@@ -3,3 +3,4 @@
 ## Tech stacks
 - Frontend is developed with Angular and Ant NG-Zorro along with Tailwind library is used for UI.
 -  Backend is built with spring boot java - 21
+-  database is postgres relational database
