@@ -68,6 +68,21 @@
 
 .dashboard-section {
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dashboard-section:nth-of-type(-n + 2),
+.dashboard-section:nth-of-type(-n + 2) ::ng-deep .ant-card {
+  border-radius: 12px;
+}
+
+.dashboard-section:nth-of-type(-n + 2) .metric-card,
+.dashboard-section:nth-of-type(-n + 2) .summary-card,
+.dashboard-section:nth-of-type(-n + 2) ::ng-deep .metric-card.ant-card,
+.dashboard-section:nth-of-type(-n + 2) ::ng-deep .summary-card.ant-card {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .section-title {
