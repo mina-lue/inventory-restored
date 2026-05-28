@@ -72,6 +72,10 @@ public class ProductService {
         return product.orElse(null);
     }
 
+    public long count() {
+        return productRepository.count();
+    }
+
     public ResponseEntity<Product> save(Product product) {
         if (product.getQuantity() == null) {
             product.setQuantity(0);

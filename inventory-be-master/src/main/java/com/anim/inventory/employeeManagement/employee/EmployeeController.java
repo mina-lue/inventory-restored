@@ -20,6 +20,11 @@ public class EmployeeController {
         return pageEmployees.getContent();
     }
 
+    @GetMapping("/count")
+    public long count() {
+        return employeeRepository.count();
+    }
+
     @GetMapping("/{id}")
     public Employee get(@PathVariable Long id) {
         return employeeRepository.findById(id).orElse(null);

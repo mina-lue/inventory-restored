@@ -28,6 +28,10 @@ public class AssetService {
         return ResponseEntity.notFound().build();
     }
 
+    public long count() {
+        return assetRepository.count();
+    }
+
     public ResponseEntity<Asset> save(Asset asset) {
         return new ResponseEntity<>(assetRepository.save(asset), HttpStatus.CREATED);
     }

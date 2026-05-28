@@ -27,6 +27,11 @@ public class ProductController {
         return productService.save(product);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return ResponseEntity.ok(productService.count());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Product> finById(@PathVariable Long id) {
         if(productService.findById(id) == null) {

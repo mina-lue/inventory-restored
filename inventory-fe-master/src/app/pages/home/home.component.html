@@ -1,19 +1,23 @@
 <div class="home-page">
   <section class="quick-grid" aria-label="Primary dashboard links">
     <a class="quick-link quick-link-customers" [routerLink]="['/home/customers']">
-      <span><nz-icon nzType="team" nzTheme="outline" /> Customers</span>
+      <span class="quick-link-label"><nz-icon nzType="team" nzTheme="outline" /> Customers</span>
+      <strong class="quick-link-count">{{ customersCount$ | async }}</strong>
       <nz-icon nzType="right" nzTheme="outline" />
     </a>
     <a class="quick-link quick-link-products" [routerLink]="['/home/product-items']">
-      <span><nz-icon nzType="product" nzTheme="outline" /> Products</span>
+      <span class="quick-link-label"><nz-icon nzType="product" nzTheme="outline" /> Products</span>
+      <strong class="quick-link-count">{{ productsCount$ | async }}</strong>
       <nz-icon nzType="right" nzTheme="outline" />
     </a>
     <a class="quick-link quick-link-employees" [routerLink]="['/home/employees']">
-      <span><nz-icon nzType="team" nzTheme="outline" /> Employees</span>
+      <span class="quick-link-label"><nz-icon nzType="team" nzTheme="outline" /> Employees</span>
+      <strong class="quick-link-count">{{ employeesCount$ | async }}</strong>
       <nz-icon nzType="right" nzTheme="outline" />
     </a>
     <a class="quick-link quick-link-assets" [routerLink]="['/store/assets']">
-      <span><nz-icon nzType="apartment" nzTheme="outline" /> Assets</span>
+      <span class="quick-link-label"><nz-icon nzType="apartment" nzTheme="outline" /> Assets</span>
+      <strong class="quick-link-count">{{ assetsCount$ | async }}</strong>
       <nz-icon nzType="right" nzTheme="outline" />
     </a>
   </section>
@@ -141,7 +145,19 @@
 
 <ng-template #dateFilters>
   <div class="date-filters">
+    <nz-select
+      class="date-range-select"
+      [(ngModel)]="dateRangePreset"
+      (ngModelChange)="onDateRangePresetChange($event)"
+    >
+      <nz-option nzValue="today" nzLabel="Today"></nz-option>
+      <nz-option nzValue="week" nzLabel="This week"></nz-option>
+      <nz-option nzValue="month" nzLabel="This month"></nz-option>
+      <nz-option nzValue="all" nzLabel="All time"></nz-option>
+      <nz-option nzValue="custom" nzLabel="Custom"></nz-option>
+    </nz-select>
     <nz-date-picker
+      *ngIf="dateRangePreset === 'custom'"
       [nzDisabledDate]="disabledStartDate"
       nzFormat="yyyy-MM-dd"
       [(ngModel)]="startValue"
@@ -149,6 +165,7 @@
       (nzOnOpenChange)="handleStartOpenChange($event)"
     ></nz-date-picker>
     <nz-date-picker
+      *ngIf="dateRangePreset === 'custom'"
       #endDatePicker
       [nzDisabledDate]="disabledEndDate"
       nzFormat="yyyy-MM-dd"

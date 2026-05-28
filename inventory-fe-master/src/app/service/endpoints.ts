@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 const baseUrl = environment.apiBaseUrl;
 export const storeEndPoints = {
   products:`${baseUrl}/api/v1/products`,
+  productsCount:`${baseUrl}/api/v1/products/count`,
   lowStockProducts:`${baseUrl}/api/v1/products/low-stock`,
   productReorderSuggestions:`${baseUrl}/api/v1/products/reorder-suggestions`,
   materials: `${baseUrl}/api/v1/materials`,
@@ -10,10 +11,13 @@ export const storeEndPoints = {
   materialReorderSuggestions: `${baseUrl}/api/v1/materials/reorder-suggestions`,
   getAgedItems:`${baseUrl}/api/v1/products/aged`,
   assets: `${baseUrl}/api/v1/assets`,
+  assetsCount: `${baseUrl}/api/v1/assets/count`,
   getProductions: `${baseUrl}/api/v1/productions`,
   boms: `${baseUrl}/api/v1/boms`,
   customers: `${baseUrl}/api/v1/customers`,
+  customersCount: `${baseUrl}/api/v1/customers/count`,
   employees: `${baseUrl}/api/v1/employees`,
+  employeesCount: `${baseUrl}/api/v1/employees/count`,
   addMaterialConsumption: `${baseUrl}/api/v1/consumption`,
   addProductProduction:`${baseUrl}/api/v1/productions`,
 }

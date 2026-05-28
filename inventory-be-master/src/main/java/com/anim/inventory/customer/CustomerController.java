@@ -25,6 +25,11 @@ public class CustomerController {
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> count() {
+        return new ResponseEntity<>(customerRepository.count(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Customer> save(@RequestBody Customer customer) {
         Customer savedCustomer = customerRepository.save(customer);

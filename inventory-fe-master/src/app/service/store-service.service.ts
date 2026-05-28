@@ -33,6 +33,10 @@ export class InventoryService {
     return this.http.get<Product[]>(storeEndPoints.products, {params}).pipe(catchError(() => of([])));
   }
 
+  getProductsCount(): Observable<number>{
+    return this.http.get<number>(storeEndPoints.productsCount).pipe(catchError(() => of(0)));
+  }
+
   getLowStockProducts(): Observable<Product[]>{
     return this.http.get<Product[]>(storeEndPoints.lowStockProducts).pipe(catchError(() => of([])));
   }
@@ -43,6 +47,10 @@ export class InventoryService {
 
   getAssets(): Observable<any[]>{
     return this.http.get<any[]>(storeEndPoints.assets).pipe(catchError(() => of([])));
+  }
+
+  getAssetsCount(): Observable<number>{
+    return this.http.get<number>(storeEndPoints.assetsCount).pipe(catchError(() => of(0)));
   }
 
   addAsset(asset : Asset){
@@ -78,6 +86,10 @@ export class InventoryService {
     return this.http.get<Customer[]>(storeEndPoints.customers).pipe(catchError(() => of([])))
   }
 
+  getCustomersCount(): Observable<number>{
+    return this.http.get<number>(storeEndPoints.customersCount).pipe(catchError(() => of(0)));
+  }
+
   getMaterials(): Observable<any[]>{
     return this.http.get<any[]>(storeEndPoints.materials).pipe(catchError(() => of([])));
   }
@@ -92,6 +104,10 @@ export class InventoryService {
 
   getEmployees():Observable<any[]>{
     return this.http.get<any[]>(storeEndPoints.employees).pipe(catchError(() => of([])));
+  }
+
+  getEmployeesCount(): Observable<number>{
+    return this.http.get<number>(storeEndPoints.employeesCount).pipe(catchError(() => of(0)));
   }
 
   getMaterialTypes(): Observable<RawMaterial[]>{

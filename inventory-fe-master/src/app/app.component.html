@@ -2,6 +2,10 @@
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" class="h-100 {{isCollapsed? '-ml-24 sm:ml-0':''}}">
     <div class="logo"></div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-menu-item [routerLink]="[ '/home']">
+        <nz-icon nzType="home" />
+        <span>Home</span>
+      </li>
       <li nz-submenu nzTitle="Store" nzIcon="shop">
         <ul>
           <li nz-menu-item [routerLink]="[ '/store/products']">Products </li>

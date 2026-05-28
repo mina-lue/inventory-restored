@@ -32,11 +32,18 @@
   border: 1px solid transparent;
 }
 
-.quick-link span {
+.quick-link-label {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   min-width: 0;
+}
+
+.quick-link-count {
+  margin-left: auto;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1;
+  color: #0f172a;
 }
 
 .quick-link-customers {
@@ -77,6 +84,10 @@
 
 .date-filters nz-date-picker {
   width: min(150px, 100%);
+}
+
+.date-range-select {
+  width: 150px;
 }
 
 .metric-grid,
@@ -196,6 +207,10 @@ small {
   }
 
   .date-filters nz-date-picker {
+    width: 100%;
+  }
+
+  .date-range-select {
     width: 100%;
   }
 }

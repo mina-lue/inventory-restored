@@ -40,6 +40,10 @@ export class HomeComponent implements OnInit{
   totalUntaxedOut:number = 0;
   balance$: Observable<InventoryBalance>;
   productsInStore$: Observable<any>;
+  customersCount$: Observable<number>;
+  productsCount$: Observable<number>;
+  employeesCount$: Observable<number>;
+  assetsCount$: Observable<number>;
   productsMostSold$: Observable<any>;
   recentSales$: Observable<any>;
   productsMostAged$: Observable<any>
@@ -49,6 +53,7 @@ export class HomeComponent implements OnInit{
   lowStockMaterials$: Observable<any[]>;
   reorderSuggestions$: Observable<ReorderSuggestion[]>;
   profit = 0;
+  dateRangePreset = 'week';
 
 
   startValue: Date = new Date();
@@ -56,6 +61,7 @@ export class HomeComponent implements OnInit{
   @ViewChild('endDatePicker') endDatePicker!: NzDatePickerComponent;
 
   constructor(private readonly transactionService: TransactionsService, private readonly storeService: InventoryService){
+    this.setPresetRange(this.dateRangePreset);
     this.balance$ = transactionService.getBalance();
     this.productions$ = storeService.getProductions(formatDate(this.startValue), formatDate(this.endValue));
     this.moneyIn$ = transactionService.getMoneyIn(formatDate(this.startValue), formatDate(this.endValue));/*
@@ -63,6 +69,10 @@ export class HomeComponent implements OnInit{
     this.moneyOut$ = transactionService.getMoneyOut(formatDate(this.startValue), formatDate(this.endValue));/*
     this.moneyOutTaxed$ = transactionService.getMoneyOutTaxed(formatDate(this.startValue), formatDate(this.endValue));*/
     this.productsInStore$ = storeService.getProducts({page:0,size:10 });
+    this.customersCount$ = storeService.getCustomersCount();
+    this.productsCount$ = storeService.getProductsCount();
+    this.employeesCount$ = storeService.getEmployeesCount();
+    this.assetsCount$ = storeService.getAssetsCount();
     this.productsMostSold$ = storeService.getProducts({page:0, size: 4});
     this.productsSold$ = transactionService.getProductsSoldInDates(formatDate(this.startValue), formatDate(this.endValue));
     this.recentSales$ = transactionService.getRecentSales();
@@ -168,7 +178,22 @@ export class HomeComponent implements OnInit{
   }
 
   handleEndOpenChange(open: boolean): void {
+    if (open || this.dateRangePreset !== 'custom') {
+      return;
+    }
 
+    this.refreshDateRangeData();
+  }
+
+  onDateRangePresetChange(value: string): void {
+    this.dateRangePreset = value;
+    if (value !== 'custom') {
+      this.setPresetRange(value);
+      this.refreshDateRangeData();
+    }
+  }
+
+  private refreshDateRangeData(): void {
     this.productions$ = this.storeService.getProductions(formatDate(this.startValue), formatDate(this.endValue));
     this.moneyIn$ = this.transactionService.getMoneyIn(formatDate(this.startValue), formatDate(this.endValue));
     this.moneyInTaxed$ = this.transactionService.getMoneyInTaxed(formatDate(this.startValue), formatDate(this.endValue));
@@ -195,6 +220,38 @@ export class HomeComponent implements OnInit{
           })
         })
        });
+  }
+
+  private setPresetRange(preset: string): void {
+    const today = new Date();
+    const start = new Date(today);
+
+    if (preset === 'today') {
+      this.startValue = start;
+      this.endValue = today;
+      return;
+    }
+
+    if (preset === 'week') {
+      const day = start.getDay();
+      const daysSinceMonday = day === 0 ? 6 : day - 1;
+      start.setDate(start.getDate() - daysSinceMonday);
+      this.startValue = start;
+      this.endValue = today;
+      return;
+    }
+
+    if (preset === 'month') {
+      start.setDate(1);
+      this.startValue = start;
+      this.endValue = today;
+      return;
+    }
+
+    if (preset === 'all') {
+      this.startValue = new Date(0);
+      this.endValue = today;
+    }
   }
 
 }
