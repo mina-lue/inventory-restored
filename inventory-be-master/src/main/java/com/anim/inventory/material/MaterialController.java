@@ -22,6 +22,11 @@ public class MaterialController {
         return materialService.save(material);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Material> update(@PathVariable Long id, @RequestBody Material material) {
+        return materialService.update(id, material);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Material> finById(@PathVariable Long id) {
         if (materialService.findById(id) == null) {

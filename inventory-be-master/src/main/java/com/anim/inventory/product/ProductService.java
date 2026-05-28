@@ -98,6 +98,32 @@ public class ProductService {
         return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
     }
 
+    public ResponseEntity<Product> update(Long id, Product product) {
+        if (!productRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        product.setId(id);
+        if (product.getQuantity() == null) {
+            product.setQuantity(0);
+        }
+        if (product.getSoldQuantity() == null) {
+            product.setSoldQuantity(0);
+        }
+        if (product.getReorderPoint() == null) {
+            product.setReorderPoint(0);
+        }
+        if (product.getActive() == null) {
+            product.setActive(true);
+        }
+        if (product.getSellingPrice() == null) {
+            product.setSellingPrice(product.getPrice());
+        }
+        if (product.getPrice() == null) {
+            product.setPrice(product.getSellingPrice());
+        }
+        return new ResponseEntity<>(productRepository.save(product), HttpStatus.OK);
+    }
+
     public Product updateInventory(Product product) {
         return productRepository.save(product);
     }

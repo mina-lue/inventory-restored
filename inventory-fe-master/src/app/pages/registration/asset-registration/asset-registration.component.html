@@ -34,8 +34,7 @@
 </div>
 
 <ng-template #formTitle>
-	<p class="text-xl text-weight-10 font-bold">Register an Asset</p>
+	<p class="text-xl text-weight-10 font-bold">{{ isEdit ? 'Edit an Asset' : 'Register an Asset' }}</p>
 </ng-template>
 
 <ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>
-

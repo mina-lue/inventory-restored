@@ -36,6 +36,14 @@ public class AssetService {
         return new ResponseEntity<>(assetRepository.save(asset), HttpStatus.CREATED);
     }
 
+    public ResponseEntity<Asset> update(Long id, Asset asset) {
+        if (!assetRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        asset.setId(id);
+        return new ResponseEntity<>(assetRepository.save(asset), HttpStatus.OK);
+    }
+
     public ResponseEntity<Void> deleteById(Long id) {
         if (assetRepository.findById(id).isPresent()) {
             assetRepository.deleteById(id);

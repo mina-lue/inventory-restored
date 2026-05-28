@@ -20,6 +20,11 @@ public class AssetController {
         return assetService.save(asset);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Asset> update(@PathVariable Long id, @RequestBody Asset asset) {
+        return assetService.update(id, asset);
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return ResponseEntity.ok(assetService.count());

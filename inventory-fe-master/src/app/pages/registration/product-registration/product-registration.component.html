@@ -1,5 +1,5 @@
 <div class="justify-center flex mt-4">
-<nz-card [nzTitle]="formTitle" class="w-3/4 shadow-md" [nzExtra]="quit">
+	<nz-card [nzTitle]="formTitle" class="w-3/4 shadow-md" [nzExtra]="quit">
 <form nz-form class="w-full" [formGroup]="validateForm" (ngSubmit)="save(validateForm.value)">
 	<nz-form-item>
 		<nz-form-label [nzSpan]="5"><span class="text-lg">Product Name</span></nz-form-label>
@@ -107,7 +107,7 @@
 
 	<nz-form-item>
         <nz-form-control [nzOffset]="7" [nzSpan]="12">
-          <button nz-button nzType="primary" class="m-4 w-32 rounded-sm" type="submit">Save</button>
+          <button nz-button nzType="primary" class="m-4 w-32 rounded-sm" type="submit">{{ isEdit ? 'Update' : 'Save' }}</button>
         </nz-form-control>
      </nz-form-item>
 
@@ -117,7 +117,7 @@
 </div>
 
 <ng-template #formTitle>
-	<p class="text-xl text-weight-10 font-bold">Register a product </p>
+	<p class="text-xl text-weight-10 font-bold">{{ isEdit ? 'Edit a product' : 'Register a product' }}</p>
 </ng-template>
 
 <ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

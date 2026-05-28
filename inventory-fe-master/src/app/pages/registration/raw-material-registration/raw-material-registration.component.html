@@ -86,7 +86,7 @@
 
 	<nz-form-item>
         <nz-form-control [nzOffset]="7" [nzSpan]="12">
-          <button type="submit" nz-button nzType="primary" class="m-4 w-32 rounded-sm">Save</button>
+          <button type="submit" nz-button nzType="primary" class="m-4 w-32 rounded-sm">{{ isEdit ? 'Update' : 'Save' }}</button>
         </nz-form-control>
      </nz-form-item>
 
@@ -96,7 +96,7 @@
 </div>
 
 <ng-template #formTitle>
-	<p class="text-xl text-weight-10 font-bold">Register a Raw Material</p>
+	<p class="text-xl text-weight-10 font-bold">{{ isEdit ? 'Edit a Raw Material' : 'Register a Raw Material' }}</p>
 </ng-template>
 
 <ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

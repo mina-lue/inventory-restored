@@ -27,6 +27,11 @@ public class ProductController {
         return productService.save(product);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        return productService.update(id, product);
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> count() {
         return ResponseEntity.ok(productService.count());

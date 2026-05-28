@@ -21,6 +21,7 @@
 			<th>Reorder</th>
 			<th>Location</th>
 			<th>Total Price</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -35,6 +36,11 @@
 			<td>{{product.reorderPoint}}</td>
 			<td>{{product.location || '-'}}</td>
 			<td>{{(product.sellingPrice || product.price) * product.quantity}}</td>
+			<td>
+				<a [routerLink]="['/register/product', product.id]">
+					<nz-icon nzType="edit" nzTheme="outline"></nz-icon>
+				</a>
+			</td>
 		</tr>
 	</tbody>
 	</nz-table>

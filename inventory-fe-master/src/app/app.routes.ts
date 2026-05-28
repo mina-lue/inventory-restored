@@ -63,6 +63,10 @@ export const routes: Routes = [
     component: AssetRegistrationComponent
   },
   {
+    path: 'register/asset/:id',
+    component: AssetRegistrationComponent
+  },
+  {
     path: 'register/customer',
     component: CustomerRegistrationComponent
   },
@@ -71,7 +75,15 @@ export const routes: Routes = [
     component: ProductRegistationComponent
   },
   {
+    path: 'register/product/:id',
+    component: ProductRegistationComponent
+  },
+  {
     path: 'register/raw-material',
+    component: RawMaterialRegistrationComponent
+  },
+  {
+    path: 'register/raw-material/:id',
     component: RawMaterialRegistrationComponent
   },
   {

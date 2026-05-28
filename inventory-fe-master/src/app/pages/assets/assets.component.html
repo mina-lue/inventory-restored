@@ -14,6 +14,7 @@
 	<!--	<th>Expected utility consumption per month</th>
 			<th>Expected maintenace cost</th> -->
 			<th>Quantity</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -21,6 +22,11 @@
 			<td>{{asset.name}}</td>
 			<td>{{asset.value}}</td>
 			<td>{{asset.quantity}}</td>
+			<td>
+				<a [routerLink]="['/register/asset', asset.id]">
+					<nz-icon nzType="edit" nzTheme="outline"></nz-icon>
+				</a>
+			</td>
 		</tr>
 	</tbody>
 	</nz-table>

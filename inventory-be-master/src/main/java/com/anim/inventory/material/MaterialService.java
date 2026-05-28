@@ -67,6 +67,26 @@ public class MaterialService {
         return new ResponseEntity<>(materialRepository.save(material), HttpStatus.CREATED);
     }
 
+    public ResponseEntity<Material> update(Long id, Material material) {
+        if (!materialRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        material.setId(id);
+        if (material.getQuantity() == null) {
+            material.setQuantity(0);
+        }
+        if (material.getReorderPoint() == null) {
+            material.setReorderPoint(0);
+        }
+        if (material.getActive() == null) {
+            material.setActive(true);
+        }
+        if (material.getCostPrice() == null) {
+            material.setCostPrice(material.getPrice());
+        }
+        return new ResponseEntity<>(materialRepository.save(material), HttpStatus.OK);
+    }
+
     public Material updateInventory(Material material) {
         return materialRepository.save(material);
     }

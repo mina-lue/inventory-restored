@@ -19,6 +19,7 @@
 			<th>Reorder</th>
 			<th>Location</th>
 			<th>Total Value</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -33,6 +34,11 @@
 			<td>{{material.reorderPoint}}</td>
 			<td>{{material.location || '-'}}</td>
 			<td>{{material.price * material.quantity}}</td>
+			<td>
+				<a [routerLink]="['/register/raw-material', material.id]">
+					<nz-icon nzType="edit" nzTheme="outline"></nz-icon>
+				</a>
+			</td>
 		</tr>
 	</tbody>
 	</nz-table>

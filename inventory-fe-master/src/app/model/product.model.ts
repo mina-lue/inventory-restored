@@ -1,5 +1,5 @@
 export interface Product{
-  id?:string,
+  id?: number,
   name:string,
   sku?: string,
   barcode?: string,
@@ -10,6 +10,7 @@ export interface Product{
   sellingPrice?: number,
   taxRate?: number,
   quantity: number,
+  soldQuantity?: number,
   reorderPoint?: number,
   location?: string,
   batchNumber?: string,

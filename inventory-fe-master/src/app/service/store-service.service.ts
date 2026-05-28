@@ -37,6 +37,10 @@ export class InventoryService {
     return this.http.get<number>(storeEndPoints.productsCount).pipe(catchError(() => of(0)));
   }
 
+  getProductById(id: number): Observable<Product | null>{
+    return this.http.get<Product>(`${storeEndPoints.products}/${id}`).pipe(catchError(() => of(null)));
+  }
+
   getLowStockProducts(): Observable<Product[]>{
     return this.http.get<Product[]>(storeEndPoints.lowStockProducts).pipe(catchError(() => of([])));
   }
@@ -53,6 +57,10 @@ export class InventoryService {
     return this.http.get<number>(storeEndPoints.assetsCount).pipe(catchError(() => of(0)));
   }
 
+  getAssetById(id: number): Observable<Asset | null>{
+    return this.http.get<Asset>(`${storeEndPoints.assets}/${id}`).pipe(catchError(() => of(null)));
+  }
+
   addAsset(asset : Asset, onSuccess?: () => void){
     this.http.post<Asset>(storeEndPoints.assets, asset).subscribe({
      next: response => {
@@ -60,6 +68,16 @@ export class InventoryService {
       onSuccess?.();
      },
      error: error => this.notification.showNotification(false, `Asset registration not successful!`)
+    })
+ }
+
+  updateAsset(id: number, asset: Asset, onSuccess?: () => void){
+    this.http.put<Asset>(`${storeEndPoints.assets}/${id}`, asset).subscribe({
+     next: response => {
+      this.notification.showNotification(true, `${asset.name} updated successfully!`);
+      onSuccess?.();
+     },
+     error: error => this.notification.showNotification(false, `Asset update not successful!`)
    })
  }
 
@@ -131,6 +149,10 @@ export class InventoryService {
     return this.http.get<RawMaterial[]>(models.getMaterialTypes).pipe(catchError(() => of([])));
   }
 
+  getMaterialById(id: number): Observable<RawMaterial | null>{
+    return this.http.get<RawMaterial>(`${storeEndPoints.materials}/${id}`).pipe(catchError(() => of(null)));
+  }
+
   addProduct(product:Product, onSuccess?: () => void){
      this.http.post<Product>(storeEndPoints.products, product).subscribe({
       next: response => {
@@ -138,6 +160,16 @@ export class InventoryService {
         onSuccess?.();
       },
       error: error => this.notification.showNotification(false, `Product registration not successful!`)
+    })
+  }
+
+  updateProduct(id: number, product: Product, onSuccess?: () => void){
+     this.http.put<Product>(`${storeEndPoints.products}/${id}`, product).subscribe({
+      next: response => {
+        this.notification.showNotification(true, `${product.name} updated successfully!`);
+        onSuccess?.();
+      },
+      error: error => this.notification.showNotification(false, `Product update not successful!`)
     })
   }
 
@@ -150,6 +182,16 @@ export class InventoryService {
         onSuccess?.();
       },
       error: error => this.notification.showNotification(false, `Material registration not successful!`)
+    })
+  }
+
+  updateMaterial(id: number, material: RawMaterial, onSuccess?: () => void){
+    return this.http.put<RawMaterial>(`${storeEndPoints.materials}/${id}`, material).subscribe({
+      next: response => {
+        this.notification.showNotification(true, `${material.name} updated successfully!`);
+        onSuccess?.();
+      },
+      error: error => this.notification.showNotification(false, `Material update not successful!`)
     })
   }
 
