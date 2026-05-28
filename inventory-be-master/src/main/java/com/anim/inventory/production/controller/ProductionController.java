@@ -19,8 +19,11 @@ public class ProductionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Production>> getProductions() {
-        List<Production> productions = productionService.findAll();
+    public ResponseEntity<List<Production>> getProductions(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ) {
+        List<Production> productions = productionService.findAll(startDate, endDate);
         return ResponseEntity.ok(productions);
     }
 

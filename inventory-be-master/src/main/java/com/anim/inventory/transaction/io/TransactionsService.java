@@ -19,7 +19,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -121,6 +123,19 @@ public class TransactionsService {
         return this.totalMoneyIn;
     }
 
+    public Double getAllInMoney(String startDate, String endDate){
+        totalMoneyIn = 0.0;
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            saleRepository.findBySaleDateBetween(start, end).forEach(sale -> {
+                this.totalMoneyIn += (double) sale.getTotalPrice();
+            });
+            return this.totalMoneyIn;
+        }
+        return getAllInMoney();
+    }
+
     @Transactional
     public Double getAllOutMoney(){
         totalMoneyOut = 0.0;
@@ -137,6 +152,32 @@ public class TransactionsService {
             this.totalMoneyOut += (double)purchase.getTotalPrice();
         });
         return this.totalMoneyOut;
+    }
+
+    @Transactional
+    public Double getAllOutMoney(String startDate, String endDate){
+        totalMoneyOut = 0.0;
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            expensesService.listAssetExpenses(startDate, endDate).forEach(expense -> {
+                this.totalMoneyOut += (double) expense.getAmount();
+            });
+            expensesService.listUtilityExpenses(startDate, endDate).forEach(expense -> {
+                this.totalMoneyOut += (double) expense.getAmount();
+            });
+            expensesService.listOtherExpenses(startDate, endDate).forEach(expense -> {
+                this.totalMoneyOut += (double) expense.getAmount();
+            });
+            expensesService.listLabourExpenses(startDate, endDate).forEach(expense -> {
+                this.totalMoneyOut += (double) expense.getAmount();
+            });
+            purchaseRespository.findByPurchaseDateBetween(start, end).forEach(purchase -> {
+                this.totalMoneyOut += (double) purchase.getTotalPrice();
+            });
+            return this.totalMoneyOut;
+        }
+        return getAllOutMoney();
     }
 
     public List<Sale> recentSales() {

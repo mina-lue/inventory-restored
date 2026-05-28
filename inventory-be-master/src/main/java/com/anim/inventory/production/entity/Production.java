@@ -25,10 +25,10 @@ public class Production {
     private Float productionCost;
     private String responsibleEmployee;
     private String note;
-    private LocalDateTime ProductionDate;
+    private LocalDateTime productionDate;
 
     @PrePersist
     public void prePersist() {
-        ProductionDate = LocalDateTime.now();
+        productionDate = LocalDateTime.now();
     }
 }

@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -22,8 +25,11 @@ public class ExpenseController {
     }
 
     @GetMapping("assets")
-    public ResponseEntity<List<AssetExpense>> getAssetExpenses(){
-        List<AssetExpense> expenses = expensesService.listAssetExpenses();
+    public ResponseEntity<List<AssetExpense>> getAssetExpenses(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        List<AssetExpense> expenses = expensesService.listAssetExpenses(startDate, endDate);
         if(expenses == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -31,8 +37,11 @@ public class ExpenseController {
     }
 
     @GetMapping("utility")
-    public ResponseEntity<List<UtilityExpense>> getUtilityExpenses(){
-        List<UtilityExpense> expenses = expensesService.listUtilityExpenses();
+    public ResponseEntity<List<UtilityExpense>> getUtilityExpenses(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        List<UtilityExpense> expenses = expensesService.listUtilityExpenses(startDate, endDate);
         if(expenses == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -40,8 +49,11 @@ public class ExpenseController {
     }
 
     @GetMapping("others")
-    public ResponseEntity<List<OtherExpenses>> getOtherExpenses(){
-        List<OtherExpenses> expenses = expensesService.listOtherExpenses();
+    public ResponseEntity<List<OtherExpenses>> getOtherExpenses(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        List<OtherExpenses> expenses = expensesService.listOtherExpenses(startDate, endDate);
         if(expenses == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -49,8 +61,11 @@ public class ExpenseController {
     }
 
     @GetMapping("labours")
-    public ResponseEntity<List<LabourExpense>> getLabourExpenses(){
-        List<LabourExpense> expenses = expensesService.listLabourExpenses();
+    public ResponseEntity<List<LabourExpense>> getLabourExpenses(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        List<LabourExpense> expenses = expensesService.listLabourExpenses(startDate, endDate);
         if(expenses == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

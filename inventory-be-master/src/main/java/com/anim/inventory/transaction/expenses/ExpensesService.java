@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Component
 public class ExpensesService {
@@ -63,7 +66,27 @@ public class ExpensesService {
         return assetExpenses;
     }
 
+    public List<AssetExpense> listAssetExpenses(String startDate, String endDate) {
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            return assetExpenseRepository.findByExpenseDateBetween(start, end);
+        }
+        List<AssetExpense> assetExpenses = assetExpenseRepository.findAll();
+        return assetExpenses;
+    }
+
     public List<UtilityExpense> listUtilityExpenses() {
+        List<UtilityExpense> utilityExpenses = utilityExpenseRepository.findAll();
+        return utilityExpenses;
+    }
+
+    public List<UtilityExpense> listUtilityExpenses(String startDate, String endDate) {
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            return utilityExpenseRepository.findByExpenseDateBetween(start, end);
+        }
         List<UtilityExpense> utilityExpenses = utilityExpenseRepository.findAll();
         return utilityExpenses;
     }
@@ -73,7 +96,27 @@ public class ExpensesService {
         return otherExpenses;
     }
 
+    public List<OtherExpenses> listOtherExpenses(String startDate, String endDate) {
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            return otherExpensesRepository.findByExpenseDateBetween(start, end);
+        }
+        List<OtherExpenses> otherExpenses = otherExpensesRepository.findAll();
+        return otherExpenses;
+    }
+
     public List<LabourExpense> listLabourExpenses() {
+        List<LabourExpense> labourExpenses = labourExpenseRepository.findAll();
+        return labourExpenses;
+    }
+
+    public List<LabourExpense> listLabourExpenses(String startDate, String endDate) {
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            return labourExpenseRepository.findByExpenseDateBetween(start, end);
+        }
         List<LabourExpense> labourExpenses = labourExpenseRepository.findAll();
         return labourExpenses;
     }

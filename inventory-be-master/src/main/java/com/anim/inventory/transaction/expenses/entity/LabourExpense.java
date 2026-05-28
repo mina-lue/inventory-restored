@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,10 @@ public class LabourExpense {
     private String laborerName;
     private String description;
     private Float amount;
+    private LocalDateTime expenseDate;
+
+    @PrePersist
+    protected void onCreate() {
+        expenseDate = LocalDateTime.now();
+    }
 }

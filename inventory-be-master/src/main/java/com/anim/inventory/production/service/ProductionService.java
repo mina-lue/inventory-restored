@@ -15,6 +15,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.NoSuchElementException;
 
 @Component
@@ -42,6 +45,15 @@ public class ProductionService {
     }
 
     public List<Production> findAll() {
+        return productionRepository.findAll();
+    }
+
+    public List<Production> findAll(String startDate, String endDate) {
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            return productionRepository.findByProductionDateBetween(start, end);
+        }
         return productionRepository.findAll();
     }
 

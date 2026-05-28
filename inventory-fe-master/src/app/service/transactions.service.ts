@@ -72,30 +72,68 @@ export class TransactionsService {
         ...assetExpenses.map(expense => ({
           description: expense.description ?? `${expense.asset?.name ?? 'Asset'} expense`,
           amount: -expense.amount,
-          date: ''
+          date: expense.expenseDate
         })),
         ...labourExpenses.map(expense => ({
           description: expense.description ?? `${expense.laborerName ?? 'Labour'} expense`,
           amount: -expense.amount,
-          date: ''
+          date: expense.expenseDate
         })),
         ...otherExpenses.map(expense => ({
           description: expense.description ?? 'Other expense',
           amount: -expense.amount,
-          date: ''
+          date: expense.expenseDate
         })),
         ...utilityExpenses.map(expense => ({
           description: expense.description ?? 'Utility expense',
           amount: -expense.amount,
-          date: ''
+          date: expense.expenseDate
         }))
       ])
     );
   }
 
   getAllTransactionsInDates(start:string, end:string): Observable<any[]>{
-    return this.getAllTransactions().pipe(
-      map(items => this.filterByDateRange(items, start, end, 'date'))
+    return forkJoin({
+      sales: this.getProductsSoldInDates(start, end),
+      purchases: this.getRawMaterialsCollectedInDates(start, end),
+      assetExpenses: this.getAssetExpensesInDates(start, end),
+      labourExpenses: this.getLabourExpensesInDates(start, end),
+      otherExpenses: this.getOthersInDates(start, end),
+      utilityExpenses: this.getUtilityPaymentsInDates(start, end)
+    }).pipe(
+      map(({ sales, purchases, assetExpenses, labourExpenses, otherExpenses, utilityExpenses }) => [
+        ...sales.map(sale => ({
+          description: `${sale.product?.name ?? 'Product'} sale`,
+          amount: sale.totalPrice,
+          date: sale.saleDate
+        })),
+        ...purchases.map(purchase => ({
+          description: `${purchase.material?.name ?? 'Material'} purchase`,
+          amount: -purchase.totalPrice,
+          date: purchase.purchaseDate
+        })),
+        ...assetExpenses.map(expense => ({
+          description: expense.description ?? `${expense.asset?.name ?? 'Asset'} expense`,
+          amount: -expense.amount,
+          date: expense.expenseDate
+        })),
+        ...labourExpenses.map(expense => ({
+          description: expense.description ?? `${expense.laborerName ?? 'Labour'} expense`,
+          amount: -expense.amount,
+          date: expense.expenseDate
+        })),
+        ...otherExpenses.map(expense => ({
+          description: expense.description ?? 'Other expense',
+          amount: -expense.amount,
+          date: expense.expenseDate
+        })),
+        ...utilityExpenses.map(expense => ({
+          description: expense.description ?? 'Utility expense',
+          amount: -expense.amount,
+          date: expense.expenseDate
+        }))
+      ])
     );
   }
 
@@ -108,10 +146,7 @@ export class TransactionsService {
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getProductSellsBetweenDates, {params}).pipe(
-      catchError(() => of([])),
-      map(items => this.filterByDateRange(items, start, end, 'saleDate'))
-    );
+    return this.http.get<any[]>(transactions.getProductSellsBetweenDates, {params}).pipe(catchError(() => of([])));
   }
 
   getRecentSales():Observable<any[]>{
@@ -129,10 +164,7 @@ export class TransactionsService {
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getMaterialsBetweenDates, {params}).pipe(
-      catchError(() => of([])),
-      map(items => this.filterByDateRange(items, start, end, 'purchaseDate'))
-    );
+    return this.http.get<any[]>(transactions.getMaterialsBetweenDates, {params}).pipe(catchError(() => of([])));
   }
 
   getLabourExpenses(): Observable<any[]>{
@@ -251,17 +283,4 @@ export class TransactionsService {
     })
   }
 
-  private filterByDateRange(items: any[], start: string, end: string, dateField: string): any[] {
-    const startTime = new Date(start).getTime();
-    const endTime = new Date(end).getTime();
-
-    return items.filter(item => {
-      const dateValue = item[dateField];
-      if (!dateValue) {
-        return true;
-      }
-      const itemTime = new Date(dateValue).getTime();
-      return itemTime >= startTime && itemTime <= endTime;
-    });
-  }
 }

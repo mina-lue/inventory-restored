@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -48,25 +51,49 @@ public class TransactionController {
     // Delete and update to be implemented
 
     @GetMapping("/sales")
-    public ResponseEntity<List<Sale>> getSales(){
+    public ResponseEntity<List<Sale>> getSales(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            return ResponseEntity.ok(saleRepository.findBySaleDateBetween(start, end));
+        }
+
         return ResponseEntity.ok(saleRepository.findAll());
     }
 
     @GetMapping("/materials")
-    public ResponseEntity<List<Purchase>> getPurchases(){
+    public ResponseEntity<List<Purchase>> getPurchases(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = LocalDate.parse(startDate).atStartOfDay();
+            LocalDateTime end = LocalDate.parse(endDate).atTime(LocalTime.MAX);
+            return ResponseEntity.ok(purchaseRespository.findByPurchaseDateBetween(start, end));
+        }
+
         return ResponseEntity.ok(purchaseRespository.findAll());
     }
 
 // total money ins and outs
 
     @GetMapping("/money-in")
-    public ResponseEntity<Double> getMoneyIn(){
-        return ResponseEntity.ok(transactionsService.getAllInMoney());
+    public ResponseEntity<Double> getMoneyIn(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        return ResponseEntity.ok(transactionsService.getAllInMoney(startDate, endDate));
     }
 
     @GetMapping("/money-out")
-    public ResponseEntity<Double> getMoneyOut(){
-        return ResponseEntity.ok(transactionsService.getAllOutMoney());
+    public ResponseEntity<Double> getMoneyOut(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ){
+        return ResponseEntity.ok(transactionsService.getAllOutMoney(startDate, endDate));
     }
 
     @GetMapping("recent-sales")
