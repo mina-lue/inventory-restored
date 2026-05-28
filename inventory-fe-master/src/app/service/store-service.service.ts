@@ -53,9 +53,12 @@ export class InventoryService {
     return this.http.get<number>(storeEndPoints.assetsCount).pipe(catchError(() => of(0)));
   }
 
-  addAsset(asset : Asset){
+  addAsset(asset : Asset, onSuccess?: () => void){
     this.http.post<Asset>(storeEndPoints.assets, asset).subscribe({
-     next: response => this.notification.showNotification(true, `${asset.name} registered successfully!`),
+     next: response => {
+      this.notification.showNotification(true, `${asset.name} registered successfully!`);
+      onSuccess?.();
+     },
      error: error => this.notification.showNotification(false, `Asset registration not successful!`)
    })
  }
@@ -72,9 +75,12 @@ export class InventoryService {
     return this.http.get<ProductBomItem[]>(`${storeEndPoints.boms}/product/${productId}`).pipe(catchError(() => of([])));
   }
 
-  addProductBomItem(bomItem: ProductBomItem){
+  addProductBomItem(bomItem: ProductBomItem, onSuccess?: () => void){
     return this.http.post<ProductBomItem>(storeEndPoints.boms, bomItem).subscribe({
-      next: response => this.notification.showNotification(true, `Recipe item registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `Recipe item registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Recipe item registration not successful!`)
     })
   }
@@ -114,48 +120,63 @@ export class InventoryService {
     return this.http.get<RawMaterial[]>(models.getMaterialTypes).pipe(catchError(() => of([])));
   }
 
-  addProduct(product:Product){
+  addProduct(product:Product, onSuccess?: () => void){
      this.http.post<Product>(storeEndPoints.products, product).subscribe({
-      next: response => this.notification.showNotification(true, `${product.name} registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `${product.name} registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Product registration not successful!`)
     })
   }
 
 
 
-  addMaterial(material: RawMaterial){
+  addMaterial(material: RawMaterial, onSuccess?: () => void){
     return this.http.post<RawMaterial>(storeEndPoints.materials, material).subscribe({
-      next: response => this.notification.showNotification(true, `${material.name} registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `${material.name} registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Material registration not successful!`)
     })
   }
 
-  addCustomer(customer :Customer){
+  addCustomer(customer :Customer, onSuccess?: () => void){
     return this.http.post<Customer>(storeEndPoints.customers, customer).subscribe({
-      next: response => this.notification.showNotification(true, `${customer.name} registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `${customer.name} registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Customer registration not successful!`)
     })
   }
 
-  addEmployee(employee : Employee){
+  addEmployee(employee : Employee, onSuccess?: () => void){
     return this.http.post<Employee>(storeEndPoints.employees, employee).subscribe({
-      next: response => this.notification.showNotification(true, `${employee.name} registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `${employee.name} registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `${employee.name} registration not successful!`)
     })
   }
 
-  addMaterialConsumption(materialId: number, quantity: number){
+  addMaterialConsumption(materialId: number, quantity: number, onSuccess?: () => void){
     const consumption = {
       material: { id: materialId },
       quantity
     };
     return this.http.post(`${storeEndPoints.addMaterialConsumption}`, consumption).subscribe({
-      next: response => this.notification.showNotification(true, `material consumption registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `material consumption registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `material consumption registration not successful!`)
     })
   }
 
-  addProductInStore(productInStore: any, productionData: any){
+  addProductInStore(productInStore: any, productionData: any, onSuccess?: () => void){
     const production = {
       product: { id: productInStore.id },
       quantity: productionData.quantity,
@@ -165,7 +186,10 @@ export class InventoryService {
       note: productionData.note
     };
     return this.http.post(`${storeEndPoints.addProductProduction}`, production).subscribe({
-      next: response => this.notification.showNotification(true, `${productionData.quantity} ${productInStore.unit} ${productInStore.name} added to store successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `${productionData.quantity} ${productInStore.unit} ${productInStore.name} added to store successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `${productInStore.name} registration not successful!`)
     })
   }

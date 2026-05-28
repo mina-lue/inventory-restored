@@ -41,7 +41,7 @@ export class EmployeeRegistrationComponent {
     save(data: any){
       if(this.validateForm.valid){
         console.log(data)
-        this.service.addEmployee(data);
+        this.service.addEmployee(data, () => this.validateForm.reset());
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

@@ -65,8 +65,8 @@ export class MaterialCollectComponent implements OnInit{
             material: data.material,
             quantity: data.quantity,
             totalPrice: data.totalPrice ,
-            fsn: data.FSN,
-            taxed: data.vat });
+            fsn: data.fsn,
+            taxed: data.taxed }, () => this.validateForm.reset({ totalPrice: 0, taxed: false, fsn: '' }));
         } else {
           Object.values(this.validateForm.controls).forEach(control => {
             if (control.invalid) {

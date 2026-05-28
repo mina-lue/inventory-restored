@@ -44,15 +44,15 @@ export class ProductRegistationComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  save(data: any){
-    if(this.validateForm.valid){
+    save(data: any){
+      if(this.validateForm.valid){
       this.service.addProduct({
         ...data,
         price: data.sellingPrice
-      });
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
+      }, () => this.validateForm.reset({ reorderPoint: 0 }));
+      } else {
+        Object.values(this.validateForm.controls).forEach(control => {
+          if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
         }

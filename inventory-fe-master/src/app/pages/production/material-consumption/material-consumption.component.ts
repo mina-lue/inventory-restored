@@ -40,7 +40,7 @@ private fb = inject(FormBuilder);
 
     save(data: any){
       if(this.validateForm.valid){
-        this.service.addMaterialConsumption(Number(data.materialType.id), Number(data.quantity));
+        this.service.addMaterialConsumption(Number(data.materialType.id), Number(data.quantity), () => this.validateForm.reset());
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

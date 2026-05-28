@@ -56,7 +56,7 @@ private fb = inject(FormBuilder);
 
     save(data: any){
       if(this.validateForm.valid){
-        this.service.addProductInStore(data.productItem, data);
+        this.service.addProductInStore(data.productItem, data, () => this.validateForm.reset({ wastageQuantity: 0 }));
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {
@@ -81,7 +81,7 @@ private fb = inject(FormBuilder);
           quantityPerUnit: data.quantityPerUnit,
           wastagePercent: data.wastagePercent,
           note: data.note
-        });
+        }, () => this.bomForm.reset({ productItem: data.productItem, wastagePercent: 0 }));
         this.loadBom(data.productItem);
       } else {
         Object.values(this.bomForm.controls).forEach(control => {

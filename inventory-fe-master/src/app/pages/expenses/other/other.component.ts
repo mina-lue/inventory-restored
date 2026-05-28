@@ -31,7 +31,7 @@ private fb = inject(FormBuilder);
 
     save(data: any){
       if(this.validateForm.valid){
-        this.service.addOtherExpenses({description:data.description, amount: data.amount});
+        this.service.addOtherExpenses({description:data.description, amount: data.amount}, () => this.validateForm.reset());
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

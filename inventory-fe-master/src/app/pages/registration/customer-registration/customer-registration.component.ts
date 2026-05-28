@@ -36,7 +36,7 @@ export class CustomerRegistrationComponent {
     save(data: any){
       if(this.validateForm.valid){
         console.log(data)
-        this.service.addCustomer(data);
+        this.service.addCustomer(data, () => this.validateForm.reset());
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

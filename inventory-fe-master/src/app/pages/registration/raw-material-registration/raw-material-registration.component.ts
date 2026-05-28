@@ -44,7 +44,7 @@ export class RawMaterialRegistrationComponent {
     save(data: any){
       if(this.validateForm.valid){
         console.log(data)
-        this.service.addMaterial(data);
+        this.service.addMaterial(data, () => this.validateForm.reset({ reorderPoint: 0 }));
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

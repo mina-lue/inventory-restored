@@ -66,7 +66,9 @@ export class SalaryComponent implements OnInit{
     }
 
     saveSalaries(){
-      this.transactionService.addSalariesPay(this.salariesToPay);
+      this.transactionService.addSalariesPay(this.salariesToPay, () => {
+        this.loadSalaries();
+      });
     }
 
     loadEmpWorkHours(emp: any){

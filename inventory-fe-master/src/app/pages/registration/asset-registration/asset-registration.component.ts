@@ -30,12 +30,12 @@ private fb = inject(FormBuilder);
   constructor(private readonly service: InventoryService){
   }
 
-  save(data: any){
-    if(this.validateForm.valid){
-      this.service.addAsset({name: data.name, value: data.value, quantity: data.quantity});
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
+    save(data: any){
+      if(this.validateForm.valid){
+      this.service.addAsset({name: data.name, value: data.value, quantity: data.quantity}, () => this.validateForm.reset());
+      } else {
+        Object.values(this.validateForm.controls).forEach(control => {
+          if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
         }

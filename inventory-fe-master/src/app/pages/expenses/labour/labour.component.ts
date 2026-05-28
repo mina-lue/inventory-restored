@@ -36,7 +36,7 @@ export class LabourComponent {
           description: data.description,
           laborerName: data.laborerName,
           amount: data.amount,
-          date: new Date()});
+          date: new Date()}, () => this.validateForm.reset());
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

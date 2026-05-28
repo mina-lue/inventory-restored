@@ -181,51 +181,72 @@ export class TransactionsService {
 
 
 
-  addProductSold(data: any): void{
+  addProductSold(data: any, onSuccess?: () => void): void{
     this.http.post<any>(transactions.addProductSold,data ).subscribe({
-      next: response => this.notification.showNotification(true, `${data.quantity} ${data.product.unit} ${data.product.name} sales registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `${data.quantity} ${data.product.unit} ${data.product.name} sales registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `${data.product.name} sale registration not successful!`)
     })
   }
 
-  addLabourExpenses(expense: any): void{
+  addLabourExpenses(expense: any, onSuccess?: () => void): void{
     this.http.post<any>(transactions.labourExpenses,expense ).subscribe({
-      next: response => this.notification.showNotification(true, `labour pay registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `labour pay registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `labour pay not successful!`)
     })
   }
 
-  addAssetExpenses(expense: any): void{
+  addAssetExpenses(expense: any, onSuccess?: () => void): void{
     this.http.post<any>(transactions.assetExpenses,expense ).subscribe({
-      next: response => this.notification.showNotification(true, `${expense.asset.name} expense added successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `${expense.asset.name} expense added successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Asset expense registration not successful!`)
     })
   }
 
-  addOtherExpenses(expense: any): void{
+  addOtherExpenses(expense: any, onSuccess?: () => void): void{
     this.http.post<any>(transactions.others ,expense ).subscribe({
-      next: response => this.notification.showNotification(true, `Expense added successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `Expense added successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Expense registration not successful!`)
     })
   }
 
-  addMaterialInStore(materials: any){
+  addMaterialInStore(materials: any, onSuccess?: () => void){
     return this.http.post(`${transactions.materials}`, materials).subscribe({
-      next: response => this.notification.showNotification(true, `Raw materials added successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `Raw materials added successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Raw material add not successful!`)
     })
   }
 
-  addUtilityPayment(materials: any){
+  addUtilityPayment(materials: any, onSuccess?: () => void){
     return this.http.post(`${transactions.utilities}`, materials).subscribe({
-      next: response => this.notification.showNotification(true, `Utility payment added successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `Utility payment added successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `Utility payment registration not successful!`)
     })
   }
 
-  addSalariesPay(salaries: any[]) {
+  addSalariesPay(salaries: any[], onSuccess?: () => void) {
     return this.http.post(`${transactions.addSalaries}`, salaries).subscribe({
-      next: response => this.notification.showNotification(true, `salary pays registered successfully!`),
+      next: response => {
+        this.notification.showNotification(true, `salary pays registered successfully!`);
+        onSuccess?.();
+      },
       error: error => this.notification.showNotification(false, `salary pay not successful!`)
     })
   }

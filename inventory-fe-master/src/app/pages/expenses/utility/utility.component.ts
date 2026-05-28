@@ -32,7 +32,7 @@ private fb = inject(FormBuilder);
     save(data: any){
       if(this.validateForm.valid){
         console.log({name: data.name, amount: data.amount})
-        this.service.addUtilityPayment({name: data.name, description:data.name, amount: -(data.amount), date: new Date()});
+        this.service.addUtilityPayment({name: data.name, description:data.name, amount: -(data.amount), date: new Date()}, () => this.validateForm.reset());
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

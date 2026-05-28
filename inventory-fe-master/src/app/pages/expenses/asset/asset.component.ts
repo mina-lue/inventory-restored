@@ -37,7 +37,7 @@ assets$ : Observable<any[]>
 
     save(data: any){
       if(this.validateForm.valid){
-        this.service.addAssetExpenses({description: data.description, amount: (data.amount), asset: data.assetItem, date: new Date()});
+        this.service.addAssetExpenses({description: data.description, amount: (data.amount), asset: data.assetItem, date: new Date()}, () => this.validateForm.reset());
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
           if (control.invalid) {

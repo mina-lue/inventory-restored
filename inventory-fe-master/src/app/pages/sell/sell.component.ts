@@ -48,8 +48,8 @@ constructor(private service:InventoryService, private transactionService: Transa
     customer:[undefined, Validators.required],
   })
 
-  save(data: any){
-    if(this.validateForm.valid){
+    save(data: any){
+      if(this.validateForm.valid){
       this.transactionService.addProductSold({
         product: data.product,
         price: data.price,
@@ -59,10 +59,10 @@ constructor(private service:InventoryService, private transactionService: Transa
         consumer: data.customer,
         date: new Date(),
         totalPrice: data.price * data.quantity
-      });
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
+      }, () => this.validateForm.reset({ vat: false }));
+      } else {
+        Object.values(this.validateForm.controls).forEach(control => {
+          if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
         }

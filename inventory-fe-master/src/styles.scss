@@ -25,3 +25,85 @@ select,
 .ant-dropdown-menu {
   font-size: 1rem;
 }
+
+.justify-center.flex.mt-4,
+.justify-center.flex.flex-col.sm\:flex-row.gap-4.mt-4 {
+  width: 100%;
+  padding: clamp(12px, 2vw, 28px);
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.justify-center.flex.mt-4 > nz-card,
+.justify-center.flex.mt-4 > .ant-card {
+  width: min(100%, 960px);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+.justify-center.flex.flex-col.sm\:flex-row.gap-4.mt-4 > nz-card,
+.justify-center.flex.flex-col.sm\:flex-row.gap-4.mt-4 > .ant-card {
+  flex: 1 1 0;
+  min-width: min(100%, 420px);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+form[nz-form] {
+  width: 100%;
+  display: grid;
+  gap: 12px;
+}
+
+form[nz-form] .ant-form-item {
+  margin-bottom: 0;
+}
+
+form[nz-form] .ant-form-item-label > label {
+  height: auto;
+  line-height: 1.35;
+  white-space: normal;
+  font-weight: 600;
+  color: #334155;
+}
+
+form[nz-form] .ant-form-item-control {
+  min-width: 0;
+}
+
+form[nz-form] input[nz-input],
+form[nz-form] .ant-select,
+form[nz-form] .ant-picker,
+form[nz-form] .ant-input-number {
+  width: 100%;
+}
+
+form[nz-form] button[type="submit"] {
+  min-width: 8rem;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .justify-center.flex.mt-4,
+  .justify-center.flex.flex-col.sm\:flex-row.gap-4.mt-4 {
+    padding: 12px;
+  }
+
+  .justify-center.flex.mt-4 > nz-card,
+  .justify-center.flex.mt-4 > .ant-card,
+  .justify-center.flex.flex-col.sm\:flex-row.gap-4.mt-4 > nz-card,
+  .justify-center.flex.flex-col.sm\:flex-row.gap-4.mt-4 > .ant-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  form[nz-form] .ant-form-item,
+  form[nz-form] .ant-form-item-row,
+  form[nz-form] .ant-form-item-label,
+  form[nz-form] .ant-form-item-control {
+    width: 100%;
+  }
+}
