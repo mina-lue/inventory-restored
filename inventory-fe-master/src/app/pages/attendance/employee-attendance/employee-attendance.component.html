@@ -1,0 +1,18 @@
+<nz-table
+[nzSize]="'small'"
+nzBordered="true"
+[nzTitle]="employeeName"
+>
+  <thead>
+  <tr>
+  <th>date</th>
+  <th>worked hour</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of employeeAttendance">
+      <td>{{item.date}}</td>
+      <td>{{item.workHour/60.0}}</td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -1,0 +1,77 @@
+<nz-layout class="min-h-full">
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" class="h-100 {{isCollapsed? '-ml-24 sm:ml-0':''}}">
+    <div class="logo"></div>
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-submenu nzTitle="Store" nzIcon="shop">
+        <ul>
+          <li nz-menu-item [routerLink]="[ '/store/products']">Products </li>
+          <li nz-menu-item [routerLink]="[ '/store/assets']">Assets </li>
+          <li nz-menu-item [routerLink]="[ '/store/materials']">Raw Materials </li>
+          <li nz-submenu nzTitle="Production">
+            <ul>
+              <li nz-menu-item [routerLink]="[ '/production/product']">Products Produced</li>
+              <li nz-menu-item [routerLink]="[ '/production/material-consumption']">Raw Material Consumed</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Transactions" nzIcon="swap">
+        <ul>
+          <li nz-menu-item [routerLink]="[ '/transactions/products-out']">Products Sold</li>
+          <li nz-menu-item [routerLink]="[ '/transactions/raw-materials-in']">Raw Materials Collected</li>
+          <li nz-menu-item [routerLink]="[ '/transactions/utility-expenses']">Utility Expenses</li>
+          <li nz-menu-item [routerLink]="[ '/transactions/other-expenses']">Other Expenses</li>
+          <li nz-menu-item [routerLink]="[ '/transactions/assets-expenses']">Assets Expenses</li>
+          <li nz-menu-item [routerLink]="[ '/transactions/labour-expenses']">Labour Expenses</li>
+          <li nz-menu-item [routerLink]="[ '/transactions/all']">All </li>
+        </ul>
+      </li>
+
+      <li nz-menu-item>
+        <nz-icon nzType="dollar" />
+        <span><a [routerLink]="[ '/sell']"></a>Sell</span>
+      </li>
+      <li nz-submenu nzTitle="Pay" nzIcon="wallet">
+        <ul>
+          <li nz-menu-item [routerLink]="[ '/pay/salary']">Salary</li>
+          <li nz-menu-item [routerLink]="[ '/pay/labour']">Labour Expense</li>
+          <li nz-menu-item [routerLink]="[ '/pay/material-collect']">Raw material Collect</li>
+          <li nz-menu-item [routerLink]="[ '/pay/utility']">Utility Expense</li>
+          <li nz-menu-item [routerLink]="[ '/pay/asset']">Asset expense</li>
+          <li nz-menu-item [routerLink]="[ '/pay/other']">Other expense</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Register" nzIcon="laptop">
+        <ul>
+          <li nz-menu-item [routerLink]="[ '/register/asset']">Asset</li>
+          <li nz-menu-item [routerLink]="[ '/register/customer']">Customer</li>
+          <li nz-menu-item [routerLink]="[  '/register/employee']">Employee</li>
+          <li nz-menu-item [routerLink]="[ '/register/product']">Product</li>
+          <li nz-menu-item [routerLink]="[ '/register/raw-material']">Raw Material</li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="justify-between w-full bg-grey-100 flex items-center">
+      <span
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></span>
+      <span class="font-bold text-2xl sm:block hidden">
+        <a [routerLink]="['/home']">Desalegn Cement Based Factory</a>
+      </span>
+      <span class="mr-12 text-md font-bold">
+        <a [routerLink]="['/attendance/in']">Attendance</a>
+      </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer>Habkali Inventory Lite | Mina ©2025 </nz-footer>
+  </nz-layout>
+</nz-layout>

@@ -1,0 +1,34 @@
+<nz-card [nzTitle]="title" class="shadow-sm mt-2" [nzExtra]="quit">
+	<nz-table
+	[nzData]="(materials$ |async)?? []"
+	#materialsTable
+	[nzFrontPagination]="false"
+	nzSize="small"
+	nzBorderd="true"
+	ngSkipHydration
+	>
+	<thead>
+		<tr>
+			<th>Material Name</th>
+			<th>Unit of Measurement</th>
+			<th>Price Per Unit</th>
+			<th>Total Quantity</th>
+			<th>Total Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let material of materialsTable.data">
+			<td>{{material.name}}</td>
+			<td>{{material.unit}}</td>
+			<td>{{material.price}}</td>
+			<td>{{material.quantity}}</td>
+			<td>{{material.price * material.quantity}}</td>
+		</tr>
+	</tbody>
+	</nz-table>
+</nz-card>
+
+<ng-template #title>
+	<span class="text-xl font-bold text-blue-950">Raw Materials in Store</span>
+</ng-template>
+<ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

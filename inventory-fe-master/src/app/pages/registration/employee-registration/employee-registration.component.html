@@ -1,0 +1,58 @@
+<div class="justify-center flex mt-4">
+  <nz-card [nzTitle]="formTitle" class="w-1/2 shadow-md" [nzExtra]="quit">
+  <form nz-form class="w-full" [formGroup]="validateForm" (ngSubmit)="save(validateForm.value)">
+    <nz-form-item>
+      <nz-form-label [nzSpan] = "7"><span class="text-lg">Position</span></nz-form-label>
+      <nz-form-control
+        nzValidationStatus="error"
+        [nzSpan]="12"
+        nzHasFeedback
+      >
+        <nz-select name = "select" formControlName="position" >
+          <nz-option [nzValue] = "'Guard'" nzLabel="Guard"></nz-option>
+          <nz-option [nzValue] = "'Finance Expert'" nzLabel="Finance Expert"></nz-option>
+          <nz-option [nzValue] = "'Human Resource Manager'" nzLabel="Human Resource Manager"></nz-option>
+          <nz-option [nzValue] = "'Store Man'" nzLabel="Store Man"></nz-option>
+          <nz-option [nzValue] = "'load Operator'" nzLabel="Load Operator"></nz-option>
+          <nz-option [nzValue] = "'SinoTruck Driver'" nzLabel="SinoTruck driver"></nz-option>
+          <nz-option [nzValue] = "'SinoTruck Driver Support'" nzLabel="SinoTruck driver Support"></nz-option>
+          <nz-option [nzValue] = "'Machine Operator'" nzLabel="Machine Operator"></nz-option>
+        </nz-select>
+       </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7"><span class="text-lg">Employee Name</span></nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback >
+        <input nz-input placeholder="name" formControlName="name"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7"><span class="text-lg">Salary</span></nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-input-number name="input" style="width:100%" formControlName="salary"></nz-input-number>
+      </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7"><span class="text-lg">Phone</span></nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback >
+      <input nz-input placeholder="phone" formControlName="phone"/>
+    </nz-form-control>
+  </nz-form-item>
+
+    <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12" >
+            <button nz-button nzType="primary" class="m-4 w-32 rounded-sm" type="submit">Save</button>
+          </nz-form-control>
+       </nz-form-item>
+  </form>
+  </nz-card>
+  </div>
+
+  <ng-template #formTitle>
+    <p class="text-xl text-weight-10 font-bold">{{employee? "Update Employee":"Employee Register An Employee"}}</p>
+  </ng-template>
+
+  <ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

@@ -1,0 +1,47 @@
+<nz-card [nzTitle]="title" class="shadow-sm mt-2" [nzExtra]="quit">
+	<nz-table
+	[nzData]="(expenses$ |async)?? []"
+	#expensesTable
+	[nzFrontPagination]="false"
+	nzSize="small"
+	nzBorderd="true"
+	ngSkipHydration
+	>
+	<thead>
+		<tr>
+			<th>Description</th>
+			<th>Laborer Name</th>
+			<th>amount</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let expense of expensesTable.data">
+			<td>{{expense.description}}</td>
+			<td>{{expense.laborerName}}</td>
+			<td>{{expense.amount}}</td>
+		</tr>
+	</tbody>
+	</nz-table>
+</nz-card>
+
+<ng-template #title>
+	<span class="text-xl font-bold text-blue-950">Labour expenses</span>
+  <span class="date ml-4">
+    <nz-date-picker
+            [nzDisabledDate]="disabledStartDate"
+            nzFormat="yyyy-MM-dd"
+            [(ngModel)]="startValue"
+            nzPlaceHolder="Start"
+            (nzOnOpenChange)="handleStartOpenChange($event)"
+          ></nz-date-picker>
+          <nz-date-picker
+            #endDatePicker
+            [nzDisabledDate]="disabledEndDate"
+            nzFormat="yyyy-MM-dd"
+            [(ngModel)]="endValue"
+            nzPlaceHolder="End"
+            (nzOnOpenChange)="handleEndOpenChange($event)"
+          ></nz-date-picker>
+</span>
+</ng-template>
+<ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

@@ -1,0 +1,81 @@
+<div class="justify-center flex mt-4">
+  <nz-card [nzTitle]="formTitle" [nzExtra]="quit" class="w-1/2 shadow-md">
+  <form nz-form class="w-full" [formGroup]="validateForm" (ngSubmit)="save(validateForm.value)">
+    <nz-form-item>
+      <nz-form-label [nzSpan] = "7"><span class="text-lg">Material</span></nz-form-label>
+      <nz-form-control
+        nzValidationStatus="error"
+        [nzSpan]="12"
+        nzErrorTip="you must select a product to sell"
+      >
+        <nz-select name = "select" formControlName="material">
+          <nz-option [nzValue] = "material" [nzLabel]="material.name" *ngFor="let material of materials$|async"></nz-option>
+        </nz-select>
+       </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7"><span class="text-lg">Unit price</span></nz-form-label>
+      <nz-form-control [nzSpan]="12" >
+        <input nz-input placeholder="price" formControlName="unitPrice"/>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7"><span class="text-lg">Quantity</span></nz-form-label>
+        <nz-form-control [nzSpan]="12"nzHasFeedback>
+          <nz-input-number name="input-number" style="width:100%" formControlName="quantity"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan] = "7"><span class="text-lg">VAT?</span></nz-form-label>
+      <nz-form-control
+        nzValidationStatus="error"
+        [nzSpan]="12"
+        nzErrorTip="you must select a product to sell"
+      >
+        <nz-select name = "select-error" formControlName="taxed">
+          <nz-option [nzValue] = true nzLabel="Yes"></nz-option>
+          <nz-option [nzValue] = false nzLabel="No"></nz-option>
+        </nz-select>
+       </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item *ngIf="validateForm.value.taxed">
+      <nz-form-label [nzSpan]="7"><span class="text-lg">FSN</span></nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <input nz-input name="input" style="width:100%" formControlName="fsn" />
+      </nz-form-control>
+  </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7"><span class="text-lg">Total price</span></nz-form-label>
+        <nz-form-control [nzSpan]="12" >
+          <nz-input-number name="input-number" style="width:100%" formControlName="totalPrice" nzDisabled="true"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+
+
+
+
+    <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <button nz-button nzType="primary" class="m-4 w-32 rounded-sm" type="submit">Save</button>
+          </nz-form-control>
+       </nz-form-item>
+
+
+  </form>
+  </nz-card>
+  </div>
+
+  <ng-template #formTitle>
+    <p class="text-xl text-weight-10 font-bold">Raw Material Collection Expense</p>
+  </ng-template>
+
+
+  <ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>
+
+
+

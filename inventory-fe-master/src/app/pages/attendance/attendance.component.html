@@ -1,0 +1,12 @@
+<div class="mt-2 mx-32" >
+  <ul class="mt-2" nz-menu nzMode="horizontal" >
+    <li nz-menu-item nzMatchRouter>
+      <a  [routerLink]="[ '/attendance/in' ]">Attendance in</a>
+    </li>
+
+    <li nz-menu-item nzMatchRouter>
+      <a [routerLink]="[ '/attendance/out' ]">Attendance out</a>
+    </li>
+  </ul>
+<router-outlet></router-outlet>
+</div>

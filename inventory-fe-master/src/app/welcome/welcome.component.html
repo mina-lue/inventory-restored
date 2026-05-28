@@ -1,0 +1,109 @@
+<div class="m-36 bg-white h-50 p-12 rounded-md shadow-md p-12 mt-12 w-800 px-40">
+  <div class="flex justify-center flex-col items-center">
+    <div class="bg-gray-200 rounded-2xl shadow-lg mb-8 w-24 p-2">
+      <img class="w-full" src="logo_mina.png" alt="logo" />
+    </div>
+    <div>
+      <h1 class="text-xl text-center text-green-500">
+        Welcome to Habkali Inventory Application
+      </h1>
+      <div class="mt-8">
+
+        <form
+          nz-form
+          class="w-full"
+          [formGroup]="welcomeForm"
+          (ngSubmit)="save(welcomeForm.value)"
+        >
+          <div></div>
+          <nz-form-item>
+            <nz-form-label
+              ><span class="text-lg">Name of your company</span></nz-form-label
+            >
+            <nz-form-control [nzSpan]="32" nzHasFeedback>
+              <input nz-input name="name" formControlName="name" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label><span class="text-lg">Balance</span></nz-form-label>
+            <nz-form-control [nzSpan]="32" nzHasFeedback>
+              <input nz-input name="balance" formControlName="balance" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label><span class="text-lg">Capital</span></nz-form-label>
+            <nz-form-control [nzSpan]="32" nzHasFeedback>
+              <input nz-input name="capital" formControlName="capital" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <button type="submit" class="w-full mt-4"><span class="text-3xl text-green-300 flex items-center gap-2 hover:text-green-500 cursor-pointer float-right"><span class="text-lg text-zinc-700 w-full text-green-500">Get Started</span><nz-icon nzType="right-circle" nzTheme="outline" /></span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+
+        <label> Capital:</label>
+        <input name="capital">
+
+
+	<nz-form-item>
+        <nz-form-label [nzSpan]="5"><span class="text-lg">Price</span></nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback >
+          <nz-input-number name="input" style="width:100%" formControlName="price" nzValue="" ></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5"><span class="text-lg">Quantity</span></nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback>
+          <nz-input-number name="input" style="width:100%"formControlName="quantity"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan] = "5"><span class="text-lg">VAT?</span></nz-form-label>
+        <nz-form-control
+        nzValidationStatus="error"
+        [nzSpan]="12"
+			nzErrorTip="you must select a product to sell"
+      >
+		  <nz-select name = "select-error" formControlName="vat">
+        <nz-option [nzValue] = true nzLabel="Yes"></nz-option>
+		  	<nz-option [nzValue] = false nzLabel="No"></nz-option>
+		  </nz-select>
+    </nz-form-control>
+	</nz-form-item>
+
+  <nz-form-item *ngIf="validateForm.value.vat">
+    <nz-form-label [nzSpan]="5"><span class="text-lg">FSN</span></nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback>
+      <input nz-input name="input" style="width:100%" formControlName="FSN" />
+    </nz-form-control>
+  </nz-form-item>
+
+	<nz-form-item>
+    <nz-form-label [nzSpan] = "5"><span class="text-lg">Customer</span></nz-form-label>
+		<nz-form-control
+    nzValidationStatus="error"
+    [nzSpan]="12"
+    nzErrorTip="you must select a customer to sell"
+		>
+    <nz-select name = "select-error" formControlName="customer">
+      <nz-option [nzValue] = "customer" [nzLabel]="customer.name" *ngFor="let customer of (customers | async)"></nz-option>
+    </nz-select>
+		 </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="12">
+        <button nz-button nzType="primary" class="m-4 w-32 rounded-sm">Sell</button>
+      </nz-form-control>
+    </nz-form-item>
+
+
+  </form>
+  -->

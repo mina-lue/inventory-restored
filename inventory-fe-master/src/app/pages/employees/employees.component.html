@@ -1,0 +1,46 @@
+
+<nz-card [nzTitle]="title" [nzExtra]="quit" class="shadow-sm mt-2">
+	<nz-table
+	[nzData]="(employees$ | async) ?? []"
+	#employeesTable
+	[nzFrontPagination]="false"
+	nzSize="small"
+	nzBorderd="true"
+	ngSkipHydration
+	>
+
+	<thead>
+		<tr>
+			<th>Employee Name</th>
+			<th>Position</th>
+      <th>Phone</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor = "let employee of employeesTable.data">
+			<td>{{employee.name}}</td>
+			<td>{{employee.position}}</td>
+			<td>{{employee.phone}}</td>
+		</tr>
+	</tbody>
+	</nz-table>
+
+	<nz-pagination
+	    [nzTotal] = "total"
+	    [nzPageIndex]="startAt"
+	    [nzPageSize]="size"
+	    [nzSize]="'small'"
+	    [nzPageSizeOptions] = "[5, 10, 15, 20, 30, 40, 50]"
+	    [nzShowSizeChanger] = "true"
+	    (nzPageIndexChange)="onPageChange($event)"
+	    (nzPageSizeChange)="onPageSizeChange($event)"
+	    class="float-right"
+	    >
+	 </nz-pagination>
+</nz-card>
+
+<ng-template #title>
+	<span class="text-xl font-bold text-blue-950">Employees Of The Company</span>
+</ng-template>
+<ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>
+

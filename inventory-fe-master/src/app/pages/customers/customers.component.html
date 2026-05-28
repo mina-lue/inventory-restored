@@ -1,0 +1,45 @@
+
+<nz-card [nzTitle]="title" [nzExtra]="quit" class="shadow-sm mt-2">
+	<nz-table
+	[nzData]="(customers$ | async) ?? []"
+	#customersTable
+	[nzFrontPagination]="false"
+	nzSize="small"
+	nzBorderd="true"
+	ngSkipHydration
+	>
+
+	<thead>
+		<tr>
+			<th>Customer Name</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor = "let customer of customersTable.data">
+			<td>{{customer.name}}</td>
+			<td>{{customer.type}}</td>
+		</tr>
+	</tbody>
+	</nz-table>
+
+	<nz-pagination
+	    [nzTotal] = "total"
+	    [nzPageIndex]="startAt"
+	    [nzPageSize]="size"
+	    [nzSize]="'small'"
+	    [nzPageSizeOptions] = "[5, 10, 15, 20, 30, 40, 50]"
+	    [nzShowSizeChanger] = "true"
+	    (nzPageIndexChange)="onPageChange($event)"
+	    (nzPageSizeChange)="onPageSizeChange($event)"
+	    class="float-right"
+	    >
+	 </nz-pagination>
+</nz-card>
+
+<ng-template #title>
+	<span class="text-xl font-bold text-blue-950">Customers Of The Company</span>
+</ng-template>
+
+<ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>
+

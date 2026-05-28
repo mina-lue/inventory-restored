@@ -1,0 +1,52 @@
+<div class="mx-2 mt-1">
+  <nz-card [nzTitle]="itemsInStore" class="mr-3 shadow-md rounded-md bg-slate-100" >
+    <nz-table
+    #storeTable
+    ngSkipHydration
+    [nzData]="storeItems"
+    nzTableLayout="fixed"
+    nzSize="small"
+    nzBordered="true"
+    [nzLoading]="loading"
+    [nzFrontPagination]="false"
+    class="w-full -m-4 -mr-12">
+      <thead>
+        <tr class="bg-tableHead">
+          <th scope="col" class="border-t border-b"> name</th>
+          <th scope="col" class="border-t border-b"> price </th>
+          <th scope="col" class="border-t border-b"> Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of storeTable.data" class="cursor-pointer hover:bg-primary-500 group" >
+          <td>{{product.name}}</td>
+          <td>{{product.price}}</td>
+          <td>
+            <a>Action 一 {{ product.name }}</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a>Delete</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <nz-pagination
+    [nzTotal] = "total"
+    [nzPageIndex]="startAt"
+    [nzPageSize]="size"
+    [nzSize]="'small'"
+    [nzPageSizeOptions] = "[5, 10, 15, 20, 30, 40, 50]"
+    [nzShowSizeChanger] = "true"
+    (nzPageIndexChange)="onPageChange($event)"
+    (nzPageSizeChange)="onPageSizeChange($event)"
+    class="float-right"
+    ></nz-pagination>
+  </nz-card>
+
+  
+</div>
+
+<ng-template #itemsInStore>
+  <span class="text-black text-2xl ">Items In Store</span>
+</ng-template>
+
+

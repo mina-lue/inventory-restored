@@ -1,0 +1,51 @@
+
+<nz-card [nzTitle]="title" class="shadow-sm mt-2" [nzExtra]="quit">
+	<nz-table
+	[nzData]="(productsInStore | async) ?? []"
+	#productsTable
+	[nzFrontPagination]="false"
+	nzSize="small"
+	nzBorderd="true"
+	ngSkipHydration
+	>
+
+	<thead>
+		<tr>
+			<th>Product Name</th>
+			<th>Unit of Measure</th>
+			<th>Unit Price</th>
+			<th>quantity</th>
+			<th>Total Price</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor = "let product of productsTable.data">
+			<td>{{product.name}}</td>
+			<td>{{product.unit}}</td>
+			<td>{{product.price}}</td>
+			<td>{{product.quantity}}</td>
+			<td>{{product.price * product.quantity}}</td>
+		</tr>
+	</tbody>
+	</nz-table>
+
+	<nz-pagination
+	    [nzTotal] = "total"
+	    [nzPageIndex]="startAt"
+	    [nzPageSize]="size"
+	    [nzSize]="'small'"
+	    [nzPageSizeOptions] = "[5, 10, 15, 20, 30, 40, 50]"
+	    [nzShowSizeChanger] = "true"
+	    (nzPageIndexChange)="onPageChange($event)"
+	    (nzPageSizeChange)="onPageSizeChange($event)"
+	    class="float-right"
+	    >
+	 </nz-pagination>
+</nz-card>
+
+<ng-template #title>
+	<span class="text-xl font-bold text-blue-950">Products in Store</span>
+</ng-template>
+
+
+<ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

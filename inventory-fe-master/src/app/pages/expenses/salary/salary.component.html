@@ -1,0 +1,83 @@
+<nz-card [nzTitle]="attendanceTitle" class="mt-4 rounded-md" [nzExtra]="save" *ngIf="employees$|async">
+  <nz-table
+  [nzData]="salaries"
+  #emps
+  ngSkipHydration
+  [nzFrontPagination]="false"
+
+  >
+    <thead>
+      <tr>
+        <th>Employee Name</th>
+        <th>Worked Hour</th>
+        <th>Mandatory hours</th>
+        <th>difference</th>
+        <th>Salary Amount</th>
+        <th>Net Salary</th>
+        <th>Select</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sal of emps.data">
+        <td>{{sal.employee.name}}</td>
+        <td>{{(sal.workHour)/60.0 }} <button nz-button nzType="text" (click)="loadEmpWorkHours(sal.employee.employee)"><nz-icon nzType="eye" nzTheme="outline" /></button></td>
+        <td>192</td>
+        <td>{{(sal.workHour)/60-0 - 192}}</td>
+        <td>{{sal.employee.salary}}</td>
+        <td>{{(sal.employee.salary/30.0 *(sal.workHour)/60.0)}}</td>
+        <td><label nz-checkbox [(nzChecked)]="sal.paid" (change)="check(sal.employee.id)"></label></td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-card *ngIf="employeeAttendances$|async" [nzTitle]="empAttendanceTitle" [nzExtra]="close" class="w-1/2">
+    <app-employee-attendance
+    [employeeAttendance]="empAttendance"
+    [employeeName]="employeeName"
+    >
+    </app-employee-attendance>
+  </nz-card>
+  </nz-card>
+
+
+
+
+
+
+  <ng-template #attendanceTitle>
+    <span class="text-2xl font-bold"> Salary Pay On: {{today}}</span>
+    <span class="date ml-4">
+      <nz-date-picker
+      [nzDisabledDate]="disabledStartDate"
+      nzFormat="yyyy-MM-dd "
+      [(ngModel)]="startValue"
+      nzPlaceHolder="Start"
+      (nzOnOpenChange)="handleStartOpenChange($event)"
+    ></nz-date-picker>
+    <nz-date-picker
+      #endDatePicker
+      [nzDisabledDate]="disabledEndDate"
+      nzFormat="yyyy-MM-dd"
+      [(ngModel)]="endValue"
+      nzPlaceHolder="End"
+      (nzOnOpenChange)="handleEndOpenChange($event)"
+    ></nz-date-picker>
+  </span>
+  </ng-template>
+
+  <ng-template #save>
+    <button class="mr-4" nz-button nzType="primary" (click)="saveSalaries()">Pay</button>
+     <a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a>
+  </ng-template>
+
+  <ng-template #empAttendanceTitle>
+    <span class="text-lg font-bold"> Attendance detail</span>
+  </ng-template>
+
+  <ng-template #close>
+    <button class="mr-4"  (click)="closeEmpAttendances()"><nz-icon nzType="close" nzTheme="outline" /></button>
+  </ng-template>
+
+
+
+
+
