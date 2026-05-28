@@ -40,7 +40,7 @@
     </div>
   </nz-card>
 
-  <nz-card class="dashboard-section" nzTitle="Production and Sales">
+  <nz-card class="dashboard-section" [nzTitle]="productionTitle">
     <div class="summary-grid">
       <nz-card class="summary-card summary-production" nzTitle="Productions">
         <ng-container *ngIf="productions$ | async as productions">
@@ -74,7 +74,7 @@
     </div>
   </nz-card>
 
-  <nz-card class="dashboard-section" nzTitle="Low Stock and Reorder">
+  <nz-card class="dashboard-section" [nzTitle]="lowStockTitle">
     <div class="summary-grid">
       <nz-card class="alert-card" nzTitle="Low-stock products">
         <ng-container *ngIf="lowStockProducts$ | async as products">
@@ -141,6 +141,14 @@
 
 <ng-template #financialTitle>
   <span class="section-title">Financial Status</span>
+</ng-template>
+
+<ng-template #productionTitle>
+  <span class="section-title">Production and Sales</span>
+</ng-template>
+
+<ng-template #lowStockTitle>
+  <span class="section-title">Low Stock and Reorder</span>
 </ng-template>
 
 <ng-template #dateFilters>
