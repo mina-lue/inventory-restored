@@ -23,20 +23,46 @@
   </section>
 
   <nz-card class="dashboard-section" [nzTitle]="financialTitle" [nzExtra]="dateFilters">
-    <div class="metric-grid">
-      <nz-card class="metric-card metric-revenue" [nzTitle]="revenueTitle">
-        <app-line [name]="'Total Revenue'" [value]="moneyIn$ | async"></app-line>
-      </nz-card>
+    <div class="chart-grid">
+      <section class="chart-panel">
+        <div class="chart-panel-header">
+          <span>Revenue, Net and Expenses</span>
+        </div>
+        <apx-chart
+          ngSkipHydration
+          [series]="revenueExpenseChartOptions.series"
+          [chart]="revenueExpenseChartOptions.chart"
+          [colors]="revenueExpenseChartOptions.colors"
+          [dataLabels]="revenueExpenseChartOptions.dataLabels"
+          [stroke]="revenueExpenseChartOptions.stroke"
+          [markers]="revenueExpenseChartOptions.markers"
+          [xaxis]="revenueExpenseChartOptions.xaxis"
+          [yaxis]="revenueExpenseChartOptions.yaxis"
+          [tooltip]="revenueExpenseChartOptions.tooltip"
+          [legend]="revenueExpenseChartOptions.legend"
+          [grid]="revenueExpenseChartOptions.grid"
+        ></apx-chart>
+      </section>
 
-      <nz-card class="metric-card metric-net" [nzTitle]="netTitle">
-        <app-line [name]="'Capital'" [value]="(balance$ | async)?.capital"></app-line>
-        <app-line [name]="'Net Worth'" [value]="(balance$ | async)?.worth"></app-line>
-        <app-line [name]="'Total Profit'" [value]="profit"></app-line>
-      </nz-card>
-
-      <nz-card class="metric-card metric-out" [nzTitle]="outTitle">
-        <app-line [name]="'Money Out Total'" [value]="moneyOut$ | async"></app-line>
-      </nz-card>
+      <section class="chart-panel">
+        <div class="chart-panel-header">
+          <span>Productions vs Sales</span>
+        </div>
+        <apx-chart
+          ngSkipHydration
+          [series]="productionSalesChartOptions.series"
+          [chart]="productionSalesChartOptions.chart"
+          [colors]="productionSalesChartOptions.colors"
+          [plotOptions]="productionSalesChartOptions.plotOptions"
+          [dataLabels]="productionSalesChartOptions.dataLabels"
+          [stroke]="productionSalesChartOptions.stroke"
+          [xaxis]="productionSalesChartOptions.xaxis"
+          [yaxis]="productionSalesChartOptions.yaxis"
+          [tooltip]="productionSalesChartOptions.tooltip"
+          [legend]="productionSalesChartOptions.legend"
+          [grid]="productionSalesChartOptions.grid"
+        ></apx-chart>
+      </section>
     </div>
   </nz-card>
 
@@ -44,32 +70,35 @@
     <div class="summary-grid">
       <nz-card class="summary-card summary-production" [nzTitle]="productionsCardTitle">
         <ng-container *ngIf="productions$ | async as productions">
-          <p *ngFor="let production of productions" class="summary-row">
-            <span>{{production.product?.name}}</span>
-            <strong>{{production.quantity}}</strong>
+          <p *ngFor="let production of $any(productions) | slice:0:5" class="summary-row">
+            <span>{{ $any(production).product?.name }}</span>
+            <strong>{{ $any(production).quantity }}</strong>
           </p>
           <p *ngIf="productions.length === 0" class="empty-state">No production records</p>
         </ng-container>
+        <a class="see-more-link" [routerLink]="['/production/product']">See more</a>
       </nz-card>
 
       <nz-card class="summary-card summary-store" [nzTitle]="storeCardTitle">
         <ng-container *ngIf="productsInStore$ | async as products">
-          <p *ngFor="let product of products" class="summary-row">
-            <span>{{product.name}}</span>
-            <strong>{{product.quantity}}</strong>
+          <p *ngFor="let product of $any(products) | slice:0:5" class="summary-row">
+            <span>{{ $any(product).name }}</span>
+            <strong>{{ $any(product).quantity }}</strong>
           </p>
           <p *ngIf="products.length === 0" class="empty-state">No products in store</p>
         </ng-container>
+        <a class="see-more-link" [routerLink]="['/store/products']">See more</a>
       </nz-card>
 
       <nz-card class="summary-card summary-sales" [nzTitle]="salesCardTitle">
         <ng-container *ngIf="productsSold$ | async as sales">
-          <p *ngFor="let sale of sales" class="summary-row">
-            <span>{{sale.product?.name}}</span>
-            <strong>{{sale.quantity}}</strong>
+          <p *ngFor="let sale of $any(sales) | slice:0:5" class="summary-row">
+            <span>{{ $any(sale).product?.name }}</span>
+            <strong>{{ $any(sale).quantity }}</strong>
           </p>
           <p *ngIf="sales.length === 0" class="empty-state">No sales records</p>
         </ng-container>
+        <a class="see-more-link" [routerLink]="['/transactions/products-out']">See more</a>
       </nz-card>
     </div>
   </nz-card>
@@ -151,27 +180,6 @@
   <span class="section-title">Low Stock and Reorder</span>
 </ng-template>
 
-<ng-template #dateFilters>
-  <app-date-range-select
-    [(startValue)]="startValue"
-    [(endValue)]="endValue"
-    [(preset)]="dateRangePreset"
-    (rangeChange)="refreshDateRangeData()"
-  ></app-date-range-select>
-</ng-template>
-
-<ng-template #revenueTitle>
-  <span class="metric-title">Money In</span>
-</ng-template>
-
-<ng-template #netTitle>
-  <span class="metric-title">Net Money</span>
-</ng-template>
-
-<ng-template #outTitle>
-  <span class="metric-title">Money Out</span>
-</ng-template>
-
 <ng-template #productionsCardTitle>
   <span class="metric-title">Productions</span>
 </ng-template>
@@ -182,4 +190,13 @@
 
 <ng-template #salesCardTitle>
   <span class="metric-title">Sales</span>
+</ng-template>
+
+<ng-template #dateFilters>
+  <app-date-range-select
+    [(startValue)]="startValue"
+    [(endValue)]="endValue"
+    [(preset)]="dateRangePreset"
+    (rangeChange)="refreshDateRangeData()"
+  ></app-date-range-select>
 </ng-template>
