@@ -9,6 +9,7 @@ import { Customer } from '../model/Customer.model';
 import { Employee } from '../model/employee.model';
 import { NotificationService } from './notifications.service';
 import { Page } from '../model/Page';
+import { ReorderSuggestion } from '../model/ReorderSuggestion.model';
 
 
 @Injectable({
@@ -29,6 +30,14 @@ export class InventoryService {
     .set("size", page.size)
     .set("page", page.page)
     return this.http.get<Product[]>(storeEndPoints.products, {params}).pipe(catchError(() => of([])));
+  }
+
+  getLowStockProducts(): Observable<Product[]>{
+    return this.http.get<Product[]>(storeEndPoints.lowStockProducts).pipe(catchError(() => of([])));
+  }
+
+  getProductReorderSuggestions(): Observable<ReorderSuggestion[]>{
+    return this.http.get<ReorderSuggestion[]>(storeEndPoints.productReorderSuggestions).pipe(catchError(() => of([])));
   }
 
   getAssets(): Observable<any[]>{
@@ -59,6 +68,14 @@ export class InventoryService {
 
   getMaterials(): Observable<any[]>{
     return this.http.get<any[]>(storeEndPoints.materials).pipe(catchError(() => of([])));
+  }
+
+  getLowStockMaterials(): Observable<RawMaterial[]>{
+    return this.http.get<RawMaterial[]>(storeEndPoints.lowStockMaterials).pipe(catchError(() => of([])));
+  }
+
+  getMaterialReorderSuggestions(): Observable<ReorderSuggestion[]>{
+    return this.http.get<ReorderSuggestion[]>(storeEndPoints.materialReorderSuggestions).pipe(catchError(() => of([])));
   }
 
   getEmployees():Observable<any[]>{

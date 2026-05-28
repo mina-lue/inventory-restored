@@ -95,6 +95,31 @@
 
 </div>
 </nz-card>
+<nz-card nzTitle="Low Stock and Reorder" class="sm:mx-24 mx-2 shadow-md rounded-md mt-24">
+  <div class="home-main-info flex flex-col sm:flex-row gap-6 w-full justify-between px-2 sm:px-10 sm:mt-8 mt-2">
+    <nz-card nzTitle="Low-stock products" class="text-black-100 text-lg rounded-md w-full">
+      <p *ngFor="let product of lowStockProducts$ | async" class="w-100 flex justify-between bg-red-50 my-2 rounded-md px-4">
+        <span>{{product.name}} <small>{{product.sku || ''}}</small></span>
+        <span>{{product.quantity}} / {{product.reorderPoint}} {{product.unit}}</span>
+      </p>
+      <p *ngIf="(lowStockProducts$ | async)?.length === 0" class="text-gray-500">No low-stock products</p>
+    </nz-card>
+    <nz-card nzTitle="Low-stock materials" class="text-black-100 text-lg rounded-md w-full">
+      <p *ngFor="let material of lowStockMaterials$ | async" class="w-100 flex justify-between bg-orange-50 my-2 rounded-md px-4">
+        <span>{{material.name}} <small>{{material.sku || ''}}</small></span>
+        <span>{{material.quantity}} / {{material.reorderPoint}} {{material.unit}}</span>
+      </p>
+      <p *ngIf="(lowStockMaterials$ | async)?.length === 0" class="text-gray-500">No low-stock materials</p>
+    </nz-card>
+    <nz-card nzTitle="Purchase suggestions" class="text-black-100 text-lg rounded-md w-full">
+      <p *ngFor="let suggestion of reorderSuggestions$ | async" class="w-100 flex justify-between bg-zinc-100 my-2 rounded-md px-4">
+        <span>{{suggestion.itemName}} <small>{{suggestion.supplier || 'No supplier'}}</small></span>
+        <span>Order {{suggestion.suggestedQuantity}} {{suggestion.unit}}</span>
+      </p>
+      <p *ngIf="(reorderSuggestions$ | async)?.length === 0" class="text-gray-500">No reorder suggestions</p>
+    </nz-card>
+  </div>
+</nz-card>
 <div class="home-misc-info flex flex-col sm:flex-row gap-6 w-full justify-between px-2 sm:px-10 sm:mt-24 mt-2 gap-6">
   <nz-card  nzTitle="Most sold Items" class="text-black-100 text-lg rounded-md w-full sm:w-1/4 sm:mx-4">
       <p *ngFor="let productSold of productsMostSold$| async" class="w-100 flex justify-between bg-zinc-100 my-2 rounded-md px-4">

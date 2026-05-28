@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.anim.inventory.store.ReorderSuggestion;
 
 @Component
 public class ProductService {
@@ -38,6 +41,30 @@ public class ProductService {
             return new ArrayList<>();
         }
         return products;
+    }
+
+    public List<Product> getLowStockProducts() {
+        return productRepository.findAll().stream()
+                .filter(product -> product.getActive() == null || product.getActive())
+                .filter(product -> product.getReorderPoint() != null && product.getReorderPoint() > 0)
+                .filter(product -> safeQuantity(product.getQuantity()) <= product.getReorderPoint())
+                .collect(Collectors.toList());
+    }
+
+    public List<ReorderSuggestion> getReorderSuggestions() {
+        return getLowStockProducts().stream()
+                .map(product -> new ReorderSuggestion(
+                        "product",
+                        product.getId(),
+                        product.getName(),
+                        product.getSku(),
+                        product.getSupplier(),
+                        product.getUnit(),
+                        safeQuantity(product.getQuantity()),
+                        product.getReorderPoint(),
+                        product.getReorderPoint() - safeQuantity(product.getQuantity())
+                ))
+                .collect(Collectors.toList());
     }
 
     public Product findById(Long id) {
@@ -69,6 +96,10 @@ public class ProductService {
 
     public Product updateInventory(Product product) {
         return productRepository.save(product);
+    }
+
+    private int safeQuantity(Integer quantity) {
+        return quantity == null ? 0 : quantity;
     }
 
     public ResponseEntity<Void> deleteById(Long id) {

@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import com.anim.inventory.store.ReorderSuggestion;
+
 @RestController
 @RequestMapping("api/v1/materials")
 public class MaterialController {
@@ -35,6 +37,16 @@ public class MaterialController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(materials);
+    }
+
+    @GetMapping("/low-stock")
+    public ResponseEntity<List<Material>> findLowStock() {
+        return ResponseEntity.ok(materialService.getLowStockMaterials());
+    }
+
+    @GetMapping("/reorder-suggestions")
+    public ResponseEntity<List<ReorderSuggestion>> findReorderSuggestions() {
+        return ResponseEntity.ok(materialService.getReorderSuggestions());
     }
 
     @DeleteMapping("/{id}")

@@ -3,7 +3,11 @@ import { environment } from '../../environments/environment';
 const baseUrl = environment.apiBaseUrl;
 export const storeEndPoints = {
   products:`${baseUrl}/api/v1/products`,
+  lowStockProducts:`${baseUrl}/api/v1/products/low-stock`,
+  productReorderSuggestions:`${baseUrl}/api/v1/products/reorder-suggestions`,
   materials: `${baseUrl}/api/v1/materials`,
+  lowStockMaterials: `${baseUrl}/api/v1/materials/low-stock`,
+  materialReorderSuggestions: `${baseUrl}/api/v1/materials/reorder-suggestions`,
   getAgedItems:`${baseUrl}/api/v1/products/aged`,
   assets: `${baseUrl}/api/v1/assets`,
   getProductions: `${baseUrl}/api/v1/productions`,

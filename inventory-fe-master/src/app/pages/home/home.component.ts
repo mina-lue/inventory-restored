@@ -6,7 +6,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { FormsModule } from '@angular/forms'
 import { RouterLink } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { TransactionsService } from '../../service/transactions.service';
 import { formatDate } from '../../lib/DateFormatter';
 import { InventoryService } from '../../service/store-service.service';
@@ -14,6 +14,7 @@ import { Product } from '../../model/product.model';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { LineComponent } from "../lib/line/line.component";
 import { InventoryBalance } from '../../model/InventoryBalance';
+import { ReorderSuggestion } from '../../model/ReorderSuggestion.model';
 
 @Component({
   selector: 'app-home',
@@ -44,6 +45,9 @@ export class HomeComponent implements OnInit{
   productsMostAged$: Observable<any>
   productsSold$: Observable<any>;
   productions$: Observable<any>;
+  lowStockProducts$: Observable<any[]>;
+  lowStockMaterials$: Observable<any[]>;
+  reorderSuggestions$: Observable<ReorderSuggestion[]>;
   profit = 0;
 
 
@@ -63,6 +67,12 @@ export class HomeComponent implements OnInit{
     this.productsSold$ = transactionService.getProductsSoldInDates(formatDate(this.startValue), formatDate(this.endValue));
     this.recentSales$ = transactionService.getRecentSales();
     this.productsMostAged$ = transactionService.getAgedItems();
+    this.lowStockProducts$ = storeService.getLowStockProducts();
+    this.lowStockMaterials$ = storeService.getLowStockMaterials();
+    this.reorderSuggestions$ = combineLatest([
+      storeService.getProductReorderSuggestions(),
+      storeService.getMaterialReorderSuggestions()
+    ]).pipe(map(([products, materials]) => [...products, ...materials]));
   }
 
 

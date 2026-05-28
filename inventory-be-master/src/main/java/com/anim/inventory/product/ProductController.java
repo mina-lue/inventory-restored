@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.anim.inventory.store.ReorderSuggestion;
+
 @RestController
 @RequestMapping("api/v1/products")
 public class ProductController {
@@ -40,6 +42,16 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(agedProducts, HttpStatus.OK);
+    }
+
+    @GetMapping("/low-stock")
+    public ResponseEntity<List<Product>> findLowStock() {
+        return ResponseEntity.ok(productService.getLowStockProducts());
+    }
+
+    @GetMapping("/reorder-suggestions")
+    public ResponseEntity<List<ReorderSuggestion>> findReorderSuggestions() {
+        return ResponseEntity.ok(productService.getReorderSuggestions());
     }
 
     @GetMapping()

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.anim.inventory.store.ReorderSuggestion;
 
 @Component
 public class MaterialService {
@@ -22,6 +25,30 @@ public class MaterialService {
     public Material findById(Long id) {
         Optional<Material> material = materialRepository.findById(id);
         return material.orElse(null);
+    }
+
+    public List<Material> getLowStockMaterials() {
+        return materialRepository.findAll().stream()
+                .filter(material -> material.getActive() == null || material.getActive())
+                .filter(material -> material.getReorderPoint() != null && material.getReorderPoint() > 0)
+                .filter(material -> safeQuantity(material.getQuantity()) <= material.getReorderPoint())
+                .collect(Collectors.toList());
+    }
+
+    public List<ReorderSuggestion> getReorderSuggestions() {
+        return getLowStockMaterials().stream()
+                .map(material -> new ReorderSuggestion(
+                        "material",
+                        material.getId(),
+                        material.getName(),
+                        material.getSku(),
+                        material.getSupplier(),
+                        material.getUnit(),
+                        safeQuantity(material.getQuantity()),
+                        material.getReorderPoint(),
+                        material.getReorderPoint() - safeQuantity(material.getQuantity())
+                ))
+                .collect(Collectors.toList());
     }
 
     public ResponseEntity<Material> save(Material material) {
@@ -42,6 +69,10 @@ public class MaterialService {
 
     public Material updateInventory(Material material) {
         return materialRepository.save(material);
+    }
+
+    private int safeQuantity(Integer quantity) {
+        return quantity == null ? 0 : quantity;
     }
 
     public ResponseEntity<Void> deleteById(Long id) {
