@@ -71,3 +71,13 @@ export const attendances = {
 
 
 }
+
+export const reports = {
+  inventoryValuation: `${baseUrl}/api/v1/reports/inventory-valuation`,
+  lowStock: `${baseUrl}/api/v1/reports/low-stock`,
+  profitByProduct: `${baseUrl}/api/v1/reports/profit-by-product`,
+  sales: `${baseUrl}/api/v1/reports/sales`,
+  materialConsumption: `${baseUrl}/api/v1/reports/material-consumption`,
+  expenseBreakdown: `${baseUrl}/api/v1/reports/expense-breakdown`,
+  stockMovements: `${baseUrl}/api/v1/reports/stock-movements`
+}

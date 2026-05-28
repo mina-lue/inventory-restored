@@ -1,0 +1,186 @@
+<div class="reports-page">
+  <nz-card nzTitle="Inventory valuation" [nzExtra]="quit" class="shadow-sm">
+    <div *ngIf="valuation$ | async as valuation" class="report-summary">
+      <div>
+        <span>Products</span>
+        <strong>{{valuation.productValue}}</strong>
+      </div>
+      <div>
+        <span>Materials</span>
+        <strong>{{valuation.materialValue}}</strong>
+      </div>
+      <div>
+        <span>Total</span>
+        <strong>{{valuation.totalValue}}</strong>
+      </div>
+    </div>
+    <nz-table [nzData]="(valuation$ | async)?.items ?? []" #valuationTable nzSize="small" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Name</th>
+          <th>SKU</th>
+          <th>Qty</th>
+          <th>Unit Value</th>
+          <th>Total Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of valuationTable.data">
+          <td>{{row.itemType}}</td>
+          <td>{{row.name}}</td>
+          <td>{{row.sku || '-'}}</td>
+          <td>{{row.quantity}}</td>
+          <td>{{row.unitValue}}</td>
+          <td>{{row.totalValue}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card nzTitle="Low stock" class="shadow-sm">
+    <nz-table [nzData]="(lowStock$ | async) ?? []" #lowStockTable nzSize="small" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Name</th>
+          <th>SKU</th>
+          <th>Supplier</th>
+          <th>Qty</th>
+          <th>Reorder Point</th>
+          <th>Suggested</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of lowStockTable.data">
+          <td>{{row.itemType}}</td>
+          <td>{{row.name}}</td>
+          <td>{{row.sku || '-'}}</td>
+          <td>{{row.supplier || '-'}}</td>
+          <td>{{row.quantity}} {{row.unit}}</td>
+          <td>{{row.reorderPoint}}</td>
+          <td>{{row.suggestedQuantity}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card nzTitle="Profit by product" class="shadow-sm">
+    <nz-table [nzData]="(profitByProduct$ | async) ?? []" #profitTable nzSize="small" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>SKU</th>
+          <th>Qty Sold</th>
+          <th>Revenue</th>
+          <th>Estimated Cost</th>
+          <th>Estimated Profit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of profitTable.data">
+          <td>{{row.productName}}</td>
+          <td>{{row.sku || '-'}}</td>
+          <td>{{row.quantitySold}}</td>
+          <td>{{row.revenue}}</td>
+          <td>{{row.estimatedCost}}</td>
+          <td>{{row.estimatedProfit}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card nzTitle="Sales" class="shadow-sm">
+    <nz-table [nzData]="(sales$ | async) ?? []" #salesTable nzSize="small" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Product</th>
+          <th>SKU</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of salesTable.data">
+          <td>{{row.saleDate}}</td>
+          <td>{{row.customerName || '-'}}</td>
+          <td>{{row.productName}}</td>
+          <td>{{row.sku || '-'}}</td>
+          <td>{{row.quantity}}</td>
+          <td>{{row.totalPrice}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card nzTitle="Material consumption" class="shadow-sm">
+    <nz-table [nzData]="(materialConsumption$ | async) ?? []" #consumptionTable nzSize="small" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Batch</th>
+          <th>Product</th>
+          <th>Material</th>
+          <th>Qty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of consumptionTable.data">
+          <td>{{row.consumptionDate}}</td>
+          <td>{{row.batchNumber || '-'}}</td>
+          <td>{{row.productName || '-'}}</td>
+          <td>{{row.materialName}}</td>
+          <td>{{row.quantity}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card nzTitle="Expense breakdown" class="shadow-sm">
+    <nz-table [nzData]="(expenseBreakdown$ | async) ?? []" #expenseTable nzSize="small" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of expenseTable.data">
+          <td>{{row.type}}</td>
+          <td>{{row.total}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+
+  <nz-card nzTitle="Stock movement history" class="shadow-sm">
+    <nz-table [nzData]="(stockMovements$ | async) ?? []" #movementTable nzSize="small" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Item</th>
+          <th>Type</th>
+          <th>Before</th>
+          <th>After</th>
+          <th>Change</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of movementTable.data">
+          <td>{{row.createdAt}}</td>
+          <td>{{row.itemType}} #{{row.itemId}}</td>
+          <td>{{row.movementType}}</td>
+          <td>{{row.quantityBefore}}</td>
+          <td>{{row.quantityAfter}}</td>
+          <td>{{row.quantityChanged}}</td>
+          <td>{{row.note}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+</div>
+
+<ng-template #quit><a [routerLink]="[ '/home' ]"><nz-icon nzType="close" nzTheme="outline" /></a></ng-template>

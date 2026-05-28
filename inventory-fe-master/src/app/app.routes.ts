@@ -31,6 +31,7 @@ import { CustomersComponent } from './pages/customers/customers.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { ProductItemsComponent } from './pages/product-items/product-items.component';
 import { EmployeeRegistrationComponent } from './pages/registration/employee-registration/employee-registration.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +81,10 @@ export const routes: Routes = [
   {
     path: 'transactions/all',
     component: TransactionsAllComponent
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent
   },
   {
     path: 'transactions/other-expenses',

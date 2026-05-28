@@ -1,0 +1,31 @@
+.reports-page {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.report-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.report-summary div {
+  background: #f4f6f8;
+  border: 1px solid #d9dee5;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.report-summary span {
+  display: block;
+  color: #586273;
+  font-size: 12px;
+}
+
+.report-summary strong {
+  display: block;
+  font-size: 20px;
+  margin-top: 4px;
+}
