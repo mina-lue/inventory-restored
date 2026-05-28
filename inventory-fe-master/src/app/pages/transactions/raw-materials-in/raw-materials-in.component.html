@@ -1,33 +1,43 @@
 <nz-card [nzTitle]="title" class="shadow-sm mt-2" [nzExtra]="quit">
-	<nz-table
-	[nzData]="(materialsIn$ |async)?? []"
-	#materialsInTable
-	[nzFrontPagination]="false"
-	nzSize="small"
-	nzBorderd="true"
-	ngSkipHydration
-	>
-	<thead>
-		<tr>
-			<th>Material Name</th>
-			<th>Unit of Measurement</th>
-			<th>Price Per Unit</th>
-			<th>Total Quantity</th>
-			<th>Total Cost</th>
-			<th>Date</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr *ngFor="let materialIn of materialsInTable.data">
-			<td>{{materialIn.material?.name}}</td>
-			<td>{{materialIn.material?.unitOfMeasurement?.name}}</td>
-			<td>{{materialIn.material?.price}}</td>
-			<td>{{materialIn.quantity}}</td>
-			<td>{{materialIn.quantity * materialIn.material?.price}}</td>
-			<td>{{materialIn.purchaseDate | date:'MMM d, y, h:mm a'}}</td>
-		</tr>
-	</tbody>
-	</nz-table>
+	<ng-container *ngIf="materialsIn$ | async as materialsIn">
+		<nz-table
+		[nzData]="materialsIn | paginate: pageIndex : pageSize"
+		#materialsInTable
+		[nzFrontPagination]="false"
+		nzSize="small"
+		nzBorderd="true"
+		ngSkipHydration
+		>
+		<thead>
+			<tr>
+				<th>Material Name</th>
+				<th>Unit of Measurement</th>
+				<th>Price Per Unit</th>
+				<th>Total Quantity</th>
+				<th>Total Cost</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let materialIn of materialsInTable.data">
+				<td>{{materialIn.material?.name}}</td>
+				<td>{{materialIn.material?.unitOfMeasurement?.name}}</td>
+				<td>{{materialIn.material?.price}}</td>
+				<td>{{materialIn.quantity}}</td>
+				<td>{{materialIn.quantity * materialIn.material?.price}}</td>
+				<td>{{materialIn.purchaseDate | date:'MMM d, y, h:mm a'}}</td>
+			</tr>
+		</tbody>
+		</nz-table>
+
+		<app-list-pagination
+		  [total]="materialsIn.length"
+		  [pageIndex]="pageIndex"
+		  [pageSize]="pageSize"
+		  (pageIndexChange)="pageIndex = $event"
+		  (pageSizeChange)="pageSize = $event; pageIndex = 1"
+		></app-list-pagination>
+	</ng-container>
 </nz-card>
 
 <ng-template #title>

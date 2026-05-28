@@ -1,27 +1,37 @@
 <nz-card [nzTitle]="title" class="shadow-sm mt-2" [nzExtra]="quit">
-	<nz-table
-	[nzData]="(expenses$ |async)?? []"
-	#expensesTable
-	[nzFrontPagination]="false"
-	nzSize="small"
-	nzBorderd="true"
-	ngSkipHydration
-	>
-	<thead>
-		<tr>
-			<th>Description</th>
-			<th>Amount</th>
-      <th>The Asset</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr *ngFor="let expense of expensesTable.data">
-			<td>{{expense.description}}</td>
-			<td>{{expense.amount}}</td>
-      <td>{{expense.asset.name}}</td>
-		</tr>
-	</tbody>
-	</nz-table>
+	<ng-container *ngIf="expenses$ | async as expenses">
+		<nz-table
+		[nzData]="expenses | paginate: pageIndex : pageSize"
+		#expensesTable
+		[nzFrontPagination]="false"
+		nzSize="small"
+		nzBorderd="true"
+		ngSkipHydration
+		>
+		<thead>
+			<tr>
+				<th>Description</th>
+				<th>Amount</th>
+        <th>The Asset</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let expense of expensesTable.data">
+				<td>{{expense.description}}</td>
+				<td>{{expense.amount}}</td>
+        <td>{{expense.asset.name}}</td>
+			</tr>
+		</tbody>
+		</nz-table>
+
+		<app-list-pagination
+		  [total]="expenses.length"
+		  [pageIndex]="pageIndex"
+		  [pageSize]="pageSize"
+		  (pageIndexChange)="pageIndex = $event"
+		  (pageSizeChange)="pageSize = $event; pageIndex = 1"
+		></app-list-pagination>
+	</ng-container>
 </nz-card>
 
 <ng-template #title>

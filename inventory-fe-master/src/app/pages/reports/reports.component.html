@@ -40,8 +40,9 @@
       [total]="(valuation$ | async)?.items?.length ?? 0"
       [pageIndex]="valuationPageIndex"
       [pageSize]="reportPageSize"
-      [showSizeChanger]="false"
+      [hideOnSinglePage]="false"
       (pageIndexChange)="valuationPageIndex = $event"
+      (pageSizeChange)="onReportPageSizeChange($event)"
     ></app-list-pagination>
   </nz-card>
 
@@ -74,8 +75,9 @@
       [total]="(lowStock$ | async)?.length ?? 0"
       [pageIndex]="lowStockPageIndex"
       [pageSize]="reportPageSize"
-      [showSizeChanger]="false"
+      [hideOnSinglePage]="false"
       (pageIndexChange)="lowStockPageIndex = $event"
+      (pageSizeChange)="onReportPageSizeChange($event)"
     ></app-list-pagination>
   </nz-card>
 
@@ -106,8 +108,9 @@
       [total]="(profitByProduct$ | async)?.length ?? 0"
       [pageIndex]="profitPageIndex"
       [pageSize]="reportPageSize"
-      [showSizeChanger]="false"
+      [hideOnSinglePage]="false"
       (pageIndexChange)="profitPageIndex = $event"
+      (pageSizeChange)="onReportPageSizeChange($event)"
     ></app-list-pagination>
   </nz-card>
 
@@ -138,8 +141,9 @@
       [total]="(sales$ | async)?.length ?? 0"
       [pageIndex]="salesPageIndex"
       [pageSize]="reportPageSize"
-      [showSizeChanger]="false"
+      [hideOnSinglePage]="false"
       (pageIndexChange)="salesPageIndex = $event"
+      (pageSizeChange)="onReportPageSizeChange($event)"
     ></app-list-pagination>
   </nz-card>
 
@@ -168,8 +172,9 @@
       [total]="(materialConsumption$ | async)?.length ?? 0"
       [pageIndex]="consumptionPageIndex"
       [pageSize]="reportPageSize"
-      [showSizeChanger]="false"
+      [hideOnSinglePage]="false"
       (pageIndexChange)="consumptionPageIndex = $event"
+      (pageSizeChange)="onReportPageSizeChange($event)"
     ></app-list-pagination>
   </nz-card>
 
@@ -192,8 +197,9 @@
       [total]="(expenseBreakdown$ | async)?.length ?? 0"
       [pageIndex]="expensePageIndex"
       [pageSize]="reportPageSize"
-      [showSizeChanger]="false"
+      [hideOnSinglePage]="false"
       (pageIndexChange)="expensePageIndex = $event"
+      (pageSizeChange)="onReportPageSizeChange($event)"
     ></app-list-pagination>
   </nz-card>
 
@@ -226,8 +232,9 @@
       [total]="(stockMovements$ | async)?.length ?? 0"
       [pageIndex]="movementPageIndex"
       [pageSize]="reportPageSize"
-      [showSizeChanger]="false"
+      [hideOnSinglePage]="false"
       (pageIndexChange)="movementPageIndex = $event"
+      (pageSizeChange)="onReportPageSizeChange($event)"
     ></app-list-pagination>
   </nz-card>
 </div>

@@ -8,11 +8,13 @@ import { formatDate } from '../../../lib/DateFormatter';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterLink } from '@angular/router';
 import { DateRangePreset, DateRangeSelectComponent, getDateRangeForPreset } from '../../lib/date-range-select/date-range-select.component';
+import { ListPaginationComponent } from '../../lib/list-pagination/list-pagination.component';
+import { PaginatePipe } from '../../lib/paginate/paginate.pipe';
 
 
 @Component({
   selector: 'app-products-out',
-  imports: [NzIconModule, RouterLink, NzCardComponent, NzTableModule, CommonModule, DateRangeSelectComponent],
+  imports: [NzIconModule, RouterLink, NzCardComponent, NzTableModule, CommonModule, DateRangeSelectComponent, ListPaginationComponent, PaginatePipe],
   templateUrl: './products-out.component.html',
   styleUrl: './products-out.component.scss'
 })
@@ -20,6 +22,8 @@ export class ProductsOutComponent {
   startValue: Date = new Date();
   endValue: Date = new Date();
   dateRangePreset: DateRangePreset = 'week';
+  pageIndex = 1;
+  pageSize = 20;
 
 
  productsOut$: Observable<any[]>;
@@ -33,5 +37,6 @@ export class ProductsOutComponent {
 
  refreshDateRangeData(): void {
   this.productsOut$ = this.service.getProductsSoldInDates(formatDate(this.startValue), formatDate(this.endValue));
+  this.pageIndex = 1;
 }
 }

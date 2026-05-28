@@ -15,6 +15,7 @@ export class ListPaginationComponent {
   @Input() pageSize = 20;
   @Input() pageSizeOptions = [5, 10, 15, 20, 30, 40, 50];
   @Input() showSizeChanger = true;
+  @Input() hideOnSinglePage = false;
 
   @Output() pageIndexChange = new EventEmitter<number>();
   @Output() pageSizeChange = new EventEmitter<number>();

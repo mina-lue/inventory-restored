@@ -1,34 +1,43 @@
 <nz-card [nzTitle]="title" class="shadow-sm mt-2" [nzExtra]="quit">
+	<ng-container *ngIf="productsOut$ | async as productsOut">
+		<nz-table
+		[nzData]="productsOut | paginate: pageIndex : pageSize"
+		#productsOutTable
+		[nzFrontPagination]="false"
+		nzSize="small"
+		nzBorderd="true"
+		ngSkipHydration
+		>
+		<thead>
+			<tr>
+				<th>Product Name</th>
+				<th>Unit of Measurement</th>
+				<th>Price Per Unit</th>
+				<th>Total Quantity</th>
+				<th>Total revenue</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let productOut of productsOutTable.data">
+				<td>{{productOut.product.name}}</td>
+				<td>{{productOut.product.unit}}</td>
+				<td>{{productOut.product.price}}</td>
+				<td>{{productOut.quantity}}</td>
+				<td>{{productOut.quantity * productOut?.product.price}}</td>
+				<td>{{productOut.saleDate | date:'MMM d, y, h:mm a'}}</td>
+			</tr>
+		</tbody>
+		</nz-table>
 
-	<nz-table
-	[nzData]="(productsOut$ |async)?? []"
-	#productsOutTable
-	[nzFrontPagination]="false"
-	nzSize="small"
-	nzBorderd="true"
-	ngSkipHydration
-	>
-	<thead>
-		<tr>
-			<th>Product Name</th>
-			<th>Unit of Measurement</th>
-			<th>Price Per Unit</th>
-			<th>Total Quantity</th>
-			<th>Total revenue</th>
-			<th>Date</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr *ngFor="let productOut of productsOutTable.data">
-			<td>{{productOut.product.name}}</td>
-			<td>{{productOut.product.unit}}</td>
-			<td>{{productOut.product.price}}</td>
-			<td>{{productOut.quantity}}</td>
-			<td>{{productOut.quantity * productOut?.product.price}}</td>
-			<td>{{productOut.saleDate | date:'MMM d, y, h:mm a'}}</td>
-		</tr>
-	</tbody>
-	</nz-table>
+		<app-list-pagination
+		  [total]="productsOut.length"
+		  [pageIndex]="pageIndex"
+		  [pageSize]="pageSize"
+		  (pageIndexChange)="pageIndex = $event"
+		  (pageSizeChange)="pageSize = $event; pageIndex = 1"
+		></app-list-pagination>
+	</ng-container>
 </nz-card>
 
 <ng-template #title>

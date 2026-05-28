@@ -41,4 +41,15 @@ export class ReportsComponent {
     this.expenseBreakdown$ = reportsService.getExpenseBreakdown();
     this.stockMovements$ = reportsService.getStockMovements();
   }
+
+  onReportPageSizeChange(pageSize: number): void {
+    this.reportPageSize = pageSize;
+    this.valuationPageIndex = 1;
+    this.lowStockPageIndex = 1;
+    this.profitPageIndex = 1;
+    this.salesPageIndex = 1;
+    this.consumptionPageIndex = 1;
+    this.expensePageIndex = 1;
+    this.movementPageIndex = 1;
+  }
 }
