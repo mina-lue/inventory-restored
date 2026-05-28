@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("api/v1/boms")
@@ -36,14 +35,8 @@ public class ProductBomItemController {
 
     @PostMapping
     public ResponseEntity<ProductBomItem> save(@RequestBody ProductBomItem bomItem) {
-        try {
-            ProductBomItem savedBomItem = productBomItemService.save(bomItem);
-            return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().build().toUri()).body(savedBomItem);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        ProductBomItem savedBomItem = productBomItemService.save(bomItem);
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().build().toUri()).body(savedBomItem);
     }
 
     @DeleteMapping("/{id}")

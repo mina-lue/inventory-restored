@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
@@ -36,26 +35,14 @@ public class TransactionController {
 
     @PostMapping("/sales")
     public ResponseEntity<Sale> Sell(@RequestBody Sale sale) {
-        try {
-            Sale saleSaved = transactionsService.saveSale(sale);
-            return ResponseEntity.created(URI.create("/sales/")).body(saleSaved);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Sale saleSaved = transactionsService.saveSale(sale);
+        return ResponseEntity.created(URI.create("/sales/")).body(saleSaved);
     }
 
     @PostMapping("/materials")
     public ResponseEntity<Purchase> BuyMaterial(@RequestBody Purchase purchase) {
-        try {
-            Purchase purchaseSaved = transactionsService.savePurchase(purchase);
-            return ResponseEntity.created(URI.create("/materils/")).body(purchaseSaved);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Purchase purchaseSaved = transactionsService.savePurchase(purchase);
+        return ResponseEntity.created(URI.create("/materils/")).body(purchaseSaved);
     }
 
     // Delete and update to be implemented

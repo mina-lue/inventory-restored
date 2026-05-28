@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("api/v1/productions")
@@ -27,13 +26,7 @@ public class ProductionController {
 
     @PostMapping
     public ResponseEntity<Production> createProduction(@RequestBody Production production) {
-        try {
-            Production p = productionService.save(production);
-            return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUri()).body(p);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Production p = productionService.save(production);
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUri()).body(p);
     }
 }
