@@ -1,206 +1,172 @@
-<div class="my-12">
-  <div class="intro sm:mx-24 mx-8 flex sm:my-8 my-2 justify-between flex-col sm:flex-row">
-    <div class="sm:h-24 h-16 w-60 sm:w-80 bg-blue-200 flex items-center justify-center rounded-lg my-2">
-      <p class="w-3/4 px-8 text-xl"> <span><nz-icon nzType="team" nzTheme="outline" /></span> Customers</p>
-      <div class="flex h-full w-1/4 bg-blue-100 justify-center rounded-lg text-4xl font-bold hover:bg-blue-200 hover:text-blue-800 hover:cursor-pointer">
-      <a [routerLink]="['/home/customers']" class="flex justify-center"><nz-icon nzType="right" nzTheme="outline" /></a>
-    </div>
-    </div>
+<div class="home-page">
+  <section class="quick-grid" aria-label="Primary dashboard links">
+    <a class="quick-link quick-link-customers" [routerLink]="['/home/customers']">
+      <span><nz-icon nzType="team" nzTheme="outline" /> Customers</span>
+      <nz-icon nzType="right" nzTheme="outline" />
+    </a>
+    <a class="quick-link quick-link-products" [routerLink]="['/home/product-items']">
+      <span><nz-icon nzType="product" nzTheme="outline" /> Products</span>
+      <nz-icon nzType="right" nzTheme="outline" />
+    </a>
+    <a class="quick-link quick-link-employees" [routerLink]="['/home/employees']">
+      <span><nz-icon nzType="team" nzTheme="outline" /> Employees</span>
+      <nz-icon nzType="right" nzTheme="outline" />
+    </a>
+    <a class="quick-link quick-link-assets" [routerLink]="['/store/assets']">
+      <span><nz-icon nzType="apartment" nzTheme="outline" /> Assets</span>
+      <nz-icon nzType="right" nzTheme="outline" />
+    </a>
+  </section>
 
-    <div class="sm:h-24 h-16 w-60 sm:w-80 bg-red-100 flex items-center justify-center rounded-lg my-2">
-      <p class="w-3/4 px-8 text-xl"> <span><nz-icon nzType="product" nzTheme="outline" /></span> Products</p>
-      <div class="flex h-full w-1/4 bg-red-50 justify-center rounded-lg text-4xl font-bold hover:bg-red-100 hover:text-blue-800 hover:cursor-pointer">
-      <a [routerLink]="['/home/product-items']" class="flex justify-center"><nz-icon nzType="right" nzTheme="outline" /></a>
-    </div>
-    </div>
+  <nz-card class="dashboard-section" [nzTitle]="financialTitle" [nzExtra]="dateFilters">
+    <div class="metric-grid">
+      <nz-card class="metric-card metric-revenue" [nzTitle]="revenueTitle">
+        <app-line [name]="'Total Revenue'" [value]="moneyIn$ | async"></app-line>
+      </nz-card>
 
-    <div class="sm:h-24 h-16 w-60 sm:w-80 bg-gray-400 flex items-center justify-center rounded-lg my-2">
-      <p class="w-3/4 px-8 text-xl"> <span><nz-icon nzType="team" nzTheme="outline" /></span> Employees</p>
-      <div class="flex h-full w-1/4 bg-gray-300 justify-center rounded-lg text-4xl font-bold hover:bg-gray-400 hover:text-blue-800 hover:cursor-pointer">
-        <a [routerLink]="['/home/employees']" class="flex justify-center"><nz-icon nzType="right" nzTheme="outline" /></a>
-    </div>
-    </div>
-
-    <div class="sm:h-24 h-16 w-60 sm:w-80 bg-orange-200 flex items-center justify-center rounded-lg my-2">
-      <p class="w-3/4 px-8 text-xl"> <span><nz-icon nzType="apartment" nzTheme="outline" /></span> Assets</p>
-      <div class="flex h-full w-1/4 bg-orange-100 justify-center rounded-lg text-4xl font-bold hover:bg-orange-200 hover:text-blue-800 hover:cursor-pointer">
-        <a [routerLink]="['/store/assets']" class="flex justify-center"><nz-icon nzType="right" nzTheme="outline" /></a>
-    </div>
-    </div>
-  </div>
-  <nz-card [nzTitle]="currentFinancialStatusTitle" [nzExtra]="extra" class="sm:mx-24 mx-2 shadow-md rounded-md mt-18">
-<div class="home-main-info flex flex-col sm:flex-row gap-8 w-full justify-between px-2 sm:px-10 sm:mt-8 mt-2">
-  <div class="sm:w-full ">
-    <nz-card [nzTitle]="totalIn"  class="bg-teal-900 text-white text-lg rounded-md w-full mx-2" nzDelay="500">
-      <div >
-        <!--
-        *ngIf="((moneyInTaxed$|async)||(moneyInTaxed$|async)==0) && ((moneyIn$|async) || (moneyIn$|async)==0)"
-        <app-line [name]="'Revenue Taxed'" [value]="(moneyInTaxed$|async)"></app-line>
-        <app-line [name]="'Revenue Untaxed'" [value]="(moneyInUnTaxed)"></app-line>
-        -->
-        <app-line [name]="'Total Revenue'" [value]="(moneyIn$ | async)"></app-line>
-      </div>
-    </nz-card>
-  </div>
-  <div class="text-white sm:w-full">
-    <nz-card  [nzTitle]="netTotal"  class="bg-blue-950 text-white text-lg rounded-md w-full mx-2">
-      <div >
-        <!-- *ngIf="(((moneyInTaxed$|async)||(moneyInTaxed$|async)==0) && ((moneyIn$|async) || (moneyIn$|async)==0))&& ((moneyOutTaxed$|async) || (moneyOutTaxed$|async) == 0) && ((moneyOut$|async)||(moneyOut$|async)== 0)" -->
-        <app-line [name]="'Capital'" [value]="(balance$|async)?.capital"></app-line>
-        <app-line [name]="'Net Worth'" [value]="(balance$|async)?.worth"></app-line>
+      <nz-card class="metric-card metric-net" [nzTitle]="netTitle">
+        <app-line [name]="'Capital'" [value]="(balance$ | async)?.capital"></app-line>
+        <app-line [name]="'Net Worth'" [value]="(balance$ | async)?.worth"></app-line>
         <app-line [name]="'Total Profit'" [value]="profit"></app-line>
-    </div>
-    </nz-card>
-  </div>
-  <div class="sm:w-full">
-    <nz-card [nzTitle]="totalOut"  class="bg-orange-800 text-white text-lg rounded-md w-full mx-2">
-      <div >
-        <!--
-        *ngIf="((moneyOutTaxed$|async) || (moneyOutTaxed$|async) == 0) && ((moneyOut$|async)||(moneyOut$|async)== 0)"
-        <app-line [name]="'Money Out Taxed'" [value]="moneyOutTaxed$|async"></app-line>
-        <app-line [name]="'Money Out Untaxed'" [value]="(this.moneyOut - this.moneyOutTaxed)"></app-line>
-        -->
-        <app-line [name]="'Money Out Total'" [value]="moneyOut$|async"></app-line>
-    </div>
-    </nz-card>
-  </div>
+      </nz-card>
 
-</div>
-</nz-card>
-
-<nz-card [nzTitle]="currentStatusTitle" class="sm:mx-24 mx-2 shadow-md rounded-md mt-24 ">
-<div class="home-main-info flex flex-col sm:flex-row gap-6 w-full justify-between px-2 sm:px-10 sm:mt-8 mt-2">
-<div class="sm:w-full " >
-  <nz-card  [nzTitle]="productions"  class="bg-teal-900 text-white  text-lg rounded-md w-full mx-2">
-    <div *ngIf="(productions$ | async) as productions">
-    <p *ngFor="let production of productions" class="w-100 flex justify-between"><span>{{production.product?.name}}</span><span>{{production.quantity}}</span></p>
-    </div>
-
-  </nz-card>
-</div>
-<div class="text-white sm:w-full ">
-  <nz-card  [nzTitle]="productsInStore"  class="bg-blue-950 text-white text-lg rounded-md w-full mx-2">
-    <div *ngIf="productsInStore$ | async">
-    <p *ngFor="let product of (productsInStore$ |async)"class="w-100 flex justify-between"><span>{{product.name}}</span> <span>{{product.quantity}}</span> </p>
-  </div>
-  </nz-card>
-</div>
-<div class="sm:w-full ">
-  <nz-card  [nzTitle]="productsSold"  class="bg-orange-800 text-white text-lg rounded-md w-full mx-2">
-    <div *ngIf="productsSold$|async as sales">
-    <p class="w-100 flex justify-between" *ngFor="let s of sales"><span>{{s.product.name}}</span><span>{{s.quantity}}</span></p>
+      <nz-card class="metric-card metric-out" [nzTitle]="outTitle">
+        <app-line [name]="'Money Out Total'" [value]="moneyOut$ | async"></app-line>
+      </nz-card>
     </div>
   </nz-card>
+
+  <nz-card class="dashboard-section" nzTitle="Production and Sales">
+    <div class="summary-grid">
+      <nz-card class="summary-card summary-production" nzTitle="Productions">
+        <ng-container *ngIf="productions$ | async as productions">
+          <p *ngFor="let production of productions" class="summary-row">
+            <span>{{production.product?.name}}</span>
+            <strong>{{production.quantity}}</strong>
+          </p>
+          <p *ngIf="productions.length === 0" class="empty-state">No production records</p>
+        </ng-container>
+      </nz-card>
+
+      <nz-card class="summary-card summary-store" nzTitle="Store">
+        <ng-container *ngIf="productsInStore$ | async as products">
+          <p *ngFor="let product of products" class="summary-row">
+            <span>{{product.name}}</span>
+            <strong>{{product.quantity}}</strong>
+          </p>
+          <p *ngIf="products.length === 0" class="empty-state">No products in store</p>
+        </ng-container>
+      </nz-card>
+
+      <nz-card class="summary-card summary-sales" nzTitle="Sales">
+        <ng-container *ngIf="productsSold$ | async as sales">
+          <p *ngFor="let sale of sales" class="summary-row">
+            <span>{{sale.product?.name}}</span>
+            <strong>{{sale.quantity}}</strong>
+          </p>
+          <p *ngIf="sales.length === 0" class="empty-state">No sales records</p>
+        </ng-container>
+      </nz-card>
+    </div>
+  </nz-card>
+
+  <nz-card class="dashboard-section" nzTitle="Low Stock and Reorder">
+    <div class="summary-grid">
+      <nz-card class="alert-card" nzTitle="Low-stock products">
+        <ng-container *ngIf="lowStockProducts$ | async as products">
+          <p *ngFor="let product of products" class="summary-row alert-row">
+            <span>{{product.name}} <small>{{product.sku || ''}}</small></span>
+            <strong>{{product.quantity}} / {{product.reorderPoint}} {{product.unit}}</strong>
+          </p>
+          <p *ngIf="products.length === 0" class="empty-state">No low-stock products</p>
+        </ng-container>
+      </nz-card>
+
+      <nz-card class="alert-card" nzTitle="Low-stock materials">
+        <ng-container *ngIf="lowStockMaterials$ | async as materials">
+          <p *ngFor="let material of materials" class="summary-row warning-row">
+            <span>{{material.name}} <small>{{material.sku || ''}}</small></span>
+            <strong>{{material.quantity}} / {{material.reorderPoint}} {{material.unit}}</strong>
+          </p>
+          <p *ngIf="materials.length === 0" class="empty-state">No low-stock materials</p>
+        </ng-container>
+      </nz-card>
+
+      <nz-card class="alert-card" nzTitle="Purchase suggestions">
+        <ng-container *ngIf="reorderSuggestions$ | async as suggestions">
+          <p *ngFor="let suggestion of suggestions" class="summary-row reorder-row">
+            <span>{{suggestion.itemName}} <small>{{suggestion.supplier || 'No supplier'}}</small></span>
+            <strong>Order {{suggestion.suggestedQuantity}} {{suggestion.unit}}</strong>
+          </p>
+          <p *ngIf="suggestions.length === 0" class="empty-state">No reorder suggestions</p>
+        </ng-container>
+      </nz-card>
+    </div>
+  </nz-card>
+
+  <section class="activity-grid">
+    <nz-card nzTitle="Most sold items">
+      <p *ngFor="let productSold of productsMostSold$ | async" class="summary-row neutral-row">
+        <span>{{productSold?.name}}</span>
+        <strong>{{productSold?.soldQuantity}}</strong>
+      </p>
+    </nz-card>
+
+    <nz-card nzTitle="Most recent sales">
+      <p *ngFor="let sale of recentSales$ | async" class="summary-row neutral-row">
+        <span>{{sale.product?.name}}</span>
+        <strong>{{sale?.quantity}}</strong>
+      </p>
+    </nz-card>
+
+    <nz-card nzTitle="Total sales">
+      <p *ngFor="let productSold of productsMostSold$ | async" class="summary-row neutral-row">
+        <span>{{productSold?.name}}</span>
+        <strong>{{productSold?.soldQuantity}}</strong>
+      </p>
+    </nz-card>
+
+    <nz-card nzTitle="High shelf age items">
+      <p *ngFor="let product of productsMostAged$ | async" class="summary-row neutral-row">
+        <span>{{product.name}}</span>
+        <strong>{{product.quantity}}</strong>
+      </p>
+    </nz-card>
+  </section>
 </div>
 
-</div>
-</nz-card>
-<nz-card nzTitle="Low Stock and Reorder" class="sm:mx-24 mx-2 shadow-md rounded-md mt-24">
-  <div class="home-main-info flex flex-col sm:flex-row gap-6 w-full justify-between px-2 sm:px-10 sm:mt-8 mt-2">
-    <nz-card nzTitle="Low-stock products" class="text-black-100 text-lg rounded-md w-full">
-      <p *ngFor="let product of lowStockProducts$ | async" class="w-100 flex justify-between bg-red-50 my-2 rounded-md px-4">
-        <span>{{product.name}} <small>{{product.sku || ''}}</small></span>
-        <span>{{product.quantity}} / {{product.reorderPoint}} {{product.unit}}</span>
-      </p>
-      <p *ngIf="(lowStockProducts$ | async)?.length === 0" class="text-gray-500">No low-stock products</p>
-    </nz-card>
-    <nz-card nzTitle="Low-stock materials" class="text-black-100 text-lg rounded-md w-full">
-      <p *ngFor="let material of lowStockMaterials$ | async" class="w-100 flex justify-between bg-orange-50 my-2 rounded-md px-4">
-        <span>{{material.name}} <small>{{material.sku || ''}}</small></span>
-        <span>{{material.quantity}} / {{material.reorderPoint}} {{material.unit}}</span>
-      </p>
-      <p *ngIf="(lowStockMaterials$ | async)?.length === 0" class="text-gray-500">No low-stock materials</p>
-    </nz-card>
-    <nz-card nzTitle="Purchase suggestions" class="text-black-100 text-lg rounded-md w-full">
-      <p *ngFor="let suggestion of reorderSuggestions$ | async" class="w-100 flex justify-between bg-zinc-100 my-2 rounded-md px-4">
-        <span>{{suggestion.itemName}} <small>{{suggestion.supplier || 'No supplier'}}</small></span>
-        <span>Order {{suggestion.suggestedQuantity}} {{suggestion.unit}}</span>
-      </p>
-      <p *ngIf="(reorderSuggestions$ | async)?.length === 0" class="text-gray-500">No reorder suggestions</p>
-    </nz-card>
-  </div>
-</nz-card>
-<div class="home-misc-info flex flex-col sm:flex-row gap-6 w-full justify-between px-2 sm:px-10 sm:mt-24 mt-2 gap-6">
-  <nz-card  nzTitle="Most sold Items" class="text-black-100 text-lg rounded-md w-full sm:w-1/4 sm:mx-4">
-      <p *ngFor="let productSold of productsMostSold$| async" class="w-100 flex justify-between bg-zinc-100 my-2 rounded-md px-4">
-        <span>{{productSold?.name}}:</span>
-        <span>{{productSold?.soldQuantity}}</span>
-      </p>
-  </nz-card>
-  <nz-card  nzTitle="Most Recent Sales" class="text-black-100 text-lg rounded-md w-full sm:w-1/4 sm:mx-4">
-    <p *ngFor="let sale of recentSales$| async" class="w-100 flex justify-between bg-zinc-100 my-2 rounded-md px-4">
-      <span>{{sale.product?.name}}</span>
-      <span>{{sale?.quantity}}</span>
-    </p>
-  </nz-card>
-  <nz-card  nzTitle="Total sales" class="text-black-100 text-lg rounded-md w-full sm:w-1/4 sm:mx-4">
-    <p *ngFor="let productSold of productsMostSold$| async" class="w-100 flex justify-between bg-zinc-100 my-2 rounded-md px-4">
-      <span>{{productSold?.name}}:</span>
-      <span>{{productSold?.soldQuantity}}</span>
-    </p>
-  </nz-card>
-  <nz-card  nzTitle="High shelf age item" class="text-black-100 text-lg rounded-md shadow-md w-full sm:w-1/4 sm:mx-4">
-    <p *ngFor="let product of productsMostAged$| async" class="w-100 flex justify-between bg-zinc-100 my-2 rounded-md px-4">
-      <span>{{product.name}}:</span>
-      <span>{{product.quantity}}</span>
-    </p>
-  </nz-card>
-</div>
+<ng-template #financialTitle>
+  <span class="section-title">Financial Status</span>
+</ng-template>
 
-</div>
-
-<ng-template #extraTemplate>
-  <a class="bg-inherit text-gray-300">More</a>
-</ng-template>
-<ng-template #totalIn >
-  <span class="text-white text-2xl">Money In</span>
-</ng-template>
-<ng-template #netTotal>
-  <span class="text-white text-2xl">Net Money</span>
-</ng-template>
-<ng-template #totalOut>
-  <span class="text-white text-2xl">Money Out</span>
-</ng-template>
-<ng-template #currentFinancialStatusTitle>
-  <span class="sm:text-2xl text-md font-bold">Financial Status</span>
-</ng-template>
-<ng-template #extra>
-  <span class="date ml-4">
+<ng-template #dateFilters>
+  <div class="date-filters">
     <nz-date-picker
-    [nzDisabledDate]="disabledStartDate"
-    nzFormat="yyyy-MM-dd"
-    [(ngModel)]="startValue"
-    nzPlaceHolder="Start"
-    (nzOnOpenChange)="handleStartOpenChange($event)"
-  ></nz-date-picker>
-  <nz-date-picker
-    #endDatePicker
-    [nzDisabledDate]="disabledEndDate"
-    nzFormat="yyyy-MM-dd"
-    [(ngModel)]="endValue"
-    nzPlaceHolder="End"
-    (nzOnOpenChange)="handleEndOpenChange($event)"
-  ></nz-date-picker>
-</span>
+      [nzDisabledDate]="disabledStartDate"
+      nzFormat="yyyy-MM-dd"
+      [(ngModel)]="startValue"
+      nzPlaceHolder="Start"
+      (nzOnOpenChange)="handleStartOpenChange($event)"
+    ></nz-date-picker>
+    <nz-date-picker
+      #endDatePicker
+      [nzDisabledDate]="disabledEndDate"
+      nzFormat="yyyy-MM-dd"
+      [(ngModel)]="endValue"
+      nzPlaceHolder="End"
+      (nzOnOpenChange)="handleEndOpenChange($event)"
+    ></nz-date-picker>
+  </div>
 </ng-template>
 
-<ng-template #productions >
-  <span class="text-white text-2xl">Productions</span>
-</ng-template>
-<ng-template #productsInStore >
-  <span class="text-white text-2xl">Store</span>
-</ng-template>
-<ng-template #productsSold >
-  <span class="text-white text-2xl">Sales</span>
+<ng-template #revenueTitle>
+  <span class="metric-title">Money In</span>
 </ng-template>
 
-<ng-template #currentStatusTitle>
-  <span class="sm:text-2xl text-md font-bold">Production and Sales</span>
+<ng-template #netTitle>
+  <span class="metric-title">Net Money</span>
 </ng-template>
 
-
-<!--
-
-productions is array instead of being an entity.
-
--->
+<ng-template #outTitle>
+  <span class="metric-title">Money Out</span>
+</ng-template>

@@ -1,23 +1,201 @@
-
-.header-menu {
-  line-height: 64px;
+.home-page {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: clamp(12px, 2vw, 28px);
+  display: grid;
+  gap: clamp(16px, 2vw, 28px);
 }
 
-.sider-menu {
-  min-height: 100vh;
-  border-right: 0;
+.quick-grid,
+.metric-grid,
+.summary-grid,
+.activity-grid {
+  display: grid;
+  gap: 16px;
 }
 
-.inner-layout {
-  padding: 0 24px 24px;
+.quick-grid {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 
-nz-content {
-  background: #fff;
-  padding: 24px;
-  min-height: 280px;
+.quick-link {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  color: #172033;
+  font-size: 18px;
+  font-weight: 650;
+  border: 1px solid transparent;
 }
 
-nz-date-picker {
-  margin: 0 8px 12px 0;
+.quick-link span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.quick-link-customers {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+}
+
+.quick-link-products {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.quick-link-employees {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.quick-link-assets {
+  background: #fed7aa;
+  border-color: #fdba74;
+}
+
+.dashboard-section {
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+}
+
+.section-title {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 700;
+}
+
+.date-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.date-filters nz-date-picker {
+  width: min(150px, 100%);
+}
+
+.metric-grid,
+.summary-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.activity-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.metric-card,
+.summary-card {
+  min-width: 0;
+}
+
+.metric-card {
+  color: #fff;
+}
+
+.metric-revenue {
+  background: #115e59;
+}
+
+.metric-net {
+  background: #172554;
+}
+
+.metric-out {
+  background: #9a3412;
+}
+
+.metric-title {
+  color: #fff;
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 700;
+}
+
+.summary-production {
+  background: #115e59;
+  color: #fff;
+}
+
+.summary-store {
+  background: #172554;
+  color: #fff;
+}
+
+.summary-sales {
+  background: #9a3412;
+  color: #fff;
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.summary-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.summary-row strong {
+  white-space: nowrap;
+}
+
+.alert-row {
+  background: #fef2f2;
+}
+
+.warning-row {
+  background: #fff7ed;
+}
+
+.reorder-row,
+.neutral-row {
+  background: #f4f6f8;
+}
+
+.empty-state {
+  margin: 8px 0 0;
+  color: #64748b;
+}
+
+small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .home-page {
+    padding: 10px;
+  }
+
+  .quick-link {
+    min-height: 60px;
+    font-size: 16px;
+  }
+
+  .summary-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .summary-row strong {
+    white-space: normal;
+  }
+
+  .date-filters {
+    justify-content: flex-start;
+  }
+
+  .date-filters nz-date-picker {
+    width: 100%;
+  }
 }
