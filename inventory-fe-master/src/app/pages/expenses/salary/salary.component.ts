@@ -43,9 +43,9 @@ export class SalaryComponent implements OnInit{
         data.forEach((emp)=>{
           this.salaries.push({
             employee: emp.employee,
-            amount: ((emp.employee.salary/192)*(emp.workHour/60)),
+            amount: emp.amount,
             date: this.today,
-            workHour: emp.workHour,
+            workHour: emp.workedHours,
             paid: false
           })
         })

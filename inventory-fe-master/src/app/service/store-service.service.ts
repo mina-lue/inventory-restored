@@ -1,7 +1,7 @@
 import { Injectable, model } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { storeEndPoints, models, transactions } from './endpoints';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { Product } from '../model/product.model';
 import { Asset } from '../model/Asset.model';
 import { RawMaterial } from '../model/RawMaterial.model';
@@ -21,18 +21,18 @@ export class InventoryService {
   }
 
   getProductTypes(): Observable<Product[]>{
-    return this.http.get<any[]>(models.getProductTypes);
+    return this.http.get<Product[]>(models.getProductTypes).pipe(catchError(() => of([])));
   }
 
   getProducts(page:Page): Observable<Product[]>{
     const params = new HttpParams()
     .set("size", page.size)
     .set("page", page.page)
-    return this.http.get<any[]>(storeEndPoints.products, {params});
+    return this.http.get<Product[]>(storeEndPoints.products, {params}).pipe(catchError(() => of([])));
   }
 
   getAssets(): Observable<any[]>{
-    return this.http.get<any[]>(storeEndPoints.assets);
+    return this.http.get<any[]>(storeEndPoints.assets).pipe(catchError(() => of([])));
   }
 
   addAsset(asset : Asset){
@@ -47,26 +47,26 @@ export class InventoryService {
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(storeEndPoints.getProductions, {params});
+    return this.http.get<any[]>(storeEndPoints.getProductions, {params}).pipe(catchError(() => of([])));
   }
 
   getCustomers(): Observable<Customer[]>{
     const params = new HttpParams()
     .set("page", 0)
     .set("size", 10);
-    return this.http.get<Customer[]>(storeEndPoints.customers)
+    return this.http.get<Customer[]>(storeEndPoints.customers).pipe(catchError(() => of([])))
   }
 
   getMaterials(): Observable<any[]>{
-    return this.http.get<any[]>(storeEndPoints.materials);
+    return this.http.get<any[]>(storeEndPoints.materials).pipe(catchError(() => of([])));
   }
 
   getEmployees():Observable<any[]>{
-    return this.http.get<any[]>(storeEndPoints.employees);
+    return this.http.get<any[]>(storeEndPoints.employees).pipe(catchError(() => of([])));
   }
 
   getMaterialTypes(): Observable<RawMaterial[]>{
-    return this.http.get<RawMaterial[]>(models.getMaterialTypes);
+    return this.http.get<RawMaterial[]>(models.getMaterialTypes).pipe(catchError(() => of([])));
   }
 
   addProduct(product:Product){
@@ -100,17 +100,23 @@ export class InventoryService {
   }
 
   addMaterialConsumption(materialId: number, quantity: number){
-    const params = {materialId: materialId, quantity: quantity}
-    console.log(params);
-    return this.http.post(`${storeEndPoints.addMaterialConsumption}?materialId=${materialId}&quantity=${quantity}`, {}).subscribe({
+    const consumption = {
+      material: { id: materialId },
+      quantity
+    };
+    return this.http.post(`${storeEndPoints.addMaterialConsumption}`, consumption).subscribe({
       next: response => this.notification.showNotification(true, `material consumption registered successfully!`),
       error: error => this.notification.showNotification(false, `material consumption registration not successful!`)
     })
   }
 
   addProductInStore(productInStore: any, quantity: number){
-    return this.http.post(`${storeEndPoints.addProductProduction}?id=${productInStore.id}`, quantity).subscribe({
-      next: response => this.notification.showNotification(true, `${quantity}${productInStore.product.measurementUnit} ${productInStore.product.name} added to store successfully!`),
+    const production = {
+      product: { id: productInStore.id },
+      quantity
+    };
+    return this.http.post(`${storeEndPoints.addProductProduction}`, production).subscribe({
+      next: response => this.notification.showNotification(true, `${quantity} ${productInStore.unit} ${productInStore.name} added to store successfully!`),
       error: error => this.notification.showNotification(false, `${productInStore.name} registration not successful!`)
     })
   }

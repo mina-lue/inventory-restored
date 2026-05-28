@@ -3,6 +3,7 @@ import { attendances, storeEndPoints } from './endpoints';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AttendanceIn } from '../model/attendance.model';
 import { Observable } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { NotificationService } from './notifications.service';
 import { formatDate } from '../lib/DateFormatter';
 
@@ -29,7 +30,7 @@ export class AttendanceService {
     }
 
     getAttendanceInToday(): Observable<any[]>{
-      return this.http.get<AttendanceIn[]>(attendances.getAttendances);
+      return this.http.get<AttendanceIn[]>(attendances.getAttendances).pipe(catchError(() => of([])));
     }
 
     removeIn(): void{
@@ -60,12 +61,7 @@ export class AttendanceService {
       }
 
       getEmployeeAttendance(empId:string, start: any, end: any){
-         const params = new HttpParams()
-            .set("startDate", formatDate(start))
-            .set("endDate", formatDate(end))
-            .set("empId", empId)
-
-            return this.http.get<any[]>(attendances.getEmployeeAttendance, {params});
+         return this.http.get<any[]>(`${attendances.getEmployeeAttendance}/${empId}`).pipe(catchError(() => of([])));
       }
 
       getAttendanceHours(start: any, end: any){
@@ -73,7 +69,7 @@ export class AttendanceService {
            .set("startDate", formatDate(start))
            .set("endDate", formatDate(end))
 
-           return this.http.get<any[]>(attendances.getAttendanceHours, {params});
+           return this.http.get<any[]>(attendances.getAttendanceHours, {params}).pipe(catchError(() => of([])));
      }
 
 }

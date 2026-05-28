@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { storeEndPoints, transactions } from './endpoints';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of } from 'rxjs';
 import { RawMaterial } from '../model/RawMaterial.model';
 import { NotificationService } from './notifications.service';
 import { InventoryBalance } from '../model/InventoryBalance';
@@ -15,121 +15,168 @@ export class TransactionsService {
   }
 
   getBalance(): Observable<any>{
-    return this.http.get<InventoryBalance>(transactions.getBalance);
+    return this.http.get<InventoryBalance>(transactions.getBalance).pipe(
+      catchError(() => of({ capital: 0, worth: 0 }))
+    );
   }
 
   getMoneyIn(start:string, end:string): Observable<number>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<number>(transactions.getMoneyIn, {params});
+    return this.http.get<number>(transactions.getMoneyIn, {params}).pipe(catchError(() => of(0)));
   }
 
   getMoneyInTaxed(start:string, end:string): Observable<number>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<number>(transactions.getMoneyInTaxed, {params});
+    return this.http.get<number>(transactions.getMoneyInTaxed, {params}).pipe(catchError(() => of(0)));
   }
 
   getMoneyOut(start:string, end:string): Observable<number>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<number>(transactions.getMoneyOut, {params});
+    return this.http.get<number>(transactions.getMoneyOut, {params}).pipe(catchError(() => of(0)));
   }
 
   getMoneyOutTaxed(start:string, end:string): Observable<number>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<number>(transactions.getMoneyOutTaxed, {params});
+    return this.http.get<number>(transactions.getMoneyOutTaxed, {params}).pipe(catchError(() => of(0)));
   }
 
 
   getAllTransactions(): Observable<any[]>{
-    return this.http.get<any[]>(transactions.getAll);
+    return forkJoin({
+      sales: this.getProductsSold(),
+      purchases: this.getRawMaterialsCollected(),
+      assetExpenses: this.getAssetExpenses(),
+      labourExpenses: this.getLabourExpenses(),
+      otherExpenses: this.getOthers(),
+      utilityExpenses: this.getUtilityPayments()
+    }).pipe(
+      map(({ sales, purchases, assetExpenses, labourExpenses, otherExpenses, utilityExpenses }) => [
+        ...sales.map(sale => ({
+          description: `${sale.product?.name ?? 'Product'} sale`,
+          amount: sale.totalPrice,
+          date: sale.saleDate
+        })),
+        ...purchases.map(purchase => ({
+          description: `${purchase.material?.name ?? 'Material'} purchase`,
+          amount: -purchase.totalPrice,
+          date: purchase.purchaseDate
+        })),
+        ...assetExpenses.map(expense => ({
+          description: expense.description ?? `${expense.asset?.name ?? 'Asset'} expense`,
+          amount: -expense.amount,
+          date: ''
+        })),
+        ...labourExpenses.map(expense => ({
+          description: expense.description ?? `${expense.laborerName ?? 'Labour'} expense`,
+          amount: -expense.amount,
+          date: ''
+        })),
+        ...otherExpenses.map(expense => ({
+          description: expense.description ?? 'Other expense',
+          amount: -expense.amount,
+          date: ''
+        })),
+        ...utilityExpenses.map(expense => ({
+          description: expense.description ?? 'Utility expense',
+          amount: -expense.amount,
+          date: ''
+        }))
+      ])
+    );
   }
 
   getAllTransactionsInDates(start:string, end:string): Observable<any[]>{
-    const params = new HttpParams()
-    .set("startDate", start)
-    .set("endDate", end);
-    return this.http.get<any[]>(transactions.getAllBetweenDates, {params});
+    return this.getAllTransactions().pipe(
+      map(items => this.filterByDateRange(items, start, end, 'date'))
+    );
   }
 
 
   getProductsSold(): Observable<any[]>{
-    return this.http.get<any[]>(transactions.getProducts);
+    return this.http.get<any[]>(transactions.getProducts).pipe(catchError(() => of([])));
   }
 
   getProductsSoldInDates(start:string, end:string): Observable<any[]>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getProductSellsBetweenDates, {params});
+    return this.http.get<any[]>(transactions.getProductSellsBetweenDates, {params}).pipe(
+      catchError(() => of([])),
+      map(items => this.filterByDateRange(items, start, end, 'saleDate'))
+    );
   }
 
   getRecentSales():Observable<any[]>{
-    return this.http.get<any[]>(transactions.getRecentSales);
+    return this.http.get<any[]>(transactions.getRecentSales).pipe(catchError(() => of([])));
   }
   getAgedItems():Observable<any[]>{
-    return this.http.get<any[]>(storeEndPoints.getAgedItems);
+    return this.http.get<any[]>(storeEndPoints.getAgedItems).pipe(catchError(() => of([])));
   }
 
   getRawMaterialsCollected(): Observable<any[]>{
-    return this.http.get<any[]>(transactions.materials);
+    return this.http.get<any[]>(transactions.materials).pipe(catchError(() => of([])));
   }
 
   getRawMaterialsCollectedInDates(start:string, end:string): Observable<any[]>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getMaterialsBetweenDates, {params});
+    return this.http.get<any[]>(transactions.getMaterialsBetweenDates, {params}).pipe(
+      catchError(() => of([])),
+      map(items => this.filterByDateRange(items, start, end, 'purchaseDate'))
+    );
   }
 
   getLabourExpenses(): Observable<any[]>{
-    return this.http.get<any>(transactions.labourExpenses);
+    return this.http.get<any[]>(transactions.labourExpenses).pipe(catchError(() => of([])));
   }
 
   getLabourExpensesInDates(start:string, end:string): Observable<any[]>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getLabourExpensesBetweenDates, {params});
+    return this.http.get<any[]>(transactions.getLabourExpensesBetweenDates, {params}).pipe(catchError(() => of([])));
   }
 
   getAssetExpenses(): Observable<any[]>{
-    return this.http.get<any>(transactions.assetExpenses);
+    return this.http.get<any[]>(transactions.assetExpenses).pipe(catchError(() => of([])));
   }
 
   getAssetExpensesInDates(start:string, end:string): Observable<any[]>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getAssetExpensesBetweenDates, {params});
+    return this.http.get<any[]>(transactions.getAssetExpensesBetweenDates, {params}).pipe(catchError(() => of([])));
   }
 
   getOthers(): Observable<any[]>{
-    return this.http.get<any>(transactions.others)
+    return this.http.get<any[]>(transactions.others).pipe(catchError(() => of([])))
   }
 
   getOthersInDates(start:string, end:string): Observable<any[]>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getOthersBetweenDates, {params});
+    return this.http.get<any[]>(transactions.getOthersBetweenDates, {params}).pipe(catchError(() => of([])));
   }
 
   getUtilityPayments(): Observable<any[]>{
-    return this.http.get<any>(transactions.utilities);
+    return this.http.get<any[]>(transactions.utilities).pipe(catchError(() => of([])));
   }
 
   getUtilityPaymentsInDates(start:string, end:string): Observable<any[]>{
     const params = new HttpParams()
     .set("startDate", start)
     .set("endDate", end);
-    return this.http.get<any[]>(transactions.getUtilitiesBetweenDates, {params});
+    return this.http.get<any[]>(transactions.getUtilitiesBetweenDates, {params}).pipe(catchError(() => of([])));
   }
 
 
@@ -181,5 +228,19 @@ export class TransactionsService {
       next: response => this.notification.showNotification(true, `salary pays registered successfully!`),
       error: error => this.notification.showNotification(false, `salary pay not successful!`)
     })
+  }
+
+  private filterByDateRange(items: any[], start: string, end: string, dateField: string): any[] {
+    const startTime = new Date(start).getTime();
+    const endTime = new Date(end).getTime();
+
+    return items.filter(item => {
+      const dateValue = item[dateField];
+      if (!dateValue) {
+        return true;
+      }
+      const itemTime = new Date(dateValue).getTime();
+      return itemTime >= startTime && itemTime <= endTime;
+    });
   }
 }

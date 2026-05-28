@@ -8,7 +8,7 @@
         nzHasFeedback
       >
         <nz-select name = "select" formControlName="productItem">
-          <nz-option [nzValue] = "product" [nzLabel]="product.product.name" *ngFor="let product of (productsInStore$|async)|| []"></nz-option>
+          <nz-option [nzValue] = "product" [nzLabel]="product.name" *ngFor="let product of (productsInStore$|async)|| []"></nz-option>
         </nz-select>
        </nz-form-control>
     </nz-form-item>

@@ -1,4 +1,6 @@
-const baseUrl = "http://localhost:8080";
+import { environment } from '../../environments/environment';
+
+const baseUrl = environment.apiBaseUrl;
 export const storeEndPoints = {
   products:`${baseUrl}/api/v1/products`,
   materials: `${baseUrl}/api/v1/materials`,
@@ -7,16 +9,16 @@ export const storeEndPoints = {
   getProductions: `${baseUrl}/api/v1/productions`,
   customers: `${baseUrl}/api/v1/customers`,
   employees: `${baseUrl}/api/v1/employees`,
-  addMaterialConsumption: `${baseUrl}/api/store/materials/consume`,
-  addProductProduction:`${baseUrl}/api/store/products/produce`,
+  addMaterialConsumption: `${baseUrl}/api/v1/consumption`,
+  addProductProduction:`${baseUrl}/api/v1/productions`,
 }
 
 export const models={
-  addProduct:`${baseUrl}/api/product-types/add`,
-  addAsset: `${baseUrl}/api/asset-types/add`,
-  addMaterial:`${baseUrl}/api/raw-material-types/add`,
-  getProductTypes:`${baseUrl}/api/product-types/list`,
-  getMaterialTypes: `${baseUrl}/api/raw-material-types/list`
+  addProduct:`${baseUrl}/api/v1/products`,
+  addAsset: `${baseUrl}/api/v1/assets`,
+  addMaterial:`${baseUrl}/api/v1/materials`,
+  getProductTypes:`${baseUrl}/api/v1/products`,
+  getMaterialTypes: `${baseUrl}/api/v1/materials`
 }
 
 export const transactions = {
@@ -34,19 +36,19 @@ export const transactions = {
   addProductSold: `${baseUrl}/api/v1/transactions/sales`,
 
 
-  getMoneyInTaxed: `${baseUrl}/api/transactions/products-sold/money-in/taxed-in-dates`,
-  getMoneyOutTaxed: `${baseUrl}/api/transactions/money-out/taxed-in-dates`,
-  getAll: `${baseUrl}/api/transactions/all`,
-  getAllBetweenDates: `${baseUrl}/api/transactions/all/in-dates`,
-  getFuelConsumption: `${baseUrl}/api/transactions/fuel-consumption-records/list`,
-  getFuelConsumptionBetweenDates: `${baseUrl}/api/transactions/fuel-consumption-records/list/in-dates`,
-  getOthersBetweenDates: `${baseUrl}/api/transactions/other-expense-records/list/in-dates`,
+  getMoneyInTaxed: `${baseUrl}/api/v1/transactions/money-in`,
+  getMoneyOutTaxed: `${baseUrl}/api/v1/transactions/money-out`,
+  getAll: `${baseUrl}/api/v1/stock-movements`,
+  getAllBetweenDates: `${baseUrl}/api/v1/stock-movements`,
+  getFuelConsumption: `${baseUrl}/api/v1/stock-movements`,
+  getFuelConsumptionBetweenDates: `${baseUrl}/api/v1/stock-movements`,
+  getOthersBetweenDates: `${baseUrl}/api/v1/expenses/others`,
 
-  getMaterialsBetweenDates: `${baseUrl}/api/transactions/raw-material-in/list/in-dates`,
-  getUtilitiesBetweenDates: `${baseUrl}/api/transactions/utility-expense-records/list/in-dates`,
-  getLabourExpensesBetweenDates:`${baseUrl}/api/transactions/labour-expenses/list/in-dates`,
-  getAssetExpensesBetweenDates:`${baseUrl}/api/transactions/asset-expenses/list/in-dates`,
-  addSalaries:`${baseUrl}/api/salary/add`
+  getMaterialsBetweenDates: `${baseUrl}/api/v1/transactions/materials`,
+  getUtilitiesBetweenDates: `${baseUrl}/api/v1/expenses/utility`,
+  getLabourExpensesBetweenDates:`${baseUrl}/api/v1/expenses/labours`,
+  getAssetExpensesBetweenDates:`${baseUrl}/api/v1/expenses/assets`,
+  addSalaries:`${baseUrl}/api/v1/salary/pay-all`
 }
 
 export const attendances = {
@@ -57,10 +59,10 @@ export const attendances = {
 
 
 
-  getEmployeeAttendance: `${baseUrl}/api/attendance/list/employee/in-dates`,
-  getAttendanceIns: `${baseUrl}/api/attendance/in/today`,
-  getAttendanceHours: `${baseUrl}/api/attendance/hours`,
-  removeAttendance: `${baseUrl}/api/attendance/out/today/remove`,
+  getEmployeeAttendance: `${baseUrl}/api/v1/attendance`,
+  getAttendanceIns: `${baseUrl}/api/v1/attendance/today`,
+  getAttendanceHours: `${baseUrl}/api/v1/salary/calculate`,
+  removeAttendance: `${baseUrl}/api/v1/attendance/reset`,
 
 
 }
