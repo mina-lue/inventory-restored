@@ -13,6 +13,7 @@ import { RawMaterial } from '../../../model/RawMaterial.model';
 import { Product } from '../../../model/product.model';
 import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { ProductBomItem } from '../../../model/ProductBomItem.model';
 
 
 @Component({
@@ -24,15 +25,30 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class ProductComponent {
 private fb = inject(FormBuilder);
  productsInStore$: Observable<any[]>;
+ materials$: Observable<RawMaterial[]>;
+ bomItems$: Observable<ProductBomItem[]> | undefined;
 
     validateForm = this.fb.group({
       productItem:[undefined, Validators.required],
       quantity:[undefined, Validators.required],
+      batchNumber:[undefined],
+      wastageQuantity:[0],
+      responsibleEmployee:[undefined],
+      note:[undefined],
+    })
+
+    bomForm = this.fb.group({
+      productItem:[undefined, Validators.required],
+      material:[undefined, Validators.required],
+      quantityPerUnit:[undefined, Validators.required],
+      wastagePercent:[0],
+      note:[undefined],
     })
 
 
     constructor(private readonly service: InventoryService){
       this.productsInStore$= this.service.getProducts({page:0, size:10}).pipe(startWith([]));
+      this.materials$= this.service.getMaterials().pipe(startWith([]));
       this.productsInStore$.pipe().subscribe((data)=>{
         console.log(data);
       })
@@ -40,10 +56,35 @@ private fb = inject(FormBuilder);
 
     save(data: any){
       if(this.validateForm.valid){
-        console.log(data.productItem.id, data.quantity )
-        this.service.addProductInStore(data.productItem, data.quantity);
+        this.service.addProductInStore(data.productItem, data);
       } else {
         Object.values(this.validateForm.controls).forEach(control => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+          }
+        });
+      }
+    }
+
+    loadBom(product: any){
+      if (product?.id) {
+        this.bomItems$ = this.service.getProductBomItems(product.id);
+      }
+    }
+
+    saveBom(data: any){
+      if(this.bomForm.valid){
+        this.service.addProductBomItem({
+          product: { id: data.productItem.id },
+          material: { id: data.material.id },
+          quantityPerUnit: data.quantityPerUnit,
+          wastagePercent: data.wastagePercent,
+          note: data.note
+        });
+        this.loadBom(data.productItem);
+      } else {
+        Object.values(this.bomForm.controls).forEach(control => {
           if (control.invalid) {
             control.markAsDirty();
             control.updateValueAndValidity({ onlySelf: true });

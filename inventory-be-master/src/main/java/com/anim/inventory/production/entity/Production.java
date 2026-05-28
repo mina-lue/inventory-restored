@@ -20,6 +20,11 @@ public class Production {
     @ManyToOne
     private Product product;
     private Integer quantity;
+    private String batchNumber;
+    private Integer wastageQuantity;
+    private Float productionCost;
+    private String responsibleEmployee;
+    private String note;
     private LocalDateTime ProductionDate;
 
     @PrePersist

@@ -19,6 +19,15 @@ public class Consumption {
 
     @ManyToOne
     private Material material;
+    @ManyToOne
+    private Production production;
     private Integer quantity;
     private LocalDateTime consumptionDate;
+
+    @PrePersist
+    protected void onCreate() {
+        if (consumptionDate == null) {
+            consumptionDate = LocalDateTime.now();
+        }
+    }
 }

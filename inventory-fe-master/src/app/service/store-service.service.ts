@@ -10,6 +10,7 @@ import { Employee } from '../model/employee.model';
 import { NotificationService } from './notifications.service';
 import { Page } from '../model/Page';
 import { ReorderSuggestion } from '../model/ReorderSuggestion.model';
+import { ProductBomItem } from '../model/ProductBomItem.model';
 
 
 @Injectable({
@@ -57,6 +58,17 @@ export class InventoryService {
     .set("startDate", start)
     .set("endDate", end);
     return this.http.get<any[]>(storeEndPoints.getProductions, {params}).pipe(catchError(() => of([])));
+  }
+
+  getProductBomItems(productId: number): Observable<ProductBomItem[]>{
+    return this.http.get<ProductBomItem[]>(`${storeEndPoints.boms}/product/${productId}`).pipe(catchError(() => of([])));
+  }
+
+  addProductBomItem(bomItem: ProductBomItem){
+    return this.http.post<ProductBomItem>(storeEndPoints.boms, bomItem).subscribe({
+      next: response => this.notification.showNotification(true, `Recipe item registered successfully!`),
+      error: error => this.notification.showNotification(false, `Recipe item registration not successful!`)
+    })
   }
 
   getCustomers(): Observable<Customer[]>{
@@ -127,13 +139,17 @@ export class InventoryService {
     })
   }
 
-  addProductInStore(productInStore: any, quantity: number){
+  addProductInStore(productInStore: any, productionData: any){
     const production = {
       product: { id: productInStore.id },
-      quantity
+      quantity: productionData.quantity,
+      batchNumber: productionData.batchNumber,
+      wastageQuantity: productionData.wastageQuantity,
+      responsibleEmployee: productionData.responsibleEmployee,
+      note: productionData.note
     };
     return this.http.post(`${storeEndPoints.addProductProduction}`, production).subscribe({
-      next: response => this.notification.showNotification(true, `${quantity} ${productInStore.unit} ${productInStore.name} added to store successfully!`),
+      next: response => this.notification.showNotification(true, `${productionData.quantity} ${productInStore.unit} ${productInStore.name} added to store successfully!`),
       error: error => this.notification.showNotification(false, `${productInStore.name} registration not successful!`)
     })
   }

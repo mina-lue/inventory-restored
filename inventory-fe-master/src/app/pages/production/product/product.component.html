@@ -1,5 +1,5 @@
-<div class="justify-center flex mt-4">
-  <nz-card [nzTitle]="formTitle" class="w-1/2 shadow-md" [nzExtra]="quit">
+<div class="justify-center flex flex-col sm:flex-row gap-4 mt-4">
+  <nz-card [nzTitle]="formTitle" class="w-full sm:w-1/2 shadow-md" [nzExtra]="quit">
   <form nz-form class="w-full" [formGroup]="validateForm" (ngSubmit)="save(validateForm.value)">
     <nz-form-item>
       <nz-form-label [nzSpan] = "7"><span class="text-lg">Product Item</span></nz-form-label>
@@ -7,7 +7,7 @@
         [nzSpan]="12"
         nzHasFeedback
       >
-        <nz-select name = "select" formControlName="productItem">
+        <nz-select name = "select" formControlName="productItem" (ngModelChange)="loadBom($event)">
           <nz-option [nzValue] = "product" [nzLabel]="product.name" *ngFor="let product of (productsInStore$|async)|| []"></nz-option>
         </nz-select>
        </nz-form-control>
@@ -18,12 +18,86 @@
         <nz-input-number name="input" style="width:100%" formControlName="quantity"></nz-input-number>
       </nz-form-control>
   </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7"><span class="text-lg">Batch</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="batchNumber" placeholder="Batch number">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7"><span class="text-lg">Wastage</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-input-number name="wastage" style="width:100%" formControlName="wastageQuantity"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7"><span class="text-lg">Responsible</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="responsibleEmployee" placeholder="Employee">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7"><span class="text-lg">Note</span></nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <input nz-input formControlName="note" placeholder="Production note">
+    </nz-form-control>
+  </nz-form-item>
     <nz-form-item>
           <nz-form-control [nzOffset]="7" [nzSpan]="12" >
             <button nz-button nzType="primary" class="m-4 w-32 rounded-sm" type="submit">Save</button>
           </nz-form-control>
        </nz-form-item>
   </form>
+  </nz-card>
+
+  <nz-card nzTitle="Product recipe" class="w-full sm:w-1/2 shadow-md">
+    <form nz-form class="w-full" [formGroup]="bomForm" (ngSubmit)="saveBom(bomForm.value)">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7"><span class="text-lg">Product</span></nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback>
+          <nz-select formControlName="productItem" (ngModelChange)="loadBom($event)">
+            <nz-option [nzValue]="product" [nzLabel]="product.name" *ngFor="let product of (productsInStore$|async)|| []"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7"><span class="text-lg">Material</span></nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback>
+          <nz-select formControlName="material">
+            <nz-option [nzValue]="material" [nzLabel]="material.name" *ngFor="let material of (materials$|async)|| []"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7"><span class="text-lg">Qty per unit</span></nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback>
+          <nz-input-number style="width:100%" formControlName="quantityPerUnit"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7"><span class="text-lg">Wastage %</span></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-input-number style="width:100%" formControlName="wastagePercent"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="7"><span class="text-lg">Note</span></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <input nz-input formControlName="note" placeholder="Recipe note">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzOffset]="7" [nzSpan]="12">
+          <button nz-button nzType="primary" class="m-4 w-32 rounded-sm" type="submit">Add</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <div *ngIf="bomItems$ | async as bomItems">
+      <p *ngFor="let item of bomItems" class="flex justify-between bg-zinc-100 my-2 rounded-md px-4">
+        <span>{{item.material.name}}</span>
+        <span>{{item.quantityPerUnit}} / unit + {{item.wastagePercent || 0}}%</span>
+      </p>
+    </div>
   </nz-card>
   </div>
 

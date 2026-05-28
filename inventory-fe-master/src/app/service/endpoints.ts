@@ -11,6 +11,7 @@ export const storeEndPoints = {
   getAgedItems:`${baseUrl}/api/v1/products/aged`,
   assets: `${baseUrl}/api/v1/assets`,
   getProductions: `${baseUrl}/api/v1/productions`,
+  boms: `${baseUrl}/api/v1/boms`,
   customers: `${baseUrl}/api/v1/customers`,
   employees: `${baseUrl}/api/v1/employees`,
   addMaterialConsumption: `${baseUrl}/api/v1/consumption`,
