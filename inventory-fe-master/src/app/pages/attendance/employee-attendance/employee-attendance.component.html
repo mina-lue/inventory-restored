@@ -11,7 +11,7 @@ nzBordered="true"
   </thead>
   <tbody>
     <tr *ngFor="let item of employeeAttendance">
-      <td>{{item.date}}</td>
+      <td>{{item.date | date:'MMM d, y, h:mm a'}}</td>
       <td>{{item.workHour/60.0}}</td>
     </tr>
   </tbody>

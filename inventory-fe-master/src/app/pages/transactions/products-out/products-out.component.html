@@ -25,7 +25,7 @@
 			<td>{{productOut.product.price}}</td>
 			<td>{{productOut.quantity}}</td>
 			<td>{{productOut.quantity * productOut?.product.price}}</td>
-			<td>{{productOut.saleDate}}
+			<td>{{productOut.saleDate | date:'MMM d, y, h:mm a'}}</td>
 		</tr>
 	</tbody>
 	</nz-table>

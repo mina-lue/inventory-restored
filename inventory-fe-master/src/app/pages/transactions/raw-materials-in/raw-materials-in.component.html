@@ -24,7 +24,7 @@
 			<td>{{materialIn.material?.price}}</td>
 			<td>{{materialIn.quantity}}</td>
 			<td>{{materialIn.quantity * materialIn.material?.price}}</td>
-			<td>{{materialIn.purchaseDate}}
+			<td>{{materialIn.purchaseDate | date:'MMM d, y, h:mm a'}}</td>
 		</tr>
 	</tbody>
 	</nz-table>

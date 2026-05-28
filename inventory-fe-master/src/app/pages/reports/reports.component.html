@@ -104,7 +104,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of salesTable.data">
-          <td>{{row.saleDate}}</td>
+          <td>{{row.saleDate | date:'MMM d, y, h:mm a'}}</td>
           <td>{{row.customerName || '-'}}</td>
           <td>{{row.productName}}</td>
           <td>{{row.sku || '-'}}</td>
@@ -128,7 +128,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of consumptionTable.data">
-          <td>{{row.consumptionDate}}</td>
+          <td>{{row.consumptionDate | date:'MMM d, y, h:mm a'}}</td>
           <td>{{row.batchNumber || '-'}}</td>
           <td>{{row.productName || '-'}}</td>
           <td>{{row.materialName}}</td>
@@ -170,7 +170,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of movementTable.data">
-          <td>{{row.createdAt}}</td>
+          <td>{{row.createdAt | date:'MMM d, y, h:mm a'}}</td>
           <td>{{row.itemType}} #{{row.itemId}}</td>
           <td>{{row.movementType}}</td>
           <td>{{row.quantityBefore}}</td>

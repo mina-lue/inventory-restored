@@ -18,7 +18,7 @@
 		<tr *ngFor="let expense of expensesTable.data">
 			<td>{{expense.description}}</td>
 			<td>{{expense.amount}}</td>
-			<td >{{expense.date}}</td>
+			<td>{{expense.date | date:'MMM d, y, h:mm a'}}</td>
 		</tr>
 	</tbody>
 	</nz-table>
