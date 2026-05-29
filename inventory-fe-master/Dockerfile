@@ -14,6 +14,7 @@ COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 COPY --from=build /app/dist/habkal-inventory-fe/browser /usr/share/nginx/html
+RUN cp /usr/share/nginx/html/index.csr.html /usr/share/nginx/html/index.html
 
 ENV BACKEND_URL=http://backend:8080
 ENV PORT=80
