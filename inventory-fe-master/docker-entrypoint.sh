@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-# 1. Manually substitute $BACKEND_URL from Render into the final Nginx config
-echo "Substituting environment variables..."
+# Substitute the BACKEND_URL variable into the active Nginx config file directory
+echo "Injecting backend target URL: $BACKEND_URL"
 envsubst '$BACKEND_URL' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
 
-# 2. Execute the CMD (which runs Nginx)
+# Execute the main container command (nginx -g 'daemon off;')
 exec "$@"

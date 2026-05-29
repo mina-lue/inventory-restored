@@ -10,9 +10,12 @@ RUN npm run build -- --configuration production
 
 # Runtime stage – nginx serves static files and proxies /api to the backend
 FROM nginx:1.27-alpine
+
+# Copies files from the local frontend directory into the image
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
 COPY --from=build /app/dist/habkal-inventory-fe/browser /usr/share/nginx/html
 RUN cp /usr/share/nginx/html/index.csr.html /usr/share/nginx/html/index.html
 
