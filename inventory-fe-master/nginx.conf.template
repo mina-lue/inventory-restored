@@ -1,8 +1,8 @@
 server {
     listen 80;
 
-    # Includes both Docker Compose internal DNS (127.0.0.11) and Render internal DNS (10.0.0.2)
-    resolver 127.0.0.11 10.0.0.2 valid=10s;
+    # Render's internal DNS resolver 
+    resolver 10.0.0.2 valid=10s;
 
     # Serve static Angular files
     location / {
@@ -13,7 +13,12 @@ server {
 
     # Proxy API calls directly to the Spring Boot Backend
     location /api/ {
-        proxy_pass $BACKEND_URL/;
+        # 1. Capture the injected variable value into an Nginx-scoped variable
+        set $backend_app "$BACKEND_URL";
+
+        # 2. Pass ONLY the variable. This completely tricks Nginx's startup check!
+        proxy_pass $backend_app/;
+        
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
