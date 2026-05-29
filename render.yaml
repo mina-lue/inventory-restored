@@ -1,0 +1,62 @@
+# Render Blueprint – deploy all services from the dockerized branch
+# Docs: https://render.com/docs/infrastructure-as-code
+#
+# Free tier notes:
+# - Managed Postgres is used (Docker Postgres requires a paid private service on Render).
+# - Free web services spin down after ~15 min of inactivity (cold starts ~30–50 s).
+# - Free Postgres databases expire after 30 days (upgrade to keep data).
+
+databases:
+  - name: inventory-db
+    plan: free
+    databaseName: inventory_db
+    user: inventory_user
+
+services:
+  - type: web
+    name: inventory-api
+    runtime: docker
+    plan: free
+    branch: dockerized
+    dockerfilePath: ./inventory-be-master/Dockerfile
+    dockerContext: ./inventory-be-master
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: inventory-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: inventory-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: inventory-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: inventory-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: inventory-db
+          property: password
+      - key: DDL_AUTO
+        value: update
+      - key: SHOW_SQL
+        value: "false"
+
+  - type: web
+    name: inventory-web
+    runtime: docker
+    plan: free
+    branch: dockerized
+    dockerfilePath: ./inventory-fe-master/Dockerfile
+    dockerContext: ./inventory-fe-master
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: inventory-api
+          property: hostport
