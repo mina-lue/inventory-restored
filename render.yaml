@@ -56,7 +56,5 @@ services:
     dockerContext: ./inventory-fe-master
     envVars:
       - key: BACKEND_URL
-        fromService:
-          type: web
-          name: inventory-api
-          property: hostport
+        # We construct an internal network URL using Render's private service discovery
+        value: http://inventory-api:8080
